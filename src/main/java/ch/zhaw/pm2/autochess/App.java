@@ -7,7 +7,6 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.settings.GameSettings;
 
 public class App extends GameApplication{
-
 	    public String getGreeting() {
 	        return "Hello world.";
 	    }
