@@ -3,7 +3,10 @@
  */
 package ch.zhaw.pm2.autochess;
 
-public class App {
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.settings.GameSettings;
+
+public class App extends GameApplication{
     public String getGreeting() {
         return "Hello world.";
     }
@@ -11,4 +14,9 @@ public class App {
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
     }
+
+	@Override
+	protected void initSettings(GameSettings settings) {
+		// TODO Auto-generated method stub
+	}
 }
