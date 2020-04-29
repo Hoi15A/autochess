@@ -1,4 +1,4 @@
 package ch.zhaw.pm2.autochess;
 
-public class MinionMOCK {
+public class Minion {
 }
