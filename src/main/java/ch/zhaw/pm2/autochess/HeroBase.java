@@ -23,4 +23,12 @@ public class HeroBase {
             return new Alien();
         }
     }
+
+    public void checkAvailableFunds(int amount) throws IllegalArgumentException {
+
+    }
+
+    public void resetFund() {
+
+    }
 }

@@ -4,33 +4,44 @@ import java.util.ArrayList;
 
 public class BoardManager {
 
-    private Minion[][] board;
+    private Minion[][] board = new Minion[20][20];
     private ArrayList<Minion> minionList = new ArrayList<>();
 
     public BoardManager() {
-        board = new Minion[20][20];
     }
 
     public Minion[][] getBoard() {return board;}
 
-    public void addMinion(MINION_TYP minion_typ, int heroId) throws IllegalArgumentException{
+    public ArrayList<Minion> getMinionList() {
+        return minionList;
+    }
+
+    public void addMinion(Minion.MINION_TYP minion_typ, int heroId) throws IllegalArgumentException{
 
     }
 
-    public enum MINION_TYP {
-        WARRIOR(10), RANGER(20), TANK(15);
+    public void minionDoMove() {
 
-        private int price;
+    }
 
-        private MINION_TYP(int price) {
-            this.price = price;
-        }
 
-        public int getPrice() {
-            return price;
-        }
-        public static Minion getMinionFromType(MINION_TYP minion_typ) throws IllegalArgumentException{
-            return new Minion();
+    public void doBattle() {
+        boolean battleRunning = true;
+        while(battleRunning) {
+            battleRunning = false;
+            //at least one minion on each side -> return false if only one team left
+            //determine move order (agility)
+            //loop over all minions in ordered list
+            //call move and attack one after the other
         }
     }
+
+
+    public void resetMinion() {}
+
+    @Override
+    public String toString() {
+        return null;
+    }
+
 }

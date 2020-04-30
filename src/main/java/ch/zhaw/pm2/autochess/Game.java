@@ -6,23 +6,11 @@ public class Game {
     private ArrayList<HeroBase> heroArrayList = new ArrayList<>();
     private BoardManager boardManager;
 
-    /**
-     * Constructor for Game object. Initializes board and players. Sets currentGamePhase to
-     * GAME_START.
-     * @param numberOfPlayers int representing the number of players
-     * @throws IllegalArgumentException thrown if number of players invalid
-     */
-    public Game(int numberOfPlayers) throws IllegalArgumentException{
+    public Game() throws IllegalArgumentException{
         boardManager = new BoardManager();
         heroArrayList = new ArrayList<>();
     }
 
-    /**
-     * Getter for specific Hero
-     * @param heroId int to match with hero ID attribute
-     * @return Hero whose hero ID attribute matches the given integer
-     * @throws IllegalArgumentException thown if no matching hero found
-     */
     public HeroBase getHero(int heroId) throws IllegalArgumentException{
         HeroBase foundHero = null;
         for(HeroBase hero : heroArrayList) {
@@ -36,10 +24,6 @@ public class Game {
         return foundHero;
     }
 
-    /**
-     * Getter method for the Board object attribute
-     * @return Board object
-     */
     public Minion[][] getBoard() {
         return boardManager.getBoard();
     }
@@ -52,31 +36,45 @@ public class Game {
         heroArrayList.add(HeroBase.HERO_TYP.getHeroFromType(hero_typ));
     }
 
-    public void buyMinions(int heroId, ArrayList<BoardManager.MINION_TYP> minionTypList) {
+
+    public void buyMinions(int heroId, ArrayList<Minion.MINION_TYP> minionTypList) throws IllegalArgumentException{
+        if(minionTypList.size() > 10) {
+            throw new IllegalArgumentException("Too many minions");
+        }
         try {
             HeroBase hero = getHero(heroId);
             hero.decreaseAvailableFunds(calcMinionListCost(minionTypList));
             addMinions(minionTypList, heroId);
         } catch (IllegalArgumentException e) {
-            //catch multiple exceptions depending on if thrown from hero or BoardManager (Custom Exceptions Needed)
-            //reset funds and minions if caught noFundsException
+            throw new IllegalArgumentException("No hero found || not enough funds || couldn't add minions");
         }
     }
 
-    private int calcMinionListCost(ArrayList<BoardManager.MINION_TYP> minionTypList) {
+    private int calcMinionListCost(ArrayList<Minion.MINION_TYP> minionTypList) {
         int totalCost = 0;
-        for(BoardManager.MINION_TYP minion_typ : minionTypList) {
+        for(Minion.MINION_TYP minion_typ : minionTypList) {
             totalCost += minion_typ.getPrice();
         }
         return totalCost;
     }
 
-    private void addMinions(ArrayList<BoardManager.MINION_TYP> minionTypList, int heroId) throws IllegalArgumentException{
-            for (BoardManager.MINION_TYP minion_typ : minionTypList) {
-                boardManager.addMinion(minion_typ, heroId);
-            }
+    private void addMinions(ArrayList<Minion.MINION_TYP> minionTypList, int heroId) throws IllegalArgumentException{
+        for (Minion.MINION_TYP minion_typ : minionTypList) {
+            boardManager.addMinion(minion_typ, heroId);
+        }
     }
 
+    public ArrayList<Minion> getMinionList() {
+        return null;
+    }
+
+    public void placeMinion(Minion minion, int xPos, int yPos) {
+
+    }
+
+    public void doBattle() {
+
+    }
 
 
 
