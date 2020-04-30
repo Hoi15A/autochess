@@ -6,10 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainApp extends Application {
-    private static final Logger logger = Logger.getLogger(ClientMain.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(MainApp.class.getCanonicalName());
 
     public static void main(String[] args) {
         launch(args);
