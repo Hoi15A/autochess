@@ -1,16 +1,46 @@
 package ch.zhaw.pm2.autochess.Hero;
 
+import ch.zhaw.pm2.autochess.MINION_TYP_MOCK;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 public abstract class HeroBase {
 
     public enum HeroTyp {
         ALIEN, ENGINEER, SPACE_MARINE
     }
 
-    private static final int MAX_HEALTH = 10;
+    private static final int MAX_HEALTH = 100;
     private static final int START_FUNDS = 10;
     private static final int MAX_FUNDS = 100;
     private static int counterId = 0;
 
+    private ArrayList<MinionMOCK> minionList = new ArrayList<>();
+
+    private final int heroId;
+    private int health;
+    private int funds;
+
+    public HeroBase(int health, int funds) {
+        heroId = counterId;
+        counterId++;
+        this.health = health;
+        this.funds = funds;
+    }
+
+    public HeroBase() {
+        heroId = counterId;
+        counterId++;
+        health = MAX_HEALTH;
+        funds = START_FUNDS;
+    }
+
+    //****************
+    //Hero methods
+    //****************
     public static int getCounterId() {
         return counterId;
     }
@@ -19,24 +49,12 @@ public abstract class HeroBase {
         return health;
     }
 
-    public int getAvailableFunds() {
-        return availableFunds;
+    public int getFunds() {
+        return funds;
     }
 
-    private final int heroId;
-    private int health;
-    private int roundFunds;
-    private int availableFunds;
+    public int getId() { return heroId;}
 
-    public HeroBase() {
-        heroId = counterId;
-        counterId++;
-        health = MAX_HEALTH;
-        roundFunds = START_FUNDS;
-        availableFunds = roundFunds;
-    }
-
-    public int getHeroId() { return heroId;}
 
     public void increaseHealth(int value) throws IllegalArgumentException{
         if(value > 0 && value < MAX_HEALTH*10) {
@@ -64,24 +82,24 @@ public abstract class HeroBase {
         }
     }
 
-    public void increaseAvailableFunds(int value) throws IllegalArgumentException{
+    public void increaseFunds(int value) throws IllegalArgumentException{
         if(value > 0 && value < MAX_FUNDS*10) {
-            int newFunds = availableFunds + value;
-            if(newFunds <= roundFunds) {
-                availableFunds = newFunds;
+            int newFunds = funds + value;
+            if(newFunds <= MAX_FUNDS) {
+                funds = newFunds;
             } else {
-                availableFunds = roundFunds;
+                funds = MAX_FUNDS;
             }
         } else {
             throw new IllegalArgumentException("Given value invalid: Negative or greater allowed max");
         }
     }
 
-    public void decreaseAvailableFunds(int value) throws IllegalArgumentException{
+    private void decreaseFunds(int value) throws IllegalArgumentException{
         if(value > 0 && value < MAX_FUNDS*10) {
-            int newFunds = availableFunds - value;
+            int newFunds = funds - value;
             if(newFunds >= 0) {
-                availableFunds = newFunds;
+                funds = newFunds;
             } else {
                 throw new IllegalArgumentException("Funds not available");
             }
@@ -90,23 +108,100 @@ public abstract class HeroBase {
         }
     }
 
-    public void setRoundFunds(int value) {
-        if(value > 0 && value < MAX_FUNDS*10) {
-            if(value <= MAX_FUNDS) {
-                roundFunds = value;
-            } else {
-                roundFunds = MAX_FUNDS;
-            }
+    //*********************
+    //Minion Methods
+    //*********************
+
+    public void buyMinion(MINION_TYP_MOCK minion_typMOCK) throws IllegalArgumentException{
+        decreaseFunds(minion_typMOCK.getPrice());
+        addMinion(minion_typMOCK);
+    }
+
+    private void addMinion(MINION_TYP_MOCK minion_typMOCK) throws IllegalArgumentException{
+       minionList.add(MINION_TYP_MOCK.getMinion());
+    }
+
+    public void sellMinion(int minionId) {
+        if(isValidId(minionId)) {
+            MINION_TYP_MOCK minionTyp = getMinionTyp(minionId);
+            removeMinion(minionId);
+            increaseFunds(minionTyp.getPrice());
         } else {
-            throw new IllegalArgumentException("Given value invalid: Negative or greater allowed max");
+            throw new IllegalArgumentException("Not a valid Id");
         }
     }
 
-    public void resetRoundFunds() {
-        availableFunds = roundFunds;
+    private MinionMOCK getMinion(int minionId) {
+        for(MinionMOCK minion : minionList) {
+            if(minion.getId() == minionId) {
+                return minion;
+            }
+        }
+        return null;
     }
 
+    private boolean isValidId(int minionId) {
+        boolean foundStatus = false;
+        for(MinionMOCK minion : minionList) {
+            if(minion.getId() == minionId) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    private void removeMinion(int minionId) throws IllegalArgumentException{
+        if(isValidId(minionId)) {
+            for (Iterator<MinionMOCK> it = minionList.iterator(); it.hasNext(); ) {
+                MinionMOCK minion = it.next();
+                if (minion.getId() == minionId) {
+                    it.remove();
+                }
+            }
+        }else {
+            throw new IllegalArgumentException("not a valid Id");
+        }
+    }
 
+    public Set<Integer> getAllMinionIds() {
+        Set<Integer> minionIdSet = new HashSet<>();
+        for(MinionMOCK minion : minionList) {
+            minionIdSet.add(minion.getId());
+        }
+        return minionIdSet;
+    }
 
+    public MINION_TYP_MOCK getMinionTyp(int minionId) throws IllegalArgumentException {
+        if(isValidId(minionId)) {
+            return getMinion(minionId).getMinionTyp();
+        } else {
+            throw new IllegalArgumentException("no minion found");
+        }
+    }
+
+    public int getMinionLevel(int minionId) throws IllegalArgumentException {
+        if (isValidId(minionId)) {
+            return getMinion(minionId).getLevel();
+        } else {
+            throw new IllegalArgumentException("no minion found");
+        }
+    }
+
+    public void increaseMinionLevel(int minionId) throws IllegalArgumentException {
+        if(isValidId(minionId)) {
+            getMinion(minionId).increaseLevel();
+            //decreaseFunds();
+        } else {
+            throw new IllegalArgumentException("no minion found");
+        }
+    }
+
+    public void decreaseMinionLevel(int minionId) throws IllegalArgumentException {
+        if(isValidId(minionId)) {
+            getMinion(minionId).decreaseLevel();
+            //increaseFunds();
+        } else {
+            throw new IllegalArgumentException("no minion found");
+        }
+    }
 }
