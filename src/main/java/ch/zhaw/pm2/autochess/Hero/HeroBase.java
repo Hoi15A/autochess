@@ -2,10 +2,7 @@ package ch.zhaw.pm2.autochess.Hero;
 
 import ch.zhaw.pm2.autochess.MINION_TYP_MOCK;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public abstract class HeroBase {
 
@@ -95,7 +92,7 @@ public abstract class HeroBase {
         }
     }
 
-    private void decreaseFunds(int value) throws IllegalArgumentException{
+    public void decreaseFunds(int value) throws IllegalArgumentException{
         if(value > 0 && value < MAX_FUNDS*10) {
             int newFunds = funds - value;
             if(newFunds >= 0) {
@@ -113,8 +110,12 @@ public abstract class HeroBase {
     //*********************
 
     public void buyMinion(MINION_TYP_MOCK minion_typMOCK) throws IllegalArgumentException{
-        decreaseFunds(minion_typMOCK.getPrice());
-        addMinion(minion_typMOCK);
+        if(minion_typMOCK == null) {
+            throw new IllegalArgumentException();
+        } else {
+            decreaseFunds(minion_typMOCK.getPrice());
+            addMinion(minion_typMOCK);
+        }
     }
 
     private void addMinion(MINION_TYP_MOCK minion_typMOCK) throws IllegalArgumentException{
@@ -203,5 +204,9 @@ public abstract class HeroBase {
         } else {
             throw new IllegalArgumentException("no minion found");
         }
+    }
+
+    public ArrayList<MinionMOCK> getMinionList() {
+        return minionList;
     }
 }
