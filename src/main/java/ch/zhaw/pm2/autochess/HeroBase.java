@@ -16,6 +16,18 @@ public class HeroBase {
         return 0;
     }
 
+    public int getNbrOfMinions() {
+        return 0;
+    }
+
+    public void buyMinion(Minion.MINION_TYP minionTyp) {
+
+    }
+
+    public void sellMinion(int minionId) {
+
+    }
+
     public enum HERO_TYP {
         ALIEN;
 

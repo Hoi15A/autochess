@@ -1,6 +1,7 @@
 package ch.zhaw.pm2.autochess;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Game {
     private ArrayList<HeroBase> heroArrayList = new ArrayList<>();
@@ -11,7 +12,15 @@ public class Game {
         heroArrayList = new ArrayList<>();
     }
 
-    public HeroBase getHero(int heroId) throws IllegalArgumentException{
+    public Minion[][] getBoard() {
+        return boardManager.getBoard();
+    }
+
+    //*******************************
+    //Hero methods
+    //*******************************
+
+    private HeroBase getHero(int heroId) throws IllegalArgumentException{
         HeroBase foundHero = null;
         for(HeroBase hero : heroArrayList) {
             if(hero.getHeroId() == heroId) {
@@ -24,11 +33,7 @@ public class Game {
         return foundHero;
     }
 
-    public Minion[][] getBoard() {
-        return boardManager.getBoard();
-    }
-
-    public boolean checkWinner() {
+    public boolean checkHeroWinner() {
         return false;
     }
 
@@ -36,46 +41,54 @@ public class Game {
         heroArrayList.add(HeroBase.HERO_TYP.getHeroFromType(hero_typ));
     }
 
+    public void doHeroAbility(int heroId) {
 
-    public void buyMinions(int heroId, ArrayList<Minion.MINION_TYP> minionTypList) throws IllegalArgumentException{
-        if(minionTypList.size() > 10) {
-            throw new IllegalArgumentException("Too many minions");
-        }
+    }
+
+    //***********************
+    //Minion methods
+    //***********************
+
+    public void buyMinion(int heroId, Minion.MINION_TYP minionTyp) throws IllegalArgumentException{
         try {
             HeroBase hero = getHero(heroId);
-            hero.decreaseAvailableFunds(calcMinionListCost(minionTypList));
-            addMinions(minionTypList, heroId);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("No hero found || not enough funds || couldn't add minions");
+            hero.buyMinion(minionTyp);
+        } catch (IllegalArgumentException e){
+
         }
     }
 
-    private int calcMinionListCost(ArrayList<Minion.MINION_TYP> minionTypList) {
-        int totalCost = 0;
-        for(Minion.MINION_TYP minion_typ : minionTypList) {
-            totalCost += minion_typ.getPrice();
-        }
-        return totalCost;
-    }
+    public void sellMinion(int heroId, int minionId) throws IllegalArgumentException {
+        try {
+            HeroBase hero = getHero(heroId);
+            hero.sellMinion(minionId);
+        } catch(IllegalArgumentException e) {
 
-    private void addMinions(ArrayList<Minion.MINION_TYP> minionTypList, int heroId) throws IllegalArgumentException{
-        for (Minion.MINION_TYP minion_typ : minionTypList) {
-            boardManager.addMinion(minion_typ, heroId);
         }
     }
 
-    public ArrayList<Minion> getMinionList() {
+    public Set<Integer> getAllMinionIds(int heroId) throws IllegalArgumentException{
         return null;
     }
 
-    public void placeMinion(Minion minion, int xPos, int yPos) {
-
+    public Minion.MINION_TYP getMinionTyp(int minionId) throws IllegalArgumentException{
+        return null;
     }
+
+    public int getMinionLevel(int minionId) throws IllegalArgumentException{
+        return 1;
+    }
+
+    //*******************************
+    //Battle methods
+    //*******************************
 
     public void doBattle() {
-
+        //combine minionLists
+        //call boardManager doBattle with list of
     }
 
-
-
+    public ArrayList<String> getBattleLog() {
+        return null;
+    }
 }
