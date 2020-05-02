@@ -38,6 +38,8 @@ public abstract class Minion {
     public void changeHealth(int modifier) {
         if (health + modifier > maxHealth) {
             this.health = maxHealth;
+        } else if (health + modifier < 0) {
+            this.health = 0;
         } else {
             this.health += modifier;
         }
