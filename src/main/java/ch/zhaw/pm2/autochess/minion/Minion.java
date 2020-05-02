@@ -1,33 +1,50 @@
 package ch.zhaw.pm2.autochess.minion;
 
-public class Minion {
+public abstract class Minion {
 
-    private final int ownerId;
+    private static int idCount = 0;
+    private final int minionId;
     private final MinionType type;
 
-    private final int baseHealth;
+    private final int maxHealth;
     private final int baseAttack;
     private final int baseDefense;
     private final int baseRange;
     private final int baseAgility;
-    private int healthModifier = 0;
+    private int health = 0;
     private int attackModifier = 0;
     private int defenseModifier = 0;
     private int rangeModifier = 0;
     private int agilityModifier = 0;
 
-    public Minion(int ownerId, MinionType type, int health, int attack, int defense, int range, int agility) {
-        this.ownerId = ownerId;
+    public Minion(MinionType type, int health, int attack, int defense, int range, int agility) {
+        this.minionId = idCount++;
         this.type = type;
-        baseHealth = health;
+        maxHealth = health;
         baseAttack = attack;
         baseDefense = defense;
         baseRange = range;
         baseAgility = agility;
     }
 
-    public void setHealthModifier(int healthModifier) {
-        this.healthModifier = healthModifier;
+    public int getMinionId() {
+        return minionId;
+    }
+
+    public MinionType getType() {
+        return type;
+    }
+
+    public void changeHealth(int modifier) {
+        if (health + modifier > maxHealth) {
+            this.health = maxHealth;
+        } else {
+            this.health += modifier;
+        }
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     public void setAttackModifier(int attackModifier) {
@@ -44,10 +61,6 @@ public class Minion {
 
     public void setAgilityModifier(int agilityModifier) {
         this.agilityModifier = agilityModifier;
-    }
-
-    public int getHealth() {
-        return baseHealth + healthModifier;
     }
 
     public int getAttack() {
