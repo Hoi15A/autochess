@@ -13,18 +13,18 @@ public enum MinionType {
         return price;
     }
 
-    public static Minion getMinionFromType(MinionType minionType, int player) throws IllegalArgumentException {
+    public static Minion getMinionFromType(MinionType minionType) throws IllegalArgumentException {
         Minion newMinion;
 
         switch (minionType) {
             case WARRIOR:
-                newMinion = new Minion(player, minionType, 10, 5, 5, 1, 3);
+                newMinion = new Warrior();
                 break;
             case RANGER:
-                newMinion = new Minion(player, minionType, 8, 3, 2, 3, 5);
+                newMinion = new Ranger();
                 break;
             case TANK:
-                newMinion = new Minion(player, minionType, 20, 2, 5, 1, 1);
+                newMinion = new Tank();
                 break;
             default:
                 throw new IllegalArgumentException("Invalid minionType");
