@@ -79,13 +79,21 @@ public class Game {
         return 1;
     }
 
+    public void increaseMinionLevel(int heroId, int minionId) {
+
+    }
+
+    public void decreaseMinionLevel(int heroId, int minionId) {
+
+    }
+
     //*******************************
     //Battle methods
     //*******************************
 
     public void doBattle() {
-        //combine minionLists
-        //call boardManager doBattle with list of
+        //todo: combine minion lists of both heros
+        //todo: call boardManager with fullMinionList
     }
 
     public ArrayList<String> getBattleLog() {
