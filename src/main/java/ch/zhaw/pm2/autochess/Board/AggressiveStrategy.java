@@ -1,4 +1,4 @@
-package ch.zhaw.pm2.autochess;
+package ch.zhaw.pm2.autochess.Board;
 
 public class AggressiveStrategy extends MoveStrategy {
     @Override

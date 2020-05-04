@@ -1,24 +1,18 @@
-package ch.zhaw.pm2.autochess;
+package ch.zhaw.pm2.autochess.Board;
+
+import ch.zhaw.pm2.autochess.Minion.MinionBase;
 
 import java.util.ArrayList;
 
 public class BoardManager {
 
-    private Minion[][] board = new Minion[20][20];
-    private ArrayList<Minion> minionList = new ArrayList<>();
+    private MinionBase[][] board = new MinionBase[20][20];
+    private ArrayList<MinionBase> minionList = new ArrayList<>();
 
     public BoardManager() {
     }
 
-    public Minion[][] getBoard() {return board;}
-
-    public ArrayList<Minion> getMinionList() {
-        return minionList;
-    }
-
-    public void addMinion(Minion.MINION_TYP minion_typ, int heroId) throws IllegalArgumentException{
-
-    }
+    public MinionBase[][] getBoard() {return board;}
 
     public void minionDoMove() {
 

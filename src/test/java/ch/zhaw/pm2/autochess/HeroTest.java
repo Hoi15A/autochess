@@ -2,7 +2,8 @@ package ch.zhaw.pm2.autochess;
 
 import ch.zhaw.pm2.autochess.Hero.HeroAlien;
 import ch.zhaw.pm2.autochess.Hero.HeroBase;
-import ch.zhaw.pm2.autochess.Hero.MinionMOCK;
+import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.Minion.MinionBase.MinionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -15,12 +16,13 @@ import static org.mockito.Mockito.*;
 
 public class HeroTest {
     private HeroBase hero;
-    @Mock private MinionMOCK minionOne;
-    @Mock private MinionMOCK minionTwo;
+    @Mock private MinionBase minionOne;
+    @Mock private MinionBase minionTwo;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
+        HeroBase.resetCounter();
     }
 
     @Test
@@ -134,7 +136,7 @@ public class HeroTest {
         hero = new HeroAlien(100,100);
         assertEquals(100, hero.getFunds());
 
-        hero.buyMinion(MINION_TYP_MOCK.WARRIOR);
+        hero.buyMinion(MinionType.WARRIOR);
 
         assertEquals(90, hero.getFunds());
         assertEquals(1, hero.getMinionList().size());
@@ -145,7 +147,7 @@ public class HeroTest {
         hero = new HeroAlien(100, 0);
         assertEquals(0, hero.getFunds());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.buyMinion(MINION_TYP_MOCK.WARRIOR));
+        assertThrows(IllegalArgumentException.class, () -> hero.buyMinion(MinionType.WARRIOR));
         assertEquals(0, hero.getMinionList().size());
     }
 
@@ -165,7 +167,8 @@ public class HeroTest {
         assertEquals(1, hero.getMinionList().size());
 
         when(minionOne.getId()).thenReturn(3);
-        when(minionOne.getMinionTyp()).thenReturn(MINION_TYP_MOCK.WARRIOR);
+        when(minionOne.getMinionType()).thenReturn(MinionType.WARRIOR);
+        when(minionOne.getPrice()).thenReturn(10);
 
         hero.sellMinion(3);
 
@@ -180,7 +183,7 @@ public class HeroTest {
         assertEquals(1, hero.getMinionList().size());
 
         when(minionOne.getId()).thenReturn(3);
-        when(minionOne.getMinionTyp()).thenReturn(MINION_TYP_MOCK.WARRIOR);
+        when(minionOne.getMinionType()).thenReturn(MinionType.WARRIOR);
 
         assertThrows(IllegalArgumentException.class, () -> hero.sellMinion(1));
         assertEquals(1, hero.getMinionList().size());

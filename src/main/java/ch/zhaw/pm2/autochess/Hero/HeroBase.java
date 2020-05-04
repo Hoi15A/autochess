@@ -1,13 +1,26 @@
 package ch.zhaw.pm2.autochess.Hero;
 
-import ch.zhaw.pm2.autochess.MINION_TYP_MOCK;
+import ch.zhaw.pm2.autochess.Minion.MinionBase;
 
 import java.util.*;
 
 public abstract class HeroBase {
 
-    public enum HeroTyp {
-        ALIEN, ENGINEER, SPACE_MARINE
+    public enum HeroType {
+        ALIEN, ENGINEER, SPACE_MARINE;
+
+        public static HeroBase getHeroFromType(HeroType heroType) throws IllegalArgumentException{
+            switch(heroType) {
+                case ALIEN:
+                    return new HeroAlien();
+                case ENGINEER:
+                    return new HeroEngineer();
+                case SPACE_MARINE:
+                    return new HeroSpaceMarine();
+                default:
+                    throw new IllegalArgumentException("No such heroType available");
+            }
+        }
     }
 
     private static final int MAX_HEALTH = 100;
@@ -15,7 +28,7 @@ public abstract class HeroBase {
     private static final int MAX_FUNDS = 100;
     private static int counterId = 0;
 
-    private ArrayList<MinionMOCK> minionList = new ArrayList<>();
+    private ArrayList<MinionBase> minionList = new ArrayList<>();
 
     private final int heroId;
     private int health;
@@ -105,35 +118,39 @@ public abstract class HeroBase {
         }
     }
 
+    public static void resetCounter() {
+        counterId = 0;
+    }
+
     //*********************
     //Minion Methods
     //*********************
 
-    public void buyMinion(MINION_TYP_MOCK minion_typMOCK) throws IllegalArgumentException{
-        if(minion_typMOCK == null) {
+    public void buyMinion(MinionBase.MinionType minionType) throws IllegalArgumentException{
+        if(minionType == null) {
             throw new IllegalArgumentException();
         } else {
-            decreaseFunds(minion_typMOCK.getPrice());
-            addMinion(minion_typMOCK);
+            decreaseFunds(minionType.getPrice());
+            addMinion(minionType);
         }
     }
 
-    private void addMinion(MINION_TYP_MOCK minion_typMOCK) throws IllegalArgumentException{
-       minionList.add(MINION_TYP_MOCK.getMinion());
+    private void addMinion(MinionBase.MinionType minionType) throws IllegalArgumentException{
+       minionList.add(MinionBase.MinionType.getMinionFromType(minionType));
     }
 
     public void sellMinion(int minionId) {
         if(isValidId(minionId)) {
-            MINION_TYP_MOCK minionTyp = getMinionTyp(minionId);
+            int price = getMinion(minionId).getPrice();
             removeMinion(minionId);
-            increaseFunds(minionTyp.getPrice());
+            increaseFunds(price);
         } else {
             throw new IllegalArgumentException("Not a valid Id");
         }
     }
 
-    private MinionMOCK getMinion(int minionId) {
-        for(MinionMOCK minion : minionList) {
+    private MinionBase getMinion(int minionId) {
+        for(MinionBase minion : minionList) {
             if(minion.getId() == minionId) {
                 return minion;
             }
@@ -143,7 +160,7 @@ public abstract class HeroBase {
 
     private boolean isValidId(int minionId) {
         boolean foundStatus = false;
-        for(MinionMOCK minion : minionList) {
+        for(MinionBase minion : minionList) {
             if(minion.getId() == minionId) {
                 return true;
             }
@@ -153,8 +170,8 @@ public abstract class HeroBase {
 
     private void removeMinion(int minionId) throws IllegalArgumentException{
         if(isValidId(minionId)) {
-            for (Iterator<MinionMOCK> it = minionList.iterator(); it.hasNext(); ) {
-                MinionMOCK minion = it.next();
+            for (Iterator<MinionBase> it = minionList.iterator(); it.hasNext(); ) {
+                MinionBase minion = it.next();
                 if (minion.getId() == minionId) {
                     it.remove();
                 }
@@ -166,15 +183,15 @@ public abstract class HeroBase {
 
     public Set<Integer> getAllMinionIds() {
         Set<Integer> minionIdSet = new HashSet<>();
-        for(MinionMOCK minion : minionList) {
+        for(MinionBase minion : minionList) {
             minionIdSet.add(minion.getId());
         }
         return minionIdSet;
     }
 
-    public MINION_TYP_MOCK getMinionTyp(int minionId) throws IllegalArgumentException {
+    public MinionBase.MinionType getMinionTyp(int minionId) throws IllegalArgumentException {
         if(isValidId(minionId)) {
-            return getMinion(minionId).getMinionTyp();
+            return getMinion(minionId).getMinionType();
         } else {
             throw new IllegalArgumentException("no minion found");
         }
@@ -206,7 +223,7 @@ public abstract class HeroBase {
         }
     }
 
-    public ArrayList<MinionMOCK> getMinionList() {
+    public ArrayList<MinionBase> getMinionList() {
         return minionList;
     }
 }

@@ -1,6 +1,11 @@
 package ch.zhaw.pm2.autochess;
 
+import ch.zhaw.pm2.autochess.Board.BoardManager;
+import ch.zhaw.pm2.autochess.Hero.HeroBase;
+import ch.zhaw.pm2.autochess.Minion.MinionBase;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Game {
@@ -12,7 +17,7 @@ public class Game {
         heroArrayList = new ArrayList<>();
     }
 
-    public Minion[][] getBoard() {
+    public MinionBase[][] getBoard() {
         return boardManager.getBoard();
     }
 
@@ -21,9 +26,10 @@ public class Game {
     //*******************************
 
     private HeroBase getHero(int heroId) throws IllegalArgumentException{
+        //todo: create isValidId method like in HeroBase. Call in each method to throw proper exception
         HeroBase foundHero = null;
         for(HeroBase hero : heroArrayList) {
-            if(hero.getHeroId() == heroId) {
+            if(hero.getId() == heroId) {
                 foundHero = hero;
             }
         }
@@ -37,8 +43,12 @@ public class Game {
         return false;
     }
 
-    public void addHero(HeroBase.HERO_TYP hero_typ) {
-        heroArrayList.add(HeroBase.HERO_TYP.getHeroFromType(hero_typ));
+    public void addHero(HeroBase.HeroType heroType) {
+        try {
+            heroArrayList.add(HeroBase.HeroType.getHeroFromType(heroType));
+        } catch (IllegalArgumentException e) {
+
+        }
     }
 
     public void doHeroAbility(int heroId) {
@@ -49,10 +59,10 @@ public class Game {
     //Minion methods
     //***********************
 
-    public void buyMinion(int heroId, Minion.MINION_TYP minionTyp) throws IllegalArgumentException{
+    public void buyMinion(int heroId, MinionBase.MinionType minionType) throws IllegalArgumentException{
         try {
             HeroBase hero = getHero(heroId);
-            hero.buyMinion(minionTyp);
+            hero.buyMinion(minionType);
         } catch (IllegalArgumentException e){
 
         }
@@ -68,14 +78,20 @@ public class Game {
     }
 
     public Set<Integer> getAllMinionIds(int heroId) throws IllegalArgumentException{
+        Set<Integer> minionIdList = new HashSet<>();
+        try {
+            minionIdList = getHero(heroId).getAllMinionIds();
+        } catch (IllegalArgumentException e) {
+
+        }
+        return minionIdList;
+    }
+
+    public MinionBase.MinionType getMinionType(int heroId, int minionId) throws IllegalArgumentException{
         return null;
     }
 
-    public Minion.MINION_TYP getMinionTyp(int minionId) throws IllegalArgumentException{
-        return null;
-    }
-
-    public int getMinionLevel(int minionId) throws IllegalArgumentException{
+    public int getMinionLevel(int heroId, int minionId) throws IllegalArgumentException{
         return 1;
     }
 
