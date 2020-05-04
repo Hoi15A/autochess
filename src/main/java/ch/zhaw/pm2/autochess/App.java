@@ -7,19 +7,19 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.settings.GameSettings;
 
 public class App extends GameApplication{
-	    public String getGreeting() {
-	        return "Hello world.";
-	    }
+    public String getGreeting() {
+        return "Hello world.";
+    }
 
-	    public static void main(String[] args) {
-	        System.out.println(new App().getGreeting());
-	        launch(args);
-	    }
+    public static void main(String[] args) {
+        System.out.println(new App().getGreeting());
+        launch(args);
+    }
 
-	@Override
-	protected void initSettings(GameSettings settings) {
+    @Override
+    protected void initSettings(GameSettings settings) {
         settings.setWidth(800);
         settings.setHeight(600);
         settings.setTitle("SMAC");
-	}
+    }
 }
