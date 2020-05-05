@@ -77,6 +77,19 @@ public class Game {
         }
     }
 
+    public void placeMinionOnBoard(int heroId, int minionId, int xPos, int yPos) throws IllegalArgumentException {
+        //todo: getMinion and pass to BoardManager board with pos
+    }
+
+    public void removeMinionFromBoard(int xPos, int yPos) {
+        //todo: BoardManager: find minion at x,y and remove from board
+    }
+
+    public int getMinionPos(int heroId, int minionId) {
+        //todo: BoardManager: find minion on board and return pos
+        return 0;
+    }
+
     public Set<Integer> getAllMinionIds(int heroId) throws IllegalArgumentException{
         Set<Integer> minionIdList = new HashSet<>();
         try {
@@ -108,8 +121,7 @@ public class Game {
     //*******************************
 
     public void doBattle() {
-        //todo: combine minion lists of both heros
-        //todo: call boardManager with fullMinionList
+
     }
 
     public ArrayList<String> getBattleLog() {
