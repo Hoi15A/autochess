@@ -2,8 +2,12 @@ package ch.zhaw.pm2.autochess;
 
 import ch.zhaw.pm2.autochess.Hero.HeroAlien;
 import ch.zhaw.pm2.autochess.Hero.HeroBase;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.MinionBase.MinionType;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -34,7 +38,7 @@ public class HeroTest {
     }
 
     @Test
-    void testIncreaseHealthValidAmount() {
+    void testIncreaseHealthValidAmount() throws IllegalHeroValueException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getHealth());
 
@@ -50,15 +54,15 @@ public class HeroTest {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getHealth());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.increaseHealth(-20));
+        assertThrows(IllegalHeroValueException.class, () -> hero.increaseHealth(-20));
         assertEquals(50, hero.getHealth());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.increaseHealth(100000000));
+        assertThrows(IllegalHeroValueException.class, () -> hero.increaseHealth(100000000));
         assertEquals(50, hero.getHealth());
     }
 
     @Test
-    void testDecreaseHealthValidAmount() {
+    void testDecreaseHealthValidAmount() throws IllegalHeroValueException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getHealth());
 
@@ -74,15 +78,15 @@ public class HeroTest {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getHealth());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.increaseHealth(-20));
+        assertThrows(IllegalHeroValueException.class, () -> hero.increaseHealth(-20));
         assertEquals(50, hero.getHealth());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.increaseHealth(100000000));
+        assertThrows(IllegalHeroValueException.class, () -> hero.increaseHealth(100000000));
         assertEquals(50, hero.getHealth());
     }
 
     @Test
-    void testIncreaseFundsValidAmount() {
+    void testIncreaseFundsValidAmount() throws IllegalHeroValueException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
@@ -98,22 +102,22 @@ public class HeroTest {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.increaseFunds(-20));
+        assertThrows(IllegalHeroValueException.class, () -> hero.increaseFunds(-20));
         assertEquals(50, hero.getFunds());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.increaseFunds(100000000));
+        assertThrows(IllegalHeroValueException.class, () -> hero.increaseFunds(100000000));
         assertEquals(50, hero.getFunds());
     }
 
     @Test
-    void testDecreaseFundsValidAmount() {
+    void testDecreaseFundsValidAmount() throws IllegalHeroValueException, IllegalFundsStateException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
         hero.decreaseFunds(30);
         assertEquals(20, hero.getFunds());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.decreaseFunds(150));
+        assertThrows(IllegalFundsStateException.class, () -> hero.decreaseFunds(150));
         assertEquals(20, hero.getFunds());
     }
 
@@ -122,15 +126,15 @@ public class HeroTest {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.decreaseFunds(-20));
+        assertThrows(IllegalHeroValueException.class, () -> hero.decreaseFunds(-20));
         assertEquals(50, hero.getFunds());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.decreaseFunds(100000000));
+        assertThrows(IllegalHeroValueException.class, () -> hero.decreaseFunds(100000000));
         assertEquals(50, hero.getFunds());
     }
 
     @Test
-    void testBuyMinionFundsAvailable() {
+    void testBuyMinionFundsAvailable() throws InvalidMinionTypeException, IllegalFundsStateException, IllegalHeroValueException {
         //todo: can't mock enum!? when(getPrice())
 
         hero = new HeroAlien(100,100);
@@ -147,7 +151,7 @@ public class HeroTest {
         hero = new HeroAlien(100, 0);
         assertEquals(0, hero.getFunds());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.buyMinion(MinionType.WARRIOR));
+        assertThrows(IllegalFundsStateException.class, () -> hero.buyMinion(MinionType.WARRIOR));
         assertEquals(0, hero.getMinionList().size());
     }
 
@@ -156,12 +160,12 @@ public class HeroTest {
         hero = new HeroAlien(100, 100);
         assertEquals(100, hero.getFunds());
 
-        assertThrows(IllegalArgumentException.class, () -> hero.buyMinion(null));
+        assertThrows(InvalidMinionTypeException.class, () -> hero.buyMinion(null));
         assertEquals(0, hero.getMinionList().size());
     }
 
     @Test
-    void testSellMinionValidMinionId() {
+    void testSellMinionValidMinionId() throws IllegalHeroValueException, InvalidMinionIDException {
         hero = new HeroAlien(100, 0);
         hero.getMinionList().add(minionOne);
         assertEquals(1, hero.getMinionList().size());
@@ -185,7 +189,7 @@ public class HeroTest {
         when(minionOne.getId()).thenReturn(3);
         when(minionOne.getMinionType()).thenReturn(MinionType.WARRIOR);
 
-        assertThrows(IllegalArgumentException.class, () -> hero.sellMinion(1));
+        assertThrows(InvalidMinionIDException.class, () -> hero.sellMinion(1));
         assertEquals(1, hero.getMinionList().size());
     }
 
