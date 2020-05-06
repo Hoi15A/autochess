@@ -132,25 +132,21 @@ public abstract class HeroBase {
     //*********************
 
     public void buyMinion(MinionBase.MinionType minionType) throws IllegalHeroValueException, IllegalFundsStateException, InvalidMinionTypeException{
-        if(isValidMinionType(minionType)){
+        if(isValidMinionType(minionType)) {
             decreaseFunds(minionType.getPrice());
-            addMinion(minionType);
+            minionList.add(MinionBase.MinionType.getMinionFromType(minionType));
         }else {
-            throw new InvalidMinionTypeException("Not a valid minion Type");
+            throw new InvalidMinionTypeException("Not a valid Minion type");
         }
     }
 
-    private boolean isValidMinionType(MinionBase.MinionType minionTypeParameter) {
-        for(MinionBase.MinionType minionType : MinionBase.MinionType.values()) {
-            if(minionType.equals(minionTypeParameter)) {
+    private boolean isValidMinionType(MinionBase.MinionType minionType) {
+        for(MinionBase.MinionType minType : MinionBase.MinionType.values()) {
+            if(minType.equals(minionType)) {
                 return true;
             }
         }
         return false;
-    }
-
-    private void addMinion(MinionBase.MinionType minionType) {
-       minionList.add(MinionBase.MinionType.getMinionFromType(minionType));
     }
 
     public void sellMinion(int minionId) throws IllegalHeroValueException, InvalidMinionIDException{
@@ -203,9 +199,9 @@ public abstract class HeroBase {
         return minionIdSet;
     }
 
-    public MinionBase.MinionType getMinionTyp(int minionId) throws InvalidMinionIDException {
+    public MinionBase.MinionType getMinionType(int minionId) throws InvalidMinionIDException {
         if(isValidId(minionId)) {
-            return getMinion(minionId).getMinionType();
+             return getMinion(minionId).getMinionType();
         } else {
             throw new InvalidMinionIDException("Not a valid Minion ID");
         }

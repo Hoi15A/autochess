@@ -1,5 +1,8 @@
 package ch.zhaw.pm2.autochess.Minion;
 
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
+
 public class MinionBase {
 
     private int price;
@@ -49,7 +52,7 @@ public class MinionBase {
             return price;
         }
 
-        public static MinionBase getMinionFromType(MinionType minionType) throws IllegalArgumentException{
+        public static MinionBase getMinionFromType(MinionType minionType) throws InvalidMinionTypeException {
             switch (minionType) {
                 case WARRIOR:
                     return new MinionWorrior(minionType.getPrice(), minionType);
@@ -58,7 +61,7 @@ public class MinionBase {
                 case TANK:
                     return new MinionTank(minionType.getPrice(), minionType);
                 default:
-                    throw new IllegalArgumentException("No such minion available");
+                    throw new InvalidMinionTypeException("No such minion type available");
             }
         }
     }
