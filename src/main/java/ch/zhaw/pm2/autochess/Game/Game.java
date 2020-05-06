@@ -1,8 +1,16 @@
-package ch.zhaw.pm2.autochess;
+package ch.zhaw.pm2.autochess.Game;
 
 import ch.zhaw.pm2.autochess.Board.BoardManager;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.Game.exceptions.InvalidIdentifierException;
+import ch.zhaw.pm2.autochess.Game.exceptions.InvalidTypeException;
 import ch.zhaw.pm2.autochess.Hero.HeroBase;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,7 +33,7 @@ public class Game {
     //Hero methods
     //*******************************
 
-    private HeroBase getHero(int heroId) throws IllegalArgumentException{
+    private HeroBase getHero(int heroId) throws InvalidIdentifierException {
         //todo: create isValidId method like in HeroBase. Call in each method to throw proper exception
         HeroBase foundHero = null;
         for(HeroBase hero : heroArrayList) {
@@ -34,7 +42,7 @@ public class Game {
             }
         }
         if(foundHero.equals(null)) {
-            throw new IllegalArgumentException("No hero-ID matches the given parameter");
+            throw new InvalidIdentifierException("Not a valid Hero ID");
         }
         return foundHero;
     }
@@ -43,11 +51,11 @@ public class Game {
         return false;
     }
 
-    public void addHero(HeroBase.HeroType heroType) {
+    public void addHero(HeroBase.HeroType heroType) throws InvalidTypeException {
         try {
             heroArrayList.add(HeroBase.HeroType.getHeroFromType(heroType));
-        } catch (IllegalArgumentException e) {
-
+        } catch (InvalidHeroTypeException e) {
+            throw new InvalidTypeException(e.getMessage());
         }
     }
 
@@ -59,16 +67,18 @@ public class Game {
     //Minion methods
     //***********************
 
-    public void buyMinion(int heroId, MinionBase.MinionType minionType) throws IllegalArgumentException{
+    public void buyMinion(int heroId, MinionBase.MinionType minionType) throws InvalidIdentifierException, InvalidTypeException, IllegalGameStateException{
         try {
             HeroBase hero = getHero(heroId);
             hero.buyMinion(minionType);
-        } catch (IllegalArgumentException e){
-
+        } catch (InvalidMinionTypeException e) {
+            throw new InvalidTypeException(e.getMessage());
+        } catch (IllegalHeroValueException | IllegalFundsStateException e) {
+            throw new IllegalGameStateException(e.getMessage());
         }
     }
 
-    public void sellMinion(int heroId, int minionId) throws IllegalArgumentException {
+    public void sellMinion(int heroId, int minionId) throws InvalidIdentifierException {
         try {
             HeroBase hero = getHero(heroId);
             hero.sellMinion(minionId);

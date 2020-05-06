@@ -1,6 +1,11 @@
 package ch.zhaw.pm2.autochess.Hero;
 
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 
 import java.util.*;
 
@@ -9,7 +14,7 @@ public abstract class HeroBase {
     public enum HeroType {
         ALIEN, ENGINEER, SPACE_MARINE;
 
-        public static HeroBase getHeroFromType(HeroType heroType) throws IllegalArgumentException{
+        public static HeroBase getHeroFromType(HeroType heroType) throws InvalidHeroTypeException{
             switch(heroType) {
                 case ALIEN:
                     return new HeroAlien();
@@ -18,7 +23,7 @@ public abstract class HeroBase {
                 case SPACE_MARINE:
                     return new HeroSpaceMarine();
                 default:
-                    throw new IllegalArgumentException("No such heroType available");
+                    throw new InvalidHeroTypeException("Given HeroType does not exist");
             }
         }
     }
@@ -66,7 +71,7 @@ public abstract class HeroBase {
     public int getId() { return heroId;}
 
 
-    public void increaseHealth(int value) throws IllegalArgumentException{
+    public void increaseHealth(int value) throws IllegalHeroValueException{
         if(value > 0 && value < MAX_HEALTH*10) {
             int newHealth = health + value;
             if(newHealth <= MAX_HEALTH) {
@@ -75,11 +80,11 @@ public abstract class HeroBase {
                 health = MAX_HEALTH;
             }
         } else {
-            throw new IllegalArgumentException("Given value invalid: Negative or greater allowed max");
+            throw new IllegalHeroValueException("Illegal value: Negative or greater allowed max");
         }
     }
 
-    public void decreaseHealth(int value) throws IllegalArgumentException{
+    public void decreaseHealth(int value) throws IllegalHeroValueException{
         if(value > 0 && value < MAX_HEALTH*10) {
             int newHealth = health - value;
             if(newHealth >= 0) {
@@ -88,11 +93,11 @@ public abstract class HeroBase {
                 health = 0;
             }
         } else {
-            throw new IllegalArgumentException("Given value invalid: Negative or greater allowed max");
+            throw new IllegalHeroValueException("Illegal value: Negative or greater allowed max");
         }
     }
 
-    public void increaseFunds(int value) throws IllegalArgumentException{
+    public void increaseFunds(int value) throws IllegalHeroValueException{
         if(value > 0 && value < MAX_FUNDS*10) {
             int newFunds = funds + value;
             if(newFunds <= MAX_FUNDS) {
@@ -101,20 +106,20 @@ public abstract class HeroBase {
                 funds = MAX_FUNDS;
             }
         } else {
-            throw new IllegalArgumentException("Given value invalid: Negative or greater allowed max");
+            throw new IllegalHeroValueException("Illegal value: Negative or greater allowed max");
         }
     }
 
-    public void decreaseFunds(int value) throws IllegalArgumentException{
+    public void decreaseFunds(int value) throws IllegalHeroValueException, IllegalFundsStateException{
         if(value > 0 && value < MAX_FUNDS*10) {
             int newFunds = funds - value;
             if(newFunds >= 0) {
                 funds = newFunds;
             } else {
-                throw new IllegalArgumentException("Funds not available");
+                throw new IllegalFundsStateException("Funds not available");
             }
         } else {
-            throw new IllegalArgumentException("Given value invalid: Negative or greater allowed max");
+            throw new IllegalHeroValueException("Illegal value: Negative or greater allowed max");
         }
     }
 
@@ -126,26 +131,35 @@ public abstract class HeroBase {
     //Minion Methods
     //*********************
 
-    public void buyMinion(MinionBase.MinionType minionType) throws IllegalArgumentException{
-        if(minionType == null) {
-            throw new IllegalArgumentException();
-        } else {
+    public void buyMinion(MinionBase.MinionType minionType) throws IllegalHeroValueException, IllegalFundsStateException, InvalidMinionTypeException{
+        if(isValidMinionType(minionType)){
             decreaseFunds(minionType.getPrice());
             addMinion(minionType);
+        }else {
+            throw new InvalidMinionTypeException("Not a valid minion Type");
         }
     }
 
-    private void addMinion(MinionBase.MinionType minionType) throws IllegalArgumentException{
+    private boolean isValidMinionType(MinionBase.MinionType minionTypeParameter) {
+        for(MinionBase.MinionType minionType : MinionBase.MinionType.values()) {
+            if(minionType.equals(minionTypeParameter)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addMinion(MinionBase.MinionType minionType) {
        minionList.add(MinionBase.MinionType.getMinionFromType(minionType));
     }
 
-    public void sellMinion(int minionId) {
+    public void sellMinion(int minionId) throws IllegalHeroValueException, InvalidMinionIDException{
         if(isValidId(minionId)) {
             int price = getMinion(minionId).getPrice();
             removeMinion(minionId);
             increaseFunds(price);
         } else {
-            throw new IllegalArgumentException("Not a valid Id");
+            throw new InvalidMinionIDException("Not a valid Minion ID");
         }
     }
 
@@ -168,7 +182,7 @@ public abstract class HeroBase {
         return false;
     }
 
-    private void removeMinion(int minionId) throws IllegalArgumentException{
+    private void removeMinion(int minionId) throws InvalidMinionIDException{
         if(isValidId(minionId)) {
             for (Iterator<MinionBase> it = minionList.iterator(); it.hasNext(); ) {
                 MinionBase minion = it.next();
@@ -177,7 +191,7 @@ public abstract class HeroBase {
                 }
             }
         }else {
-            throw new IllegalArgumentException("not a valid Id");
+            throw new InvalidMinionIDException("Not a valid Minion ID");
         }
     }
 
@@ -189,37 +203,37 @@ public abstract class HeroBase {
         return minionIdSet;
     }
 
-    public MinionBase.MinionType getMinionTyp(int minionId) throws IllegalArgumentException {
+    public MinionBase.MinionType getMinionTyp(int minionId) throws InvalidMinionIDException {
         if(isValidId(minionId)) {
             return getMinion(minionId).getMinionType();
         } else {
-            throw new IllegalArgumentException("no minion found");
+            throw new InvalidMinionIDException("Not a valid Minion ID");
         }
     }
 
-    public int getMinionLevel(int minionId) throws IllegalArgumentException {
+    public int getMinionLevel(int minionId) throws InvalidMinionIDException {
         if (isValidId(minionId)) {
             return getMinion(minionId).getLevel();
         } else {
-            throw new IllegalArgumentException("no minion found");
+            throw new InvalidMinionIDException("Not a valid Minion ID");
         }
     }
 
-    public void increaseMinionLevel(int minionId) throws IllegalArgumentException {
+    public void increaseMinionLevel(int minionId) throws InvalidMinionIDException {
         if(isValidId(minionId)) {
             getMinion(minionId).increaseLevel();
-            //decreaseFunds();
+            //todo: decreaseFunds();
         } else {
-            throw new IllegalArgumentException("no minion found");
+            throw new InvalidMinionIDException("Not a valid Minion ID");
         }
     }
 
-    public void decreaseMinionLevel(int minionId) throws IllegalArgumentException {
+    public void decreaseMinionLevel(int minionId) throws InvalidMinionIDException {
         if(isValidId(minionId)) {
             getMinion(minionId).decreaseLevel();
-            //increaseFunds();
+            //todo: increaseFunds();
         } else {
-            throw new IllegalArgumentException("no minion found");
+            throw new InvalidMinionIDException("Not a valid Minion ID");
         }
     }
 
