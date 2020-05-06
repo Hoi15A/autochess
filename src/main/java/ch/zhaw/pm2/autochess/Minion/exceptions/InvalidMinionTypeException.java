@@ -3,7 +3,7 @@ package ch.zhaw.pm2.autochess.Minion.exceptions;
 /**
  * Thrown if the given minion type is not valid
  */
-public class InvalidMinionTypeException extends MinionException{
+public class InvalidMinionTypeException extends MinionException {
         /**
          * Default constructor
          * @param message Error message

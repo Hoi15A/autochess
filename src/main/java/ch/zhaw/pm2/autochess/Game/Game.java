@@ -10,6 +10,7 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.Minion.MinionType;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class Game {
     //Minion methods
     //***********************
 
-    public void buyMinion(int heroId, MinionBase.MinionType minionType) throws InvalidIdentifierException, InvalidTypeException, IllegalGameStateException{
+    public void buyMinion(int heroId, MinionType minionType) throws InvalidIdentifierException, InvalidTypeException, IllegalGameStateException{
         if(isValidId(heroId)) {
             try {
                 HeroBase hero = getHero(heroId);
@@ -130,7 +131,7 @@ public class Game {
         }
     }
 
-    public MinionBase.MinionType getMinionType(int heroId, int minionId) throws InvalidTypeException, InvalidIdentifierException {
+    public MinionType getMinionType(int heroId, int minionId) throws InvalidTypeException, InvalidIdentifierException {
         if(isValidId(heroId)) {
             try {
                 return getHero(heroId).getMinionType(minionId);

@@ -6,7 +6,7 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
-import ch.zhaw.pm2.autochess.Minion.MinionBase.MinionType;
+import ch.zhaw.pm2.autochess.Minion.MinionType;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -171,8 +171,8 @@ public class HeroTest {
         assertEquals(1, hero.getMinionList().size());
 
         when(minionOne.getId()).thenReturn(3);
-        when(minionOne.getMinionType()).thenReturn(MinionType.WARRIOR);
-        when(minionOne.getPrice()).thenReturn(10);
+        when(minionOne.getType()).thenReturn(MinionType.WARRIOR);
+
 
         hero.sellMinion(3);
 
@@ -187,7 +187,7 @@ public class HeroTest {
         assertEquals(1, hero.getMinionList().size());
 
         when(minionOne.getId()).thenReturn(3);
-        when(minionOne.getMinionType()).thenReturn(MinionType.WARRIOR);
+        when(minionOne.getType()).thenReturn(MinionType.WARRIOR);
 
         assertThrows(InvalidMinionIDException.class, () -> hero.sellMinion(1));
         assertEquals(1, hero.getMinionList().size());
