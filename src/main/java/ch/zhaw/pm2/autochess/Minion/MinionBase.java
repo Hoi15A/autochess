@@ -1,6 +1,7 @@
 package ch.zhaw.pm2.autochess.Minion;
 
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 
@@ -127,7 +128,8 @@ public abstract class MinionBase {
      * Change the modifier used to calculate attack
      * @param attackModifier modifier
      */
-    public void setAttackModifier(int attackModifier) {
+    public void setAttackModifier(int attackModifier) throws InvalidMinionAttributeModifierException {
+        if (baseAttack + attackModifier < MIN_MINION_ATTACK || baseAttack + attackModifier > MAX_MINION_ATTACK) throw new InvalidMinionAttributeModifierException("Modifier caused attack to be too high/low");
         this.attackModifier = attackModifier;
     }
 
@@ -135,7 +137,8 @@ public abstract class MinionBase {
      * Change the modifier used to calculate defense
      * @param defenseModifier modifier
      */
-    public void setDefenseModifier(int defenseModifier) {
+    public void setDefenseModifier(int defenseModifier) throws InvalidMinionAttributeModifierException {
+        if (baseDefense + defenseModifier < MIN_MINION_DEFENSE || baseDefense + defenseModifier > MAX_MINION_DEFENSE) throw new InvalidMinionAttributeModifierException("Modifier caused defense to be too high/low");
         this.defenseModifier = defenseModifier;
     }
 
@@ -143,7 +146,8 @@ public abstract class MinionBase {
      * Change the modifier used to calculate range
      * @param rangeModifier modifier
      */
-    public void setRangeModifier(int rangeModifier) {
+    public void setRangeModifier(int rangeModifier) throws InvalidMinionAttributeModifierException {
+        if (baseRange + rangeModifier < 0 || baseRange + rangeModifier > MAX_MINION_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
         this.rangeModifier = rangeModifier;
     }
 
@@ -151,7 +155,8 @@ public abstract class MinionBase {
      * Change the modifier used to calculate agility
      * @param agilityModifier modifier
      */
-    public void setAgilityModifier(int agilityModifier) {
+    public void setAgilityModifier(int agilityModifier) throws InvalidMinionAttributeModifierException {
+        if (baseAgility + agilityModifier < 0 || baseAgility + agilityModifier > MAX_MINION_AGILITY) throw new InvalidMinionAttributeModifierException("Modifier caused agility to be too high/low");
         this.agilityModifier = agilityModifier;
     }
 
@@ -185,5 +190,12 @@ public abstract class MinionBase {
      */
     public int getAgility() {
         return baseAgility + agilityModifier;
+    }
+
+    /**
+     * Resets ID counter, should not be used outside of tests.
+     */
+    public static void resetMinionIdCounter() {
+        idCount = 0;
     }
 }
