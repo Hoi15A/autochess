@@ -14,6 +14,7 @@ public abstract class MinionBase {
     private final int baseDefense;
     private final int baseRange;
     private final int baseAgility;
+    private final int heroId;
     private int health = 0;
     private int level = 1;
     private int attackModifier = 0;
@@ -30,7 +31,7 @@ public abstract class MinionBase {
      * @param range The range the minion can move in
      * @param agility The priority at which the minion can make its move
      */
-    public MinionBase(MinionType type, int health, int attack, int defense, int range, int agility) {
+    public MinionBase(MinionType type, int health, int attack, int defense, int range, int agility, int heroId) {
         // TODO: Verify args
         this.minionId = idCount++;
         this.type = type;
@@ -39,6 +40,11 @@ public abstract class MinionBase {
         baseDefense = defense;
         baseRange = range;
         baseAgility = agility;
+        this.heroId = heroId;
+    }
+
+    public int getHeroId() {
+        return heroId;
     }
 
     /**

@@ -12,6 +12,7 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.MinionType;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
+import ch.zhaw.pm2.autochess.PositionVector;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -25,8 +26,8 @@ public class Game {
         heroArrayList = new ArrayList<>();
     }
 
-    public MinionBase[][] getBoard() {
-        return boardManager.getBoard();
+    public void printBoard() {
+        boardManager.printBoard();
     }
 
     //*******************************
@@ -102,9 +103,9 @@ public class Game {
         }
     }
 
-    public void placeMinionOnBoard(int heroId, int minionId, int xPos, int yPos) throws InvalidIdentifierException {
+    public void placeMinionOnBoard(int heroId, int minionId, int xPos, int yPos) throws InvalidIdentifierException, InvalidMinionIDException {
         if(isValidId(heroId)) {
-            //todo: getMinion and pass to BoardManager board with pos
+            boardManager.setMinionOnBoard(getHero(heroId).getMinion(minionId), new PositionVector(xPos, yPos));
         }else {
             throw new InvalidIdentifierException("Not a valid Hero ID");
         }
@@ -184,7 +185,7 @@ public class Game {
     //*******************************
 
     public void doBattle() {
-
+        boardManager.doBattle();
     }
 
     public ArrayList<String> getBattleLog() {

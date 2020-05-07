@@ -3,23 +3,55 @@
  */
 package ch.zhaw.pm2.autochess;
 
+import ch.zhaw.pm2.autochess.Game.Game;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.Game.exceptions.InvalidIdentifierException;
+import ch.zhaw.pm2.autochess.Game.exceptions.InvalidTypeException;
+import ch.zhaw.pm2.autochess.Hero.HeroBase;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
+import ch.zhaw.pm2.autochess.Minion.MinionType;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.settings.GameSettings;
 
-public class App extends GameApplication{
+import java.security.AlgorithmConstraints;
+
+public class App {
     public String getGreeting() {
         return "Hello world.";
     }
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
-        launch(args);
-    }
+        Game game = new Game();
+        try {
+            game.addHero(HeroBase.HeroType.ALIEN);
+            game.addHero(HeroBase.HeroType.SPACE_MARINE);
 
-    @Override
-    protected void initSettings(GameSettings settings) {
-        settings.setWidth(800);
-        settings.setHeight(600);
-        settings.setTitle("SMAC");
+            System.out.println(" ");
+            game.printBoard();
+            System.out.println(" ");
+
+            game.buyMinion(0, MinionType.RANGER);
+            game.placeMinionOnBoard(0,0, 5,2);
+
+            game.buyMinion(0, MinionType.RANGER);
+            game.placeMinionOnBoard(0,1, 2,2);
+
+            System.out.println(" ");
+            game.printBoard();
+            System.out.println(" ");
+
+            game.buyMinion(1, MinionType.TANK);
+            game.placeMinionOnBoard(1,2, 1,5);
+
+            System.out.println(" ");
+            game.printBoard();
+            System.out.println(" ");
+
+            game.doBattle();
+
+        } catch (InvalidTypeException | InvalidIdentifierException | IllegalGameStateException | InvalidMinionIDException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
