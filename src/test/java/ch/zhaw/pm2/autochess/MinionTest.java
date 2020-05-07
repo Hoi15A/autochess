@@ -5,7 +5,6 @@ import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
-import kotlin.ranges.RangesKt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
