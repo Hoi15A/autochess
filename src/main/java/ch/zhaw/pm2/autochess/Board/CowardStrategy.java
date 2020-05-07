@@ -1,13 +1,16 @@
 package ch.zhaw.pm2.autochess.Board;
 
+import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.PositionVector;
+
 public class CowardStrategy extends MoveStrategy {
     @Override
-    void move() {
-
+    PositionVector move(MinionBase[][] board, PositionVector position, int movementRange) {
+        return new PositionVector(0,1);
     }
 
     @Override
-    void attack() {
-
+    PositionVector attack() {
+        return null;
     }
 }

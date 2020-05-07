@@ -1,16 +1,16 @@
 package ch.zhaw.pm2.autochess.Board;
 
+import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.PositionVector;
+
 public abstract class MoveStrategy {
 
-    abstract void move();
+    abstract PositionVector move(MinionBase[][] board, PositionVector position, int movementRange);
 
-    abstract void attack();
+    abstract PositionVector attack();
 
     public enum StrategyType {
         AGGRESSIVE, COWARD, DEFENCIVE;
-
-        private StrategyType() {
-        }
 
         public static MoveStrategy getStrategyFromType(StrategyType strategyType) throws IllegalArgumentException{
             switch (strategyType) {

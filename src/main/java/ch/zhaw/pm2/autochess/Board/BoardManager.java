@@ -2,6 +2,7 @@ package ch.zhaw.pm2.autochess.Board;
 
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.PositionVector;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -93,22 +94,28 @@ public class BoardManager {
 
     public void doBattle() {
         ArrayList<MinionBase> activeMinions = getAllMinionsFromBoard();
-
-        System.out.println(activeMinions);
         //todo: sort by agility;
+        for(MinionBase minion : activeMinions) {
+            minion.printInfo();
+        }
+
         int loopCounter = 0;
         while(checkEachHeroActiveMinions(activeMinions) && loopCounter < MAXBATTLELOOPS){
             for(Iterator<MinionBase> it = activeMinions.iterator(); it.hasNext(); ) {
                 MinionBase minion = it.next();
-                System.out.println("Minion " + minion.getId());
-                if(minion.getId() == 2) {
-                    it.remove();
-                }
+                System.out.print("Current : ");
+                minion.printInfo();
+                moveMinion(minion, MoveStrategy.StrategyType.getStrategyFromType(minion.getStrategyType()).move(boardArray2d, getMinionPosition(minion.getId()), minion.getMovementRange()));
+                printBoard();
             }
             loopCounter++;
-            System.out.println(loopCounter);
         }
-        System.out.println("ended Battle");
+    }
+
+    private void moveMinion(MinionBase minion, PositionVector moveVector) {
+        PositionVector currentPos = getMinionPosition(minion.getId());
+        removeMinionFromBoard(minion.getId());
+        setMinionOnBoard(minion, PositionVector.add(currentPos, moveVector));
     }
 
     private boolean checkEachHeroActiveMinions(ArrayList<MinionBase> activeMinions) {
@@ -138,13 +145,13 @@ public class BoardManager {
             }
             sb.append("\n");
         }
+        sb.append("\n");
         return sb.toString();
         //return "hallo2";
     }
 
     public void printBoard() {
         System.out.print(toString());
-        //System.out.print("hallo1");
     }
 
 }
