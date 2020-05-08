@@ -1,5 +1,7 @@
 package ch.zhaw.pm2.autochess.Minion;
 
+import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
+
 public enum MinionType {
     WARRIOR(10), RANGER(20), TANK(15);
 
@@ -13,7 +15,7 @@ public enum MinionType {
         return price;
     }
 
-    public static MinionBase getMinionFromType(MinionType minionType) throws IllegalArgumentException {
+    public static MinionBase getMinionFromType(MinionType minionType) throws IllegalArgumentException, MinionException {
         MinionBase newMinion;
 
         switch (minionType) {
