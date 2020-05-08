@@ -30,7 +30,7 @@ public abstract class HeroBase {
     }
 
     private static final int MAX_HEALTH = 100;
-    private static final int START_FUNDS = 10;
+    private static final int START_FUNDS = 100;
     private static final int MAX_FUNDS = 100;
     private static int counterId = 0;
 
@@ -135,7 +135,7 @@ public abstract class HeroBase {
     public void buyMinion(MinionType minionType) throws IllegalHeroValueException, IllegalFundsStateException, InvalidMinionTypeException{
         if(isValidMinionType(minionType)) {
             decreaseFunds(minionType.getPrice());
-            minionList.add(MinionType.getMinionFromType(minionType));
+            minionList.add(MinionType.getMinionFromType(minionType, heroId));
         }else {
             throw new InvalidMinionTypeException("Not a valid Minion type");
         }
@@ -161,13 +161,17 @@ public abstract class HeroBase {
         }
     }
 
-    private MinionBase getMinion(int minionId) {
-        for(MinionBase minion : minionList) {
-            if(minion.getId() == minionId) {
-                return minion;
+    public MinionBase getMinion(int minionId) throws InvalidMinionIDException{
+        if(isValidId(minionId)) {
+            for(MinionBase minion : minionList) {
+                if(minion.getId() == minionId) {
+                    return minion;
+                }
             }
+            return null;
+        } else {
+            throw new InvalidMinionIDException("Not a valid Minion ID");
         }
-        return null;
     }
 
     private boolean isValidId(int minionId) {

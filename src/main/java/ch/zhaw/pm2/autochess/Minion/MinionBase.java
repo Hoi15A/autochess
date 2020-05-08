@@ -1,5 +1,6 @@
 package ch.zhaw.pm2.autochess.Minion;
 
+import ch.zhaw.pm2.autochess.Board.MoveStrategy;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
@@ -13,6 +14,7 @@ public abstract class MinionBase {
     private static int idCount = 0;
     private final int minionId;
     private final MinionType type;
+    private final MoveStrategy.StrategyType strategyType;
 
     private static final int MAX_MINION_HEALTH = 100;
     private static final int MAX_MINION_ATTACK = 100;
@@ -26,13 +28,16 @@ public abstract class MinionBase {
     private final int maxHealth;
     private final int baseAttack;
     private final int baseDefense;
-    private final int baseRange;
+    private final int baseAttackRange;
+    private final int baseMovementRange;
     private final int baseAgility;
+    private final int heroId;
     private int health;
     private int level = 1;
     private int attackModifier = 0;
     private int defenseModifier = 0;
-    private int rangeModifier = 0;
+    private int attackRangeModifier = 0;
+    private int movementRangeModifier = 0;
     private int agilityModifier = 0;
 
     /**
@@ -41,10 +46,10 @@ public abstract class MinionBase {
      * @param health The maximal amount of hit points this minion can have
      * @param attack The amount of damage the minion can do
      * @param defense The amount by which damage is reduced
-     * @param range The range the minion can move in
+     * @param attackRange The attackRange the minion can move in
      * @param agility The priority at which the minion can make its move
      */
-    public MinionBase(MinionType type, int health, int attack, int defense, int range, int agility) throws MinionException {
+    public MinionBase(MinionType type, MoveStrategy.StrategyType strategyType, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws MinionException {
         if (type == null) throw new InvalidMinionTypeException("MinionType may not be null");
         if (health > MAX_MINION_HEALTH || health <= 0) throw new InvalidMinionAttributeException("Health must be between 0 and " + MAX_MINION_HEALTH);
         if (attack > MAX_MINION_ATTACK || attack < MIN_MINION_ATTACK) throw new InvalidMinionAttributeException("Attack must be between " + MIN_MINION_ATTACK + " and " + MAX_MINION_ATTACK);
@@ -54,12 +59,19 @@ public abstract class MinionBase {
 
         this.minionId = idCount++;
         this.type = type;
+        this.strategyType = strategyType;
         maxHealth = health;
         this.health = health;
         baseAttack = attack;
         baseDefense = defense;
-        baseRange = range;
+        baseAttackRange = attackRange;
+        baseMovementRange = movementRange;
         baseAgility = agility;
+        this.heroId = heroId;
+    }
+
+    public int getHeroId() {
+        return heroId;
     }
 
     /**
@@ -76,6 +88,10 @@ public abstract class MinionBase {
      */
     public MinionType getType() {
         return type;
+    }
+
+    public MoveStrategy.StrategyType getStrategyType() {
+        return strategyType;
     }
 
     /**
@@ -144,11 +160,12 @@ public abstract class MinionBase {
 
     /**
      * Change the modifier used to calculate range
-     * @param rangeModifier modifier
+     * @param attackRangeModifier modifier
      */
-    public void setRangeModifier(int rangeModifier) throws InvalidMinionAttributeModifierException {
-        if (baseRange + rangeModifier < 0 || baseRange + rangeModifier > MAX_MINION_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
-        this.rangeModifier = rangeModifier;
+    public void setAttackRangeModifier(int rangeModifier) throws InvalidMinionAttributeModifierException {
+        if (baseAttackRange + rangeModifier < 0 || baseAttackRange + rangeModifier > MAX_MINION_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
+        this.rangeAttackModifier = rangeModifier;
+
     }
 
     /**
@@ -180,9 +197,11 @@ public abstract class MinionBase {
      * Returns the range with the rangeModifier applied
      * @return range
      */
-    public int getRange() {
-        return baseRange + rangeModifier;
+    public int getAttackRange() {
+        return baseAttackRange + attackRangeModifier;
     }
+
+    public int getMovementRange() { return baseMovementRange + movementRangeModifier;}
 
     /**
      * Returns the agility with the agilityModifier applied
@@ -192,6 +211,17 @@ public abstract class MinionBase {
         return baseAgility + agilityModifier;
     }
 
+    public void printInfo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Minion | ");
+        sb.append("ID: " + minionId + "| ");
+        sb.append("Type: " + type.toString() + "| ");
+        sb.append("Hero " + heroId + "| ");
+        sb.append("Health " + health + "| ");
+
+        System.out.println(sb.toString());
+    }
+  
     /**
      * Resets ID counter, should not be used outside of tests.
      */

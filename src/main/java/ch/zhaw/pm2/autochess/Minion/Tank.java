@@ -1,9 +1,15 @@
 package ch.zhaw.pm2.autochess.Minion;
 
-import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
+import ch.zhaw.pm2.autochess.Board.MoveStrategy;
 
 public class Tank extends MinionBase {
-    public Tank() throws MinionException {
-        super(MinionType.TANK, 30, 3, 5, 1, 1);
+    public Tank(int heroId) throws MinionException{
+        super(MinionType.TANK, MoveStrategy.StrategyType.DEFENCIVE, 30, 3, 5, 1, 2, 1, heroId);
     }
+
+    @Override
+    public String toString() {
+        return "T";
+    }
+
 }
