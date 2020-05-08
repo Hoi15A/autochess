@@ -2,7 +2,6 @@ package ch.zhaw.pm2.autochess;
 
 import ch.zhaw.pm2.autochess.Board.BoardManager;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
-import javafx.geometry.Pos;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
 import org.junit.jupiter.api.Test;
@@ -47,27 +46,6 @@ public class BoardManagerTest {
     }
 
     @Test
-    public void testRemoveMinionFromBoardValidId() {
-        PositionVector positionVector = new PositionVector(2,7);
-        MinionBase[][] board = boardManager.getBoardArray2d();
-        assertEquals(null,board[7][2]);
-        boardManager.setMinionOnBoard(minionOne, positionVector);
-        assertEquals(minionOne,board[7][2]);
-
-        boardManager.removeMinionFromBoard(0);
-        assertEquals(null,board[7][2]);
-    }
-
-    @Test
-    public void testRemoveMinionFromBoardInvalidId() {
-        MinionBase[][] board = boardManager.getBoardArray2d();
-        assertEquals(null,board[7][2]);
-
-        assertThrows(IllegalArgumentException.class, () -> boardManager.removeMinionFromBoard(0));
-
-    }
-
-    @Test
     public void testSetMinionOnBoardInvalidPositionOffBoard() {
         PositionVector positionVector = new PositionVector(2,7);
         MinionBase[][] board = boardManager.getBoardArray2d();
@@ -92,6 +70,27 @@ public class BoardManagerTest {
         PositionVector positionVector = new PositionVector(2,7);
         boardManager.setMinionOnBoard(minionOne, positionVector);
         assertThrows(IllegalArgumentException.class, () -> boardManager.setMinionOnBoard(minionTwo, new PositionVector(15,5)));
+    }
+
+    @Test
+    public void testRemoveMinionFromBoardValidId() {
+        PositionVector positionVector = new PositionVector(2,7);
+        MinionBase[][] board = boardManager.getBoardArray2d();
+        assertEquals(null,board[7][2]);
+        boardManager.setMinionOnBoard(minionOne, positionVector);
+        assertEquals(minionOne,board[7][2]);
+
+        boardManager.removeMinionFromBoard(0);
+        assertEquals(null,board[7][2]);
+    }
+
+    @Test
+    public void testRemoveMinionFromBoardInvalidId() {
+        MinionBase[][] board = boardManager.getBoardArray2d();
+        assertEquals(null,board[7][2]);
+
+        assertThrows(IllegalArgumentException.class, () -> boardManager.removeMinionFromBoard(0));
+
     }
 
     @Test

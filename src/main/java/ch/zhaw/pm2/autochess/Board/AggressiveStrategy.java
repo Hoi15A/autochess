@@ -10,7 +10,7 @@ public class AggressiveStrategy extends MoveStrategy {
     }
 
     @Override
-    public PositionVector attack() {
+    public PositionVector attack(MinionBase[][] board, PositionVector position, int movementRange) {
         return null;
     }
 }

@@ -10,7 +10,7 @@ public class CowardStrategy extends MoveStrategy {
     }
 
     @Override
-    PositionVector attack() {
+    PositionVector attack(MinionBase[][] board, PositionVector position, int movementRange) {
         return null;
     }
 }

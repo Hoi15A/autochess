@@ -9,7 +9,6 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
-import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.MinionType;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.PositionVector;

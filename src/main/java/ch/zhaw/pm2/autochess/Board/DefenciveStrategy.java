@@ -6,11 +6,11 @@ import ch.zhaw.pm2.autochess.PositionVector;
 public class DefenciveStrategy extends MoveStrategy {
     @Override
     PositionVector move(MinionBase[][] board, PositionVector position, int movementRange) {
-        return new PositionVector(0,-1);
+        return null;
     }
 
     @Override
-    PositionVector attack() {
+    PositionVector attack(MinionBase[][] board, PositionVector position, int movementRange) {
         return null;
     }
 }

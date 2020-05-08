@@ -7,7 +7,7 @@ public abstract class MoveStrategy {
 
     abstract PositionVector move(MinionBase[][] board, PositionVector position, int movementRange);
 
-    abstract PositionVector attack();
+    abstract PositionVector attack(MinionBase[][] board, PositionVector position, int attackRange);
 
     public enum StrategyType {
         AGGRESSIVE, COWARD, DEFENCIVE;

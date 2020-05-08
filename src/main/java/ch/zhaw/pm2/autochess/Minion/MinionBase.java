@@ -19,7 +19,7 @@ public abstract class MinionBase {
     private final int baseMovementRange;
     private final int baseAgility;
     private final int heroId;
-    private int health = 0;
+    private int health = 10;
     private int level = 1;
     private int attackModifier = 0;
     private int defenseModifier = 0;
@@ -186,6 +186,7 @@ public abstract class MinionBase {
         sb.append("ID: " + minionId + "| ");
         sb.append("Type: " + type.toString() + "| ");
         sb.append("Hero " + heroId + "| ");
+        sb.append("Health " + health + "| ");
 
         System.out.println(sb.toString());
     }
