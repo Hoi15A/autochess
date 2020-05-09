@@ -5,7 +5,6 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
-import ch.zhaw.pm2.autochess.Minion.MinionType;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 
@@ -15,18 +14,18 @@ public abstract class HeroBase {
 
     public enum HeroType {
         ALIEN, ENGINEER, SPACE_MARINE;
+    }
 
-        public static HeroBase getHeroFromType(HeroType heroType) throws InvalidHeroTypeException{
-            switch(heroType) {
-                case ALIEN:
-                    return new HeroAlien();
-                case ENGINEER:
-                    return new HeroEngineer();
-                case SPACE_MARINE:
-                    return new HeroSpaceMarine();
-                default:
-                    throw new InvalidHeroTypeException("Given HeroType does not exist");
-            }
+    public static HeroBase getHeroFromType(HeroType heroType) throws InvalidHeroTypeException{
+        switch(heroType) {
+            case ALIEN:
+                return new HeroAlien();
+            case ENGINEER:
+                return new HeroEngineer();
+            case SPACE_MARINE:
+                return new HeroSpaceMarine();
+            default:
+                throw new InvalidHeroTypeException("Given HeroType does not exist");
         }
     }
 
@@ -108,7 +107,7 @@ public abstract class HeroBase {
                 funds = MAX_FUNDS;
             }
         } else {
-            throw new IllegalHeroValueException("Illegal value: Negative or greater allowed max");
+            throw new IllegalHeroValueException("Illegal value: Negative or greater allowed max. Value: " + value);
         }
     }
 
@@ -133,17 +132,18 @@ public abstract class HeroBase {
     //Minion Methods
     //*********************
 
-    public void buyMinion(MinionType minionType) throws IllegalHeroValueException, IllegalFundsStateException, MinionException {
+    public void buyMinion(MinionBase.MinionType minionType) throws IllegalHeroValueException, IllegalFundsStateException, MinionException {
         if(isValidMinionType(minionType)) {
-            decreaseFunds(minionType.getPrice());
-            minionList.add(MinionType.getMinionFromType(minionType, heroId));
+            MinionBase minion = MinionBase.newMinionFromType(minionType, heroId);
+            decreaseFunds(minion.getPrice());
+            minionList.add(minion);
         }else {
             throw new InvalidMinionTypeException("Not a valid Minion type");
         }
     }
 
-    private boolean isValidMinionType(MinionType minionType) {
-        for(MinionType minType : MinionType.values()) {
+    private boolean isValidMinionType(MinionBase.MinionType minionType) {
+        for(MinionBase.MinionType minType : MinionBase.MinionType.values()) {
             if(minType.equals(minionType)) {
                 return true;
             }
@@ -153,8 +153,7 @@ public abstract class HeroBase {
 
     public void sellMinion(int minionId) throws IllegalHeroValueException, InvalidMinionIDException{
         if(isValidId(minionId)) {
-            int price = getMinion(minionId).getType().getPrice();
-
+            int price = getMinion(minionId).getPrice();
             removeMinion(minionId);
             increaseFunds(price);
         } else {
@@ -176,7 +175,6 @@ public abstract class HeroBase {
     }
 
     private boolean isValidId(int minionId) {
-        boolean foundStatus = false;
         for(MinionBase minion : minionList) {
             if(minion.getId() == minionId) {
                 return true;
@@ -206,7 +204,7 @@ public abstract class HeroBase {
         return minionIdSet;
     }
 
-    public MinionType getMinionType(int minionId) throws InvalidMinionIDException {
+    public MinionBase.MinionType getMinionType(int minionId) throws InvalidMinionIDException {
         if(isValidId(minionId)) {
              return getMinion(minionId).getType();
         } else {

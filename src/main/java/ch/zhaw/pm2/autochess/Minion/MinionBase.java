@@ -1,10 +1,11 @@
 package ch.zhaw.pm2.autochess.Minion;
 
-import ch.zhaw.pm2.autochess.Board.MoveStrategy;
+import ch.zhaw.pm2.autochess.Minion.strategy.MoveStrategy;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
+import ch.zhaw.pm2.autochess.PositionVector;
 
 /**
  * Represents the base Minion that every other Minion extends from
@@ -14,7 +15,7 @@ public abstract class MinionBase {
     private static int idCount = 0;
     private final int minionId;
     private final MinionType type;
-    private final MoveStrategy.StrategyType strategyType;
+    private final MoveStrategy strategy;
 
     private static final int MAX_MINION_HEALTH = 100;
     private static final int MAX_MINION_ATTACK = 100;
@@ -25,6 +26,7 @@ public abstract class MinionBase {
     private static final int MAX_MINION_ATTACK_RANGE = 10;
     private static final int MAX_MINION_AGILITY = 100;
     private static final int MAX_MINION_LEVEL = 3;
+    private static final int MAX_MINION_PRICE = 10;
 
     private final int maxHealth;
     private final int baseAttack;
@@ -33,6 +35,7 @@ public abstract class MinionBase {
     private final int baseMovementRange;
     private final int baseAgility;
     private final int heroId;
+    private final int price;
     private int health;
     private int level = 1;
     private int attackModifier = 0;
@@ -40,6 +43,29 @@ public abstract class MinionBase {
     private int attackRangeModifier = 0;
     private int movementRangeModifier = 0;
     private int agilityModifier = 0;
+
+    public enum MinionType {
+        WARRIOR, RANGER, TANK,
+    }
+
+    public static MinionBase newMinionFromType(MinionType minionType, int heroId) throws InvalidMinionTypeException, MinionException {
+        MinionBase newMinion;
+
+        switch (minionType) {
+            case WARRIOR:
+                newMinion = new Warrior(heroId);
+                break;
+            case RANGER:
+                newMinion = new Ranger(heroId);
+                break;
+            case TANK:
+                newMinion = new Tank(heroId);
+                break;
+            default:
+                throw new InvalidMinionTypeException("Invalid minionType");
+        }
+        return newMinion;
+    }
 
     /**
      * Creates a new minion
@@ -50,18 +76,20 @@ public abstract class MinionBase {
      * @param attackRange The attackRange the minion can move in
      * @param agility The priority at which the minion can make its move
      */
-    public MinionBase(MinionType type, MoveStrategy.StrategyType strategyType, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws MinionException {
+    public MinionBase(MinionType type, MoveStrategy strategy, int price, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws MinionException {
         if (type == null) throw new InvalidMinionTypeException("MinionType may not be null");
+        if (strategy == null) throw new InvalidMinionAttributeException("Strategy may not be null");
         if (health > MAX_MINION_HEALTH || health <= 0) throw new InvalidMinionAttributeException("Health must be between 0 and " + MAX_MINION_HEALTH);
         if (attack > MAX_MINION_ATTACK || attack < MIN_MINION_ATTACK) throw new InvalidMinionAttributeException("Attack must be between " + MIN_MINION_ATTACK + " and " + MAX_MINION_ATTACK);
         if (defense > MAX_MINION_DEFENSE || defense < MIN_MINION_DEFENSE) throw new InvalidMinionAttributeException("Defense must be between " + MIN_MINION_DEFENSE + " and " + MAX_MINION_DEFENSE);
         if (movementRange > MAX_MINION_MOVEMENT_RANGE || movementRange < 0) throw new InvalidMinionAttributeException("Range must be between 0 and " + MAX_MINION_MOVEMENT_RANGE);
         if (attackRange > MAX_MINION_ATTACK_RANGE || attackRange < 0) throw new InvalidMinionAttributeException("Range must be between 0 and " + MAX_MINION_ATTACK_RANGE);
         if (agility > MAX_MINION_AGILITY || agility < 0) throw new InvalidMinionAttributeException("Agility must be between 0 and " + MAX_MINION_AGILITY);
+        if (price > MAX_MINION_PRICE || price < 0) throw new InvalidMinionAttributeException("Price must be between 0 and " + MAX_MINION_PRICE);
 
         this.minionId = idCount++;
         this.type = type;
-        this.strategyType = strategyType;
+        this.strategy = strategy;
         this.maxHealth = health;
         this.health = health;
         this.baseAttack = attack;
@@ -70,6 +98,7 @@ public abstract class MinionBase {
         this.baseMovementRange = movementRange;
         this.baseAgility = agility;
         this.heroId = heroId;
+        this.price = price;
     }
 
     public int getHeroId() {
@@ -92,9 +121,7 @@ public abstract class MinionBase {
         return type;
     }
 
-    public MoveStrategy.StrategyType getStrategyType() {
-        return strategyType;
-    }
+    public int getPrice() {return price;}
 
     /**
      * Alter the amount of health a minion has.
@@ -235,5 +262,13 @@ public abstract class MinionBase {
      */
     public static void resetMinionIdCounter() {
         idCount = 0;
+    }
+
+    public PositionVector move(MinionBase[][] board, PositionVector currentPos) {
+        return strategy.move(board, currentPos, getMovementRange());
+    }
+
+    public PositionVector attack(MinionBase[][] board, PositionVector currentPos) {
+        return strategy.move(board, currentPos, getAttackRange());
     }
 }

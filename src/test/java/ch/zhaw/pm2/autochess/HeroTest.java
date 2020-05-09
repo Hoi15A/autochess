@@ -6,7 +6,6 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
-import ch.zhaw.pm2.autochess.Minion.MinionType;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 import org.junit.jupiter.api.BeforeEach;
@@ -141,7 +140,7 @@ public class HeroTest {
         hero = new HeroAlien(100,100);
         assertEquals(100, hero.getFunds());
 
-        hero.buyMinion(MinionType.WARRIOR);
+        hero.buyMinion(MinionBase.MinionType.WARRIOR);
 
         assertEquals(90, hero.getFunds());
         assertEquals(1, hero.getMinionList().size());
@@ -152,7 +151,7 @@ public class HeroTest {
         hero = new HeroAlien(100, 0);
         assertEquals(0, hero.getFunds());
 
-        assertThrows(IllegalFundsStateException.class, () -> hero.buyMinion(MinionType.WARRIOR));
+        assertThrows(IllegalFundsStateException.class, () -> hero.buyMinion(MinionBase.MinionType.WARRIOR));
         assertEquals(0, hero.getMinionList().size());
     }
 
@@ -172,8 +171,8 @@ public class HeroTest {
         assertEquals(1, hero.getMinionList().size());
 
         when(minionOne.getId()).thenReturn(3);
-        when(minionOne.getType()).thenReturn(MinionType.WARRIOR);
-
+        when(minionOne.getType()).thenReturn(MinionBase.MinionType.WARRIOR);
+        when(minionOne.getPrice()).thenReturn(10);
 
         hero.sellMinion(3);
 
@@ -188,7 +187,7 @@ public class HeroTest {
         assertEquals(1, hero.getMinionList().size());
 
         when(minionOne.getId()).thenReturn(3);
-        when(minionOne.getType()).thenReturn(MinionType.WARRIOR);
+        when(minionOne.getType()).thenReturn(MinionBase.MinionType.WARRIOR);
 
         assertThrows(InvalidMinionIDException.class, () -> hero.sellMinion(1));
         assertEquals(1, hero.getMinionList().size());
