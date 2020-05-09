@@ -9,11 +9,7 @@ import ch.zhaw.pm2.autochess.Game.exceptions.InvalidIdentifierException;
 import ch.zhaw.pm2.autochess.Game.exceptions.InvalidTypeException;
 import ch.zhaw.pm2.autochess.Hero.HeroBase;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
-import ch.zhaw.pm2.autochess.Minion.MinionType;
-import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.settings.GameSettings;
-
-import java.security.AlgorithmConstraints;
+import ch.zhaw.pm2.autochess.Minion.MinionBase;
 
 public class App {
     public String getGreeting() {
@@ -31,17 +27,17 @@ public class App {
             game.printBoard();
             System.out.println(" ");
 
-            game.buyMinion(0, MinionType.RANGER);
+            game.buyMinion(0, MinionBase.MinionType.RANGER);
             game.placeMinionOnBoard(0,0, 5,2);
 
-            game.buyMinion(0, MinionType.RANGER);
+            game.buyMinion(0, MinionBase.MinionType.RANGER);
             game.placeMinionOnBoard(0,1, 2,2);
 
             System.out.println(" ");
             game.printBoard();
             System.out.println(" ");
 
-            game.buyMinion(1, MinionType.TANK);
+            game.buyMinion(1, MinionBase.MinionType.TANK);
             game.placeMinionOnBoard(1,2, 1,5);
 
             System.out.println(" ");
