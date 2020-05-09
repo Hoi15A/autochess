@@ -1,10 +1,12 @@
 package ch.zhaw.pm2.autochess.Minion;
 
-import ch.zhaw.pm2.autochess.Board.MoveStrategy;
+import ch.zhaw.pm2.autochess.Minion.strategy.MoveStrategy;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
+import ch.zhaw.pm2.autochess.PositionVector;
+import javafx.geometry.Pos;
 
 /**
  * Represents the base Minion that every other Minion extends from
@@ -14,7 +16,7 @@ public abstract class MinionBase {
     private static int idCount = 0;
     private final int minionId;
     private final MinionType type;
-    private final MoveStrategy.StrategyType strategyType;
+    private final MoveStrategy strategy;
 
     private static final int MAX_MINION_HEALTH = 100;
     private static final int MAX_MINION_ATTACK = 100;
@@ -50,7 +52,7 @@ public abstract class MinionBase {
      * @param attackRange The attackRange the minion can move in
      * @param agility The priority at which the minion can make its move
      */
-    public MinionBase(MinionType type, MoveStrategy.StrategyType strategyType, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws MinionException {
+    public MinionBase(MinionType type, MoveStrategy strategy, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws MinionException {
         if (type == null) throw new InvalidMinionTypeException("MinionType may not be null");
         if (health > MAX_MINION_HEALTH || health <= 0) throw new InvalidMinionAttributeException("Health must be between 0 and " + MAX_MINION_HEALTH);
         if (attack > MAX_MINION_ATTACK || attack < MIN_MINION_ATTACK) throw new InvalidMinionAttributeException("Attack must be between " + MIN_MINION_ATTACK + " and " + MAX_MINION_ATTACK);
@@ -61,7 +63,7 @@ public abstract class MinionBase {
 
         this.minionId = idCount++;
         this.type = type;
-        this.strategyType = strategyType;
+        this.strategy = strategy;
         this.maxHealth = health;
         this.health = health;
         this.baseAttack = attack;
@@ -90,10 +92,6 @@ public abstract class MinionBase {
      */
     public MinionType getType() {
         return type;
-    }
-
-    public MoveStrategy.StrategyType getStrategyType() {
-        return strategyType;
     }
 
     /**
@@ -235,5 +233,13 @@ public abstract class MinionBase {
      */
     public static void resetMinionIdCounter() {
         idCount = 0;
+    }
+
+    public PositionVector move(MinionBase[][] board, PositionVector currentPos) {
+        return strategy.move(board, currentPos, getMovementRange());
+    }
+
+    public PositionVector attack(MinionBase[][] board, PositionVector currentPos) {
+        return strategy.move(board, currentPos, getAttackRange());
     }
 }

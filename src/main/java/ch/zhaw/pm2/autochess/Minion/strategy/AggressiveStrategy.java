@@ -1,4 +1,4 @@
-package ch.zhaw.pm2.autochess.Board;
+package ch.zhaw.pm2.autochess.Minion.strategy;
 
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.PositionVector;
@@ -6,7 +6,7 @@ import ch.zhaw.pm2.autochess.PositionVector;
 public class AggressiveStrategy extends MoveStrategy {
     @Override
     public PositionVector move(MinionBase[][] board, PositionVector position, int movementRange) {
-        return new PositionVector(0,0);
+        return null;
     }
 
     @Override

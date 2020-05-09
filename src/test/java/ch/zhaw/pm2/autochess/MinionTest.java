@@ -1,6 +1,7 @@
 package ch.zhaw.pm2.autochess;
 
-import ch.zhaw.pm2.autochess.Board.MoveStrategy;
+import ch.zhaw.pm2.autochess.Minion.strategy.AggressiveStrategy;
+import ch.zhaw.pm2.autochess.Minion.strategy.MoveStrategy;
 import ch.zhaw.pm2.autochess.Minion.*;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
@@ -23,7 +24,7 @@ public class MinionTest {
 
     private class InvalidAttributeMinion extends MinionBase {
         public InvalidAttributeMinion() throws MinionException {
-            super(MinionType.TANK, MoveStrategy.StrategyType.AGGRESSIVE, -5, 10, 10, 10, 10 ,10, 10);
+            super(MinionType.TANK, new AggressiveStrategy(), -5, 10, 10, 10, 10 ,10, 10);
         }
     }
 

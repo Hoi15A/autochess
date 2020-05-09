@@ -1,8 +1,8 @@
 package ch.zhaw.pm2.autochess.Board;
 
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.Minion.strategy.MoveStrategy;
 import ch.zhaw.pm2.autochess.PositionVector;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -113,8 +113,8 @@ public class BoardManager {
                 if(minion.getHealth() > 0) {
                     System.out.print("Current : ");
                     minion.printInfo();
-                    moveMinion(minion, MoveStrategy.StrategyType.getStrategyFromType(minion.getStrategyType()).move(boardArray2d, getMinionPosition(minion.getId()), minion.getMovementRange()));
-                    attackMinion(minion, MoveStrategy.StrategyType.getStrategyFromType(minion.getStrategyType()).attack(boardArray2d, getMinionPosition(minion.getId()), minion.getAttackRange()));
+                    moveMinion(minion);
+                    attackMinion(minion);
                 } else {
                     it.remove();
                 }
@@ -124,9 +124,10 @@ public class BoardManager {
         printBoard();
     }
 
-    private void moveMinion(MinionBase minion, PositionVector moveVector) throws IllegalArgumentException{
+    private void moveMinion(MinionBase minion) throws IllegalArgumentException{
         //todo: check valid move? i.e still on board? or assumption move is correct?
         PositionVector currentPos = getMinionPosition(minion.getId());
+        PositionVector moveVector = minion.move(boardArray2d, currentPos);
         if(moveVector != null) {
             if(isValidPosition(moveVector)) {
                 removeMinionFromBoard(minion.getId());
@@ -141,12 +142,13 @@ public class BoardManager {
         }
     }
 
-    private void attackMinion(MinionBase minion, PositionVector attackPosVector) {
+    private void attackMinion(MinionBase attacker) {
         //todo: check valid attack vector? i.e still on board? or assumption move is correct?
-        MinionBase attacker = minion;
-        if (attackPosVector != null) {
-            if (isValidPosition(attackPosVector) && getContentFromPosition(attackPosVector) != null) {
-                MinionBase defender = getContentFromPosition(attackPosVector);
+        PositionVector currentPos = getMinionPosition(attacker.getId());
+        PositionVector attackVector = attacker.attack(boardArray2d, currentPos);
+        if (attackVector != null) {
+            if (isValidPosition(attackVector) && getContentFromPosition(attackVector) != null) {
+                MinionBase defender = getContentFromPosition(attackVector);
                 int damage = (defender.getDefense() - attacker.getAttack());
                 defender.changeHealth(damage);
                 System.out.println("-- ATTACK: attacker " + attacker.getId() + getMinionPosition(attacker.getId()));
@@ -154,13 +156,13 @@ public class BoardManager {
                 System.out.println("           attack " + attacker.getAttack() + ", defence " + defender.getDefense() + ", damage " + damage);
                 if (defender.getHealth() <= 0) {
                     removeMinionFromBoard(defender.getId());
-                    System.out.println("-- DEATH: minion " + minion.getId());
+                    System.out.println("-- DEATH: minion " + attacker.getId());
                 }
             } else {
                 throw new IllegalArgumentException("Not a valid position on board or no defender found");
             }
         }else {
-            System.out.println("-- NO_ATTACK: minion " + minion.getId() + " " + "Pos" + getMinionPosition(minion.getId()));
+            System.out.println("-- NO_ATTACK: minion " + attacker.getId() + " " + "Pos" + getMinionPosition(attacker.getId()));
         }
     }
 
