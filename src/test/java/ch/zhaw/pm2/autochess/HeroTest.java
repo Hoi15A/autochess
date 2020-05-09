@@ -8,6 +8,7 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.MinionType;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
+import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -134,7 +135,7 @@ public class HeroTest {
     }
 
     @Test
-    void testBuyMinionFundsAvailable() throws InvalidMinionTypeException, IllegalFundsStateException, IllegalHeroValueException {
+    void testBuyMinionFundsAvailable() throws MinionException, IllegalFundsStateException, IllegalHeroValueException {
         //todo: can't mock enum!? when(getPrice())
 
         hero = new HeroAlien(100,100);

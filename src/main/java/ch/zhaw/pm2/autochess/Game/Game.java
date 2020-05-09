@@ -11,6 +11,7 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionType;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
+import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 import ch.zhaw.pm2.autochess.PositionVector;
 
 import java.util.ArrayList;
@@ -80,6 +81,8 @@ public class Game {
             } catch (InvalidMinionTypeException e) {
                 throw new InvalidTypeException(e.getMessage());
             } catch (IllegalHeroValueException | IllegalFundsStateException e) {
+                throw new IllegalGameStateException(e.getMessage());
+            } catch (MinionException e) {
                 throw new IllegalGameStateException(e.getMessage());
             }
         }else {

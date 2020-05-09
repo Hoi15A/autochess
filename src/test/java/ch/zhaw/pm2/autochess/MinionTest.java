@@ -1,5 +1,6 @@
 package ch.zhaw.pm2.autochess;
 
+import ch.zhaw.pm2.autochess.Board.MoveStrategy;
 import ch.zhaw.pm2.autochess.Minion.*;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
@@ -16,13 +17,13 @@ public class MinionTest {
 
     private class InvalidMinionTypeMinion extends MinionBase {
         public InvalidMinionTypeMinion() throws MinionException {
-            super(null, 10, 10, 10, 10, 10);
+            super(null, null, 10, 10, 10, 10, 10, 10,10 );
         }
     }
 
     private class InvalidAttributeMinion extends MinionBase {
         public InvalidAttributeMinion() throws MinionException {
-            super(MinionType.TANK, -5, 10, 10, 10, 10);
+            super(MinionType.TANK, MoveStrategy.StrategyType.AGGRESSIVE, -5, 10, 10, 10, 10 ,10, 10);
         }
     }
 
@@ -33,14 +34,14 @@ public class MinionTest {
 
     @Test
     public void testCreateMinion() throws MinionException {
-        minion = new Warrior();
+        minion = new Warrior(0);
         assertEquals(0, minion.getId());
         assertEquals(20, minion.getHealth());
         assertEquals(7, minion.getAttack());
-        minion = new Tank();
+        minion = new Tank(0);
         assertEquals(1, minion.getId());
         assertEquals(5, minion.getDefense());
-        assertEquals(1, minion.getRange());
+        assertEquals(1, minion.getMovementRange());
         assertEquals(1, minion.getAgility());
     }
 
@@ -61,7 +62,7 @@ public class MinionTest {
     @Test
     public void testValidHealthChange() throws MinionException {
         int modifier = -5;
-        minion = new Warrior();
+        minion = new Warrior(0);
         int healthBefore = minion.getHealth();
         minion.changeHealth(modifier);
         int healthAfter = minion.getHealth();
@@ -71,7 +72,7 @@ public class MinionTest {
     @Test
     public void testMaxHealthLimit() throws MinionException {
         int modifier = 10000;
-        minion = new Warrior();
+        minion = new Warrior(0);
         int healthBefore = minion.getHealth();
         minion.changeHealth(modifier);
         int healthAfter = minion.getHealth();
@@ -81,7 +82,7 @@ public class MinionTest {
     @Test
     public void testMinHealthLimit() throws MinionException {
         int modifier = -10000;
-        minion = new Warrior();
+        minion = new Warrior(0);
         minion.changeHealth(modifier);
         int healthAfter = minion.getHealth();
         assertEquals(0, healthAfter);
@@ -89,27 +90,27 @@ public class MinionTest {
 
     @Test
     public void testInitMinionLevel() throws MinionException {
-        minion = new Tank();
+        minion = new Tank(0);
         assertEquals(1, minion.getLevel());
     }
 
     @Test
     public void testChangeMinionLevel() throws MinionException {
-        minion = new Tank();
+        minion = new Tank(0);
         minion.modifyLevel(1);
         assertEquals(2, minion.getLevel());
     }
 
     @Test
     public void testMinMinionLevel() throws MinionException {
-        minion = new Tank();
+        minion = new Tank(0);
         minion.modifyLevel(-100);
         assertEquals(1, minion.getLevel());
     }
 
     @Test
     public void testMaxMinionLevel() throws MinionException {
-        minion = new Tank();
+        minion = new Tank(0);
         minion.modifyLevel(100);
         assertEquals(3, minion.getLevel());
     }
@@ -117,7 +118,7 @@ public class MinionTest {
     @Test
     public void testValidAttackModifier() throws MinionException {
         int modifier = 1;
-        minion = new Ranger();
+        minion = new Ranger(0);
         int atkBefore = minion.getAttack();
         minion.setAttackModifier(modifier);
         assertEquals(atkBefore + modifier, minion.getAttack());
@@ -126,7 +127,7 @@ public class MinionTest {
     @Test
     public void testInvalidAttackModifier() {
         assertThrows(InvalidMinionAttributeModifierException.class, () -> {
-            minion = new Ranger();
+            minion = new Ranger(0);
             minion.setAttackModifier(-100000);
         });
     }
@@ -134,7 +135,7 @@ public class MinionTest {
     @Test
     public void testValidDefenseModifier() throws MinionException {
         int modifier = 1;
-        minion = new Tank();
+        minion = new Tank(0);
         int defBefore = minion.getDefense();
         minion.setDefenseModifier(modifier);
         assertEquals(defBefore + modifier, minion.getDefense());
@@ -143,7 +144,7 @@ public class MinionTest {
     @Test
     public void testInvalidDefenseModifier() {
         assertThrows(InvalidMinionAttributeModifierException.class, () -> {
-            minion = new Tank();
+            minion = new Tank(0);
             minion.setDefenseModifier(100000);
         });
     }
@@ -151,24 +152,24 @@ public class MinionTest {
     @Test
     public void testValidRangeModifier() throws MinionException {
         int modifier = 3;
-        minion = new Warrior();
-        int rangeBefore = minion.getRange();
-        minion.setRangeModifier(modifier);
-        assertEquals(rangeBefore + modifier, minion.getRange());
+        minion = new Warrior(0);
+        int rangeBefore = minion.getMovementRange();
+        minion.setMovementRangeModifier(modifier);
+        assertEquals(rangeBefore + modifier, minion.getMovementRange());
     }
 
     @Test
     public void testInvalidRangeModifier() {
         assertThrows(InvalidMinionAttributeModifierException.class, () -> {
-            minion = new Warrior();
-            minion.setRangeModifier(100000);
+            minion = new Warrior(0);
+            minion.setMovementRangeModifier(100000);
         });
     }
 
     @Test
     public void testValidAgilityModifier() throws MinionException {
         int modifier = -2;
-        minion = new Warrior();
+        minion = new Warrior(0);
         int agilBefore = minion.getAgility();
         minion.setAgilityModifier(modifier);
         assertEquals(agilBefore + modifier, minion.getAgility());
@@ -177,7 +178,7 @@ public class MinionTest {
     @Test
     public void testInvalidAgilityModifier() {
         assertThrows(InvalidMinionAttributeModifierException.class, () -> {
-            minion = new Warrior();
+            minion = new Warrior(0);
             minion.setAgilityModifier(100000);
         });
     }

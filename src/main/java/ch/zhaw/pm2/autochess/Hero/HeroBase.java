@@ -7,6 +7,7 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.MinionType;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
+import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 
 import java.util.*;
 
@@ -132,7 +133,7 @@ public abstract class HeroBase {
     //Minion Methods
     //*********************
 
-    public void buyMinion(MinionType minionType) throws IllegalHeroValueException, IllegalFundsStateException, InvalidMinionTypeException{
+    public void buyMinion(MinionType minionType) throws IllegalHeroValueException, IllegalFundsStateException, MinionException {
         if(isValidMinionType(minionType)) {
             decreaseFunds(minionType.getPrice());
             minionList.add(MinionType.getMinionFromType(minionType, heroId));

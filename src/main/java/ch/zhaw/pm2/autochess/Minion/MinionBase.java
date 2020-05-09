@@ -21,7 +21,8 @@ public abstract class MinionBase {
     private static final int MIN_MINION_ATTACK = -100;
     private static final int MAX_MINION_DEFENSE = 100;
     private static final int MIN_MINION_DEFENSE = -100;
-    private static final int MAX_MINION_RANGE = 10;
+    private static final int MAX_MINION_MOVEMENT_RANGE = 10;
+    private static final int MAX_MINION_ATTACK_RANGE = 10;
     private static final int MAX_MINION_AGILITY = 100;
     private static final int MAX_MINION_LEVEL = 3;
 
@@ -54,19 +55,20 @@ public abstract class MinionBase {
         if (health > MAX_MINION_HEALTH || health <= 0) throw new InvalidMinionAttributeException("Health must be between 0 and " + MAX_MINION_HEALTH);
         if (attack > MAX_MINION_ATTACK || attack < MIN_MINION_ATTACK) throw new InvalidMinionAttributeException("Attack must be between " + MIN_MINION_ATTACK + " and " + MAX_MINION_ATTACK);
         if (defense > MAX_MINION_DEFENSE || defense < MIN_MINION_DEFENSE) throw new InvalidMinionAttributeException("Defense must be between " + MIN_MINION_DEFENSE + " and " + MAX_MINION_DEFENSE);
-        if (range > MAX_MINION_RANGE || range < 0) throw new InvalidMinionAttributeException("Range must be between 0 and " + MAX_MINION_RANGE);
+        if (movementRange > MAX_MINION_MOVEMENT_RANGE || movementRange < 0) throw new InvalidMinionAttributeException("Range must be between 0 and " + MAX_MINION_MOVEMENT_RANGE);
+        if (attackRange > MAX_MINION_ATTACK_RANGE || attackRange < 0) throw new InvalidMinionAttributeException("Range must be between 0 and " + MAX_MINION_ATTACK_RANGE);
         if (agility > MAX_MINION_AGILITY || agility < 0) throw new InvalidMinionAttributeException("Agility must be between 0 and " + MAX_MINION_AGILITY);
 
         this.minionId = idCount++;
         this.type = type;
         this.strategyType = strategyType;
-        maxHealth = health;
+        this.maxHealth = health;
         this.health = health;
-        baseAttack = attack;
-        baseDefense = defense;
-        baseAttackRange = attackRange;
-        baseMovementRange = movementRange;
-        baseAgility = agility;
+        this.baseAttack = attack;
+        this.baseDefense = defense;
+        this.baseAttackRange = attackRange;
+        this.baseMovementRange = movementRange;
+        this.baseAgility = agility;
         this.heroId = heroId;
     }
 
@@ -162,9 +164,15 @@ public abstract class MinionBase {
      * Change the modifier used to calculate range
      * @param attackRangeModifier modifier
      */
-    public void setAttackRangeModifier(int rangeModifier) throws InvalidMinionAttributeModifierException {
-        if (baseAttackRange + rangeModifier < 0 || baseAttackRange + rangeModifier > MAX_MINION_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
-        this.rangeAttackModifier = rangeModifier;
+    public void setAttackRangeModifier(int attackRangeModifier) throws InvalidMinionAttributeModifierException {
+        if (baseAttackRange + attackRangeModifier < 0 || baseAttackRange + attackRangeModifier > MAX_MINION_ATTACK_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
+        this.attackRangeModifier = attackRangeModifier;
+
+    }
+
+    public void setMovementRangeModifier(int rangeMovementModifier) throws InvalidMinionAttributeModifierException {
+        if (baseMovementRange + rangeMovementModifier < 0 || baseMovementRange + rangeMovementModifier > MAX_MINION_MOVEMENT_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
+        this.movementRangeModifier = rangeMovementModifier;
 
     }
 

@@ -1,6 +1,7 @@
 package ch.zhaw.pm2.autochess.Minion;
 
 import ch.zhaw.pm2.autochess.Board.MoveStrategy;
+import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 
 public class Ranger extends MinionBase {
 
