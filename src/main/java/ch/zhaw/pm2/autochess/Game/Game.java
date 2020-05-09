@@ -59,7 +59,7 @@ public class Game {
 
     public void addHero(HeroBase.HeroType heroType) throws InvalidTypeException {
         try {
-            heroArrayList.add(HeroBase.HeroType.getHeroFromType(heroType));
+            heroArrayList.add(HeroBase.getHeroFromType(heroType));
         } catch (InvalidHeroTypeException e) {
             throw new InvalidTypeException(e.getMessage());
         }

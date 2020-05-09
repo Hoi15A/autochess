@@ -172,7 +172,7 @@ public class HeroTest {
 
         when(minionOne.getId()).thenReturn(3);
         when(minionOne.getType()).thenReturn(MinionBase.MinionType.WARRIOR);
-
+        when(minionOne.getPrice()).thenReturn(10);
 
         hero.sellMinion(3);
 

@@ -14,18 +14,18 @@ public abstract class HeroBase {
 
     public enum HeroType {
         ALIEN, ENGINEER, SPACE_MARINE;
+    }
 
-        public static HeroBase getHeroFromType(HeroType heroType) throws InvalidHeroTypeException{
-            switch(heroType) {
-                case ALIEN:
-                    return new HeroAlien();
-                case ENGINEER:
-                    return new HeroEngineer();
-                case SPACE_MARINE:
-                    return new HeroSpaceMarine();
-                default:
-                    throw new InvalidHeroTypeException("Given HeroType does not exist");
-            }
+    public static HeroBase getHeroFromType(HeroType heroType) throws InvalidHeroTypeException{
+        switch(heroType) {
+            case ALIEN:
+                return new HeroAlien();
+            case ENGINEER:
+                return new HeroEngineer();
+            case SPACE_MARINE:
+                return new HeroSpaceMarine();
+            default:
+                throw new InvalidHeroTypeException("Given HeroType does not exist");
         }
     }
 
@@ -107,7 +107,7 @@ public abstract class HeroBase {
                 funds = MAX_FUNDS;
             }
         } else {
-            throw new IllegalHeroValueException("Illegal value: Negative or greater allowed max");
+            throw new IllegalHeroValueException("Illegal value: Negative or greater allowed max. Value: " + value);
         }
     }
 
