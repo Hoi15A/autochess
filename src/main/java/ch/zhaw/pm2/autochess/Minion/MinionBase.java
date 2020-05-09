@@ -269,6 +269,6 @@ public abstract class MinionBase {
     }
 
     public PositionVector attack(MinionBase[][] board, PositionVector currentPos) {
-        return strategy.move(board, currentPos, getAttackRange());
+        return strategy.attack(board, currentPos, getAttackRange());
     }
 }

@@ -23,28 +23,21 @@ public class App {
             game.addHero(HeroBase.HeroType.ALIEN);
             game.addHero(HeroBase.HeroType.SPACE_MARINE);
 
-            System.out.println(" ");
-            game.printBoard();
-            System.out.println(" ");
-
             game.buyMinion(0, MinionBase.MinionType.RANGER);
-            game.placeMinionOnBoard(0,0, 5,2);
-
-            game.buyMinion(0, MinionBase.MinionType.RANGER);
-            game.placeMinionOnBoard(0,1, 2,2);
-
-            System.out.println(" ");
-            game.printBoard();
-            System.out.println(" ");
+            game.placeMinionOnBoard(0,0, 2,3);
 
             game.buyMinion(1, MinionBase.MinionType.TANK);
-            game.placeMinionOnBoard(1,2, 1,5);
+            game.placeMinionOnBoard(1,1, 6,3);
 
             System.out.println(" ");
             game.printBoard();
             System.out.println(" ");
 
             game.doBattle();
+
+            System.out.println(" ");
+            game.printBoard();
+            System.out.println(" ");
 
         } catch (InvalidTypeException | InvalidIdentifierException | IllegalGameStateException | InvalidMinionIDException e) {
             System.out.println(e.getMessage());

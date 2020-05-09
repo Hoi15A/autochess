@@ -13,7 +13,7 @@ public class BoardManager {
 
     private static final int HEIGHT = 8;
     private static final int WIDTH =8;
-    private static final int MAXBATTLELOOPS = 5;
+    private static final int MAXBATTLELOOPS = 10;
     private MinionBase[][] boardArray2d = new MinionBase[HEIGHT][WIDTH];
 
     public BoardManager() {
@@ -121,7 +121,6 @@ public class BoardManager {
             }
             loopCounter++;
         }
-        printBoard();
     }
 
     private void moveMinion(MinionBase minion) throws IllegalArgumentException{
