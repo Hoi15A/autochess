@@ -10,6 +10,7 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 import ch.zhaw.pm2.autochess.PositionVector;
@@ -85,8 +86,14 @@ public class Game {
         }
     }
 
-    public void doHeroAbility(int heroId) {
-
+    public void doHeroAbility(int heroId) throws IllegalGameStateException{
+        try {
+            getHero(heroId).doAbility();
+        } catch(InvalidMinionAttributeModifierException e) {
+            throw new IllegalGameStateException(e.getMessage());
+        } catch(IllegalHeroValueException e) {
+            throw new IllegalGameStateException(e.getMessage());
+        }
     }
 
     //***********************

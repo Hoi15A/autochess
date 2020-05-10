@@ -5,6 +5,7 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 
@@ -33,6 +34,7 @@ public abstract class HeroBase {
     private static final int START_FUNDS = 100;
     private static final int MAX_FUNDS = 100;
     private static int counterId = 0;
+    protected boolean abilityAvailable = true;
 
     private ArrayList<MinionBase> minionList = new ArrayList<>();
 
@@ -70,6 +72,10 @@ public abstract class HeroBase {
     }
 
     public int getId() { return heroId;}
+
+    public boolean isAbilityAvailable() {
+        return abilityAvailable;
+    }
 
 
     public void increaseHealth(int value) throws IllegalHeroValueException{
@@ -128,7 +134,9 @@ public abstract class HeroBase {
         counterId = 0;
     }
 
-    public abstract void doAbility();
+    public abstract void doAbility() throws InvalidMinionAttributeModifierException, IllegalHeroValueException;
+
+    public abstract void buffMinion(MinionBase minion) throws InvalidMinionAttributeModifierException;
 
     //*********************
     //Minion Methods
@@ -138,6 +146,7 @@ public abstract class HeroBase {
         if(isValidMinionType(minionType)) {
             MinionBase minion = MinionBase.newMinionFromType(minionType, heroId);
             decreaseFunds(minion.getPrice());
+            buffMinion(minion);
             minionList.add(minion);
         }else {
             throw new InvalidMinionTypeException("Not a valid Minion type");

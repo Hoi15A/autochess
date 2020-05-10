@@ -21,7 +21,7 @@ public class App {
         Game game = new Game();
         try {
             game.addHero(HeroBase.HeroType.ALIEN);
-            game.addHero(HeroBase.HeroType.SPACE_MARINE);
+            game.addHero(HeroBase.HeroType.ENGINEER);
 
             game.buyMinion(0, MinionBase.MinionType.RANGER);
             game.placeMinionOnBoard(0,0, 2,3);
