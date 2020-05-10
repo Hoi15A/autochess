@@ -5,4 +5,9 @@ public class HeroEngineer extends HeroBase{
     public HeroEngineer() {
 
     }
+
+    @Override
+    public void doAbility() {
+
+    }
 }

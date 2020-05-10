@@ -1,6 +1,6 @@
 package ch.zhaw.pm2.autochess.Hero;
 
-public class HeroAlien extends HeroBase implements Ability {
+public class HeroAlien extends HeroBase {
 
     public HeroAlien() {
         super();
@@ -11,7 +11,7 @@ public class HeroAlien extends HeroBase implements Ability {
     }
 
     @Override
-    public void ability() {
+    public void doAbility() {
 
     }
 }

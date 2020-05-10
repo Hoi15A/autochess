@@ -128,6 +128,8 @@ public abstract class HeroBase {
         counterId = 0;
     }
 
+    public abstract void doAbility();
+
     //*********************
     //Minion Methods
     //*********************
