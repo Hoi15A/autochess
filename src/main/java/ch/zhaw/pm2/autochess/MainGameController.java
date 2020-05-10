@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -164,6 +165,8 @@ public class MainGameController implements Initializable {
             Stage stage = new Stage();
             stage.setTitle("Shop");
             stage.setScene(new Scene(shopPane, 450, 450));
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
         } catch (IOException e) {
             Logger logger = Logger.getLogger(getClass().getName());
