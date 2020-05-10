@@ -1,20 +1,24 @@
 package ch.zhaw.pm2.autochess;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FXMLController implements Initializable {
     private static final int FIELD_ROWS = 8;
@@ -137,6 +141,12 @@ public class FXMLController implements Initializable {
         bottomBuyButton.getStylesheets().add(String.valueOf(getClass().getResource("Stylesheet.css")));
         bottomBuyButton.setText("BUY");
         bottomBuyButton.setMaxWidth(Double.MAX_VALUE);
+        bottomBuyButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                shopWindow();
+            }
+        });
 
         VBox vbButtons = new VBox();
         vbButtons.setSpacing(10);
@@ -144,6 +154,21 @@ public class FXMLController implements Initializable {
         vbButtons.getChildren().addAll(bottomBuyButton);
 
         return vbButtons;
+    }
+
+    private void shopWindow(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ShopWindow.fxml"));
+            Pane shopPane = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Shop");
+            stage.setScene(new Scene(shopPane, 450, 450));
+            stage.show();
+        } catch (IOException e) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Failed to create new Window.", e);
+        }
     }
 }
 
