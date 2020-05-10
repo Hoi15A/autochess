@@ -1,6 +1,8 @@
 package ch.zhaw.pm2.autochess;
 
 import ch.zhaw.pm2.autochess.Board.BoardManager;
+import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
+import ch.zhaw.pm2.autochess.Board.exceptions.NoMinionFoundException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
@@ -23,7 +25,7 @@ public class BoardManagerTest {
     }
 
     @Test
-    public void testSetMinionOnBoardValidPosition() {
+    public void testSetMinionOnBoardValidPosition() throws InvalidPositionException {
         PositionVector positionVector = new PositionVector(0,0);
         MinionBase[][] board = boardManager.getBoardArray2d();
 
@@ -56,7 +58,7 @@ public class BoardManagerTest {
             }
         }
 
-        assertThrows(IllegalArgumentException.class, () -> boardManager.setMinionOnBoard(minionOne, new PositionVector(15,5)));
+        assertThrows(InvalidPositionException.class, () -> boardManager.setMinionOnBoard(minionOne, new PositionVector(15,5)));
 
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board.length; j++) {
@@ -66,14 +68,14 @@ public class BoardManagerTest {
     }
 
     @Test
-    public void testSetMinionOnBoardInvalidPositionOccupied() {
+    public void testSetMinionOnBoardInvalidPositionOccupied() throws InvalidPositionException {
         PositionVector positionVector = new PositionVector(2,7);
         boardManager.setMinionOnBoard(minionOne, positionVector);
-        assertThrows(IllegalArgumentException.class, () -> boardManager.setMinionOnBoard(minionTwo, new PositionVector(15,5)));
+        assertThrows(InvalidPositionException.class, () -> boardManager.setMinionOnBoard(minionTwo, new PositionVector(15,5)));
     }
 
     @Test
-    public void testRemoveMinionFromBoardValidId() {
+    public void testRemoveMinionFromBoardValidId() throws InvalidPositionException, NoMinionFoundException {
         PositionVector positionVector = new PositionVector(2,7);
         MinionBase[][] board = boardManager.getBoardArray2d();
         assertEquals(null,board[7][2]);
@@ -81,7 +83,7 @@ public class BoardManagerTest {
         assertEquals(minionOne,board[7][2]);
 
         boardManager.removeMinionFromBoard(0);
-        assertEquals(null,board[7][2]);
+        assertEquals(null, board[7][2]);
     }
 
     @Test
@@ -89,12 +91,12 @@ public class BoardManagerTest {
         MinionBase[][] board = boardManager.getBoardArray2d();
         assertEquals(null,board[7][2]);
 
-        assertThrows(IllegalArgumentException.class, () -> boardManager.removeMinionFromBoard(0));
+        assertThrows(NoMinionFoundException.class, () -> boardManager.removeMinionFromBoard(0));
 
     }
 
     @Test
-    public void testGetMinionPositionValidId() {
+    public void testGetMinionPositionValidId() throws InvalidPositionException, NoMinionFoundException {
         PositionVector positionVector = new PositionVector(2,7);
         MinionBase[][] board = boardManager.getBoardArray2d();
 
@@ -120,7 +122,7 @@ public class BoardManagerTest {
             }
         }
 
-        assertThrows(IllegalArgumentException.class, () -> boardManager.getMinionPosition(0));
+        assertThrows(NoMinionFoundException.class, () -> boardManager.getMinionPosition(0));
     }
 
 
