@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FXMLController implements Initializable {
+public class MainGameController implements Initializable {
     private static final int FIELD_ROWS = 8;
     private static final int FIELD_COLS = 8;
 

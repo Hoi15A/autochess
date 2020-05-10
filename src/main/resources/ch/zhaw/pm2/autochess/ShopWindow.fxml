@@ -1,0 +1,9 @@
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.ColumnConstraints?>
+
+<?import javafx.scene.layout.RowConstraints?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="ch.zhaw.pm2.autochess.ShopController" alignment="center"
+          hgap="10" vgap="10" fx:id="ShopMainGrid" gridLinesVisible="false">
+</GridPane>
