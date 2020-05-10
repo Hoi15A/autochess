@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class Game {
+    private static int NO_WINNER = -1;
+
     private ArrayList<HeroBase> heroArrayList = new ArrayList<>();
     private BoardManager boardManager;
 
@@ -53,8 +55,26 @@ public class Game {
         return false;
     }
 
-    public boolean checkHeroWinner() {
-        return false;
+    private boolean checkWinner() {
+        boolean winner = false;
+        for(HeroBase hero : heroArrayList) {
+            if(hero.getHealth() < 1) {
+                winner = true;
+            }
+        }
+        return true;
+    }
+
+    public int getWinner() {
+        int winner = NO_WINNER;
+        if(checkWinner()) {
+            for (HeroBase hero : heroArrayList) {
+                if (hero.getHealth() > 0) {
+                    winner = hero.getId();
+                }
+            }
+        }
+        return winner;
     }
 
     public void addHero(HeroBase.HeroType heroType) throws InvalidTypeException {
@@ -186,8 +206,18 @@ public class Game {
     //Battle methods
     //*******************************
 
-    public void doBattle() {
+    public void doBattle() throws IllegalGameStateException {
         boardManager.doBattle();
+    }
+
+    private void doHeroDamage() throws IllegalGameStateException {
+        for(HeroBase hero : heroArrayList) {
+            try {
+                hero.decreaseHealth(boardManager.getNumberOfMinionsPerHero(hero.getId()));
+            }catch (IllegalHeroValueException e){
+                throw new IllegalGameStateException(e.getMessage());
+            }
+        }
     }
 
     public ArrayList<String> getBattleLog() {

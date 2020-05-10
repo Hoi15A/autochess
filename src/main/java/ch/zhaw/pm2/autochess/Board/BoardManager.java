@@ -96,6 +96,14 @@ public class BoardManager {
         return listActiveMinions;
     }
 
+    public int getNumberOfMinionsPerHero(int heroId) {
+        int counter = 0;
+        for(MinionBase minion : getSpecHeroMinionsFromBoard(heroId)) {
+            counter++;
+        }
+        return counter;
+    }
+
     public void doBattle() {
         ArrayList<MinionBase> activeMinions = getAllMinionsFromBoard();
         //todo: sort by agility;
