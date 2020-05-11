@@ -5,5 +5,16 @@
 <?import javafx.scene.layout.RowConstraints?>
 <GridPane xmlns:fx="http://javafx.com/fxml"
           fx:controller="ch.zhaw.pm2.autochess.ShopController" alignment="center"
-          hgap="10" vgap="10" fx:id="ShopMainGrid" gridLinesVisible="false">
+          hgap="10" vgap="10" fx:id="ShopMainGrid" gridLinesVisible="true">
+    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" maxWidth="150" minWidth="150" prefWidth="150"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="150" minWidth="150" prefWidth="150"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="150" minWidth="150" prefWidth="150"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="150" minWidth="150" prefWidth="150"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="225" minHeight="225" prefHeight="225" vgrow="NEVER"/>
+        <RowConstraints maxHeight="225" minHeight="225" prefHeight="225" vgrow="NEVER"/>
+    </rowConstraints>
 </GridPane>

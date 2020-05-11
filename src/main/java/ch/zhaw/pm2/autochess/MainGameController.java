@@ -164,7 +164,7 @@ public class MainGameController implements Initializable {
 
             Stage stage = new Stage();
             stage.setTitle("Shop");
-            stage.setScene(new Scene(shopPane, 450, 450));
+            stage.setScene(new Scene(shopPane, 650, 475));
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
