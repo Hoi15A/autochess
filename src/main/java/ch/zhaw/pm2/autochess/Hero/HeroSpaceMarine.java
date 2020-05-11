@@ -1,20 +1,21 @@
 package ch.zhaw.pm2.autochess.Hero;
 
+import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 
 public class HeroSpaceMarine extends HeroBase {
 
-    public HeroSpaceMarine() {
-        super(100, 20);
+    public HeroSpaceMarine() throws IllegalHeroValueException {
+        super(Config.MARINE_HEALTH, Config.MARINE_START_FUNDS);
     }
 
     @Override
     public void doAbility() throws InvalidMinionAttributeModifierException, IllegalHeroValueException {
         if (abilityAvailable) {
             for(MinionBase minion : getMinionList()) {
-                minion.setAttackModifier(2);
+                minion.setAttackModifier(Config.MARINE_ABILITY_ATTACK);
             }
             abilityAvailable = false;
         } else {
@@ -24,9 +25,9 @@ public class HeroSpaceMarine extends HeroBase {
 
     @Override
     public void buffMinion(MinionBase minion) throws InvalidMinionAttributeModifierException {
-        minion.setMovementRangeModifier(2);
+        minion.setMovementRangeModifier(Config.MARINE_BUFF_MOVE_RANGE);
         if(minion.getAttackRange() > 1) {
-            minion.setAttackRangeModifier(2);
+            minion.setAttackRangeModifier(Config.MARINE_BUFF_ATTACK_RANGE);
         }
     }
 }

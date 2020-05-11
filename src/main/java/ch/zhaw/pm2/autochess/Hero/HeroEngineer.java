@@ -1,20 +1,21 @@
 package ch.zhaw.pm2.autochess.Hero;
 
+import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 
 public class HeroEngineer extends HeroBase{
 
-    public HeroEngineer() {
-        super(100, 15);
+    public HeroEngineer() throws IllegalHeroValueException {
+        super(Config.ENG_HEALTH, Config.ENG_START_FUNDS);
     }
 
     @Override
     public void doAbility() throws InvalidMinionAttributeModifierException, IllegalHeroValueException {
         if (abilityAvailable) {
             for(MinionBase minion : getMinionList()) {
-                minion.setDefenseModifier(2);
+                minion.setDefenseModifier(Config.ENG_ABILITY_DEF);
             }
             abilityAvailable = false;
         } else {
@@ -24,7 +25,7 @@ public class HeroEngineer extends HeroBase{
 
     @Override
     public void buffMinion(MinionBase minion) throws InvalidMinionAttributeModifierException {
-        minion.setDefenseModifier(5);
-        minion.changeHealth(5);
+        minion.setDefenseModifier(Config.ENG_BUFF_DEF);
+        minion.changeHealth(Config.ENG_BUFF_HP);
     }
 }

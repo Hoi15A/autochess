@@ -1,16 +1,17 @@
 package ch.zhaw.pm2.autochess.Hero;
 
+import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 
 public class HeroAlien extends HeroBase {
 
-    public HeroAlien() {
-        super(80, 25);
+    public HeroAlien() throws IllegalHeroValueException {
+        super(Config.ALIEN_HEALTH, Config.ALIEN_START_FUNDS);
     }
 
-    public HeroAlien(int health, int startingFunds) {
+    public HeroAlien(int health, int startingFunds) throws IllegalHeroValueException {
         super(health, startingFunds);
     }
 
@@ -18,7 +19,7 @@ public class HeroAlien extends HeroBase {
     public void doAbility() throws InvalidMinionAttributeModifierException, IllegalHeroValueException {
         if (abilityAvailable) {
             for (MinionBase minion : getMinionList()) {
-                minion.setMovementRangeModifier(2);
+                minion.setMovementRangeModifier(Config.ALIEN_ABILITY_MOVE_RANGE);
             }
             abilityAvailable = false;
         } else {
@@ -28,7 +29,7 @@ public class HeroAlien extends HeroBase {
 
     @Override
     public void buffMinion(MinionBase minion) throws InvalidMinionAttributeModifierException {
-        minion.setAttackModifier(6);
-        minion.setDefenseModifier(-4);
+        minion.setAttackModifier(Config.ALIEN_BUFF_ATTACK);
+        minion.setDefenseModifier(Config.ALIEN_BUFF_DEF);
     }
 }
