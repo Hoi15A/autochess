@@ -23,7 +23,7 @@ public class MinionTest {
 
     private class InvalidAttributeMinion extends MinionBase {
         public InvalidAttributeMinion() throws MinionException {
-            super(MinionType.TANK, new AggressiveStrategy(), -5, 10, 10, 10, 10 ,10, 10, 0);
+            super(Config.MinionType.TANK, new AggressiveStrategy(), -5, 10, 10, 10, 10 ,10, 10, 0);
         }
     }
 
@@ -36,13 +36,13 @@ public class MinionTest {
     public void testCreateMinion() throws MinionException {
         minion = new Warrior(0);
         assertEquals(0, minion.getId());
-        assertEquals(20, minion.getHealth());
-        assertEquals(7, minion.getAttack());
+        assertEquals(70, minion.getHealth());
+        assertEquals(10, minion.getAttack());
         minion = new Tank(0);
         assertEquals(1, minion.getId());
-        assertEquals(5, minion.getDefense());
-        assertEquals(1, minion.getMovementRange());
-        assertEquals(1, minion.getAgility());
+        assertEquals(8, minion.getDefense());
+        assertEquals(2, minion.getMovementRange());
+        assertEquals(5, minion.getAgility());
     }
 
     @Test

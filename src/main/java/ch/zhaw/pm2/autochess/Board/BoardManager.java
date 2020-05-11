@@ -2,8 +2,8 @@ package ch.zhaw.pm2.autochess.Board;
 
 import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
 import ch.zhaw.pm2.autochess.Board.exceptions.NoMinionFoundException;
+import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
-import ch.zhaw.pm2.autochess.Minion.strategy.MoveStrategy;
 import ch.zhaw.pm2.autochess.PositionVector;
 
 import java.util.ArrayList;
@@ -13,10 +13,7 @@ import java.util.Set;
 
 public class BoardManager {
 
-    private static final int HEIGHT = 8;
-    private static final int WIDTH =8;
-    private static final int MAXBATTLELOOPS = 10;
-    private MinionBase[][] boardArray2d = new MinionBase[HEIGHT][WIDTH];
+    private MinionBase[][] boardArray2d = new MinionBase[Config.BOARD_HEIGHT][Config.BOARD_WIDTH];
 
     public BoardManager() {
     }
@@ -39,7 +36,7 @@ public class BoardManager {
 
     private boolean isValidPosition(PositionVector pos) {
         if(pos != null) {
-            if(pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < HEIGHT && pos.getY() < WIDTH ) {
+            if(pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < Config.BOARD_WIDTH && pos.getY() < Config.BOARD_HEIGHT) {
                 return true;
             }
         }
@@ -117,7 +114,7 @@ public class BoardManager {
         System.out.println(" ");
 
         int loopCounter = 0;
-        while(checkEachHeroActiveMinions(activeMinions) && loopCounter < MAXBATTLELOOPS){
+        while(checkEachHeroActiveMinions(activeMinions) && loopCounter < Config.MAX_BATTLE_LOOPS){
             for(Iterator<MinionBase> it = activeMinions.iterator(); it.hasNext(); ) {
                 MinionBase minion = it.next();
                 if(minion.getHealth() > 0) {

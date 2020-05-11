@@ -1,5 +1,6 @@
 package ch.zhaw.pm2.autochess.Minion;
 
+import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Minion.strategy.MoveStrategy;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
@@ -14,19 +15,8 @@ public abstract class MinionBase {
 
     private static int idCount = 0;
     private final int minionId;
-    private final MinionType type;
+    private final Config.MinionType type;
     private final MoveStrategy strategy;
-
-    private static final int MAX_MINION_HEALTH = 100;
-    private static final int MAX_MINION_ATTACK = 100;
-    private static final int MIN_MINION_ATTACK = -100;
-    private static final int MAX_MINION_DEFENSE = 100;
-    private static final int MIN_MINION_DEFENSE = -100;
-    private static final int MAX_MINION_MOVEMENT_RANGE = 10;
-    private static final int MAX_MINION_ATTACK_RANGE = 10;
-    private static final int MAX_MINION_AGILITY = 100;
-    private static final int MAX_MINION_LEVEL = 3;
-    private static final int MAX_MINION_PRICE = 10;
 
     private final int maxHealth;
     private final int baseAttack;
@@ -44,11 +34,7 @@ public abstract class MinionBase {
     private int movementRangeModifier = 0;
     private int agilityModifier = 0;
 
-    public enum MinionType {
-        WARRIOR, RANGER, TANK,
-    }
-
-    public static MinionBase newMinionFromType(MinionType minionType, int heroId) throws InvalidMinionTypeException, MinionException {
+    public static MinionBase newMinionFromType(Config.MinionType minionType, int heroId) throws InvalidMinionTypeException, MinionException {
         MinionBase newMinion;
 
         switch (minionType) {
@@ -76,16 +62,16 @@ public abstract class MinionBase {
      * @param attackRange The attackRange the minion can move in
      * @param agility The priority at which the minion can make its move
      */
-    public MinionBase(MinionType type, MoveStrategy strategy, int price, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws MinionException {
+    public MinionBase(Config.MinionType type, MoveStrategy strategy, int price, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws MinionException {
         if (type == null) throw new InvalidMinionTypeException("MinionType may not be null");
         if (strategy == null) throw new InvalidMinionAttributeException("Strategy may not be null");
-        if (health > MAX_MINION_HEALTH || health <= 0) throw new InvalidMinionAttributeException("Health must be between 0 and " + MAX_MINION_HEALTH);
-        if (attack > MAX_MINION_ATTACK || attack < MIN_MINION_ATTACK) throw new InvalidMinionAttributeException("Attack must be between " + MIN_MINION_ATTACK + " and " + MAX_MINION_ATTACK);
-        if (defense > MAX_MINION_DEFENSE || defense < MIN_MINION_DEFENSE) throw new InvalidMinionAttributeException("Defense must be between " + MIN_MINION_DEFENSE + " and " + MAX_MINION_DEFENSE);
-        if (movementRange > MAX_MINION_MOVEMENT_RANGE || movementRange < 0) throw new InvalidMinionAttributeException("Range must be between 0 and " + MAX_MINION_MOVEMENT_RANGE);
-        if (attackRange > MAX_MINION_ATTACK_RANGE || attackRange < 0) throw new InvalidMinionAttributeException("Range must be between 0 and " + MAX_MINION_ATTACK_RANGE);
-        if (agility > MAX_MINION_AGILITY || agility < 0) throw new InvalidMinionAttributeException("Agility must be between 0 and " + MAX_MINION_AGILITY);
-        if (price > MAX_MINION_PRICE || price < 0) throw new InvalidMinionAttributeException("Price must be between 0 and " + MAX_MINION_PRICE);
+        if (health > Config.MAX_MINION_HEALTH || health <= Config.MIN_MINION_HEALTH) throw new InvalidMinionAttributeException("Invalid health parameter");
+        if (attack > Config.MAX_MINION_ATTACK || attack < Config.MIN_MINION_ATTACK) throw new InvalidMinionAttributeException("Invalid attack parameter");
+        if (defense > Config.MAX_MINION_DEFENSE || defense < Config.MIN_MINION_DEFENSE) throw new InvalidMinionAttributeException("Invalid defence parameter");
+        if (movementRange > Config.MAX_MINION_MOVEMENT_RANGE || movementRange < Config.MIN_MINION_MOVEMENT_RANGE) throw new InvalidMinionAttributeException("Invalid movement range parameter");
+        if (attackRange > Config.MAX_MINION_ATTACK_RANGE || attackRange < Config.MIN_MINION_ATTACK_RANGE) throw new InvalidMinionAttributeException("Invalid attack range parameter");
+        if (agility > Config.MAX_MINION_AGILITY || agility < Config.MIN_MINION_AGILITY) throw new InvalidMinionAttributeException("Invalid agility parameter");
+        if (price > Config.MAX_MINION_PRICE || price < Config.MIN_MINION_PRICE) throw new InvalidMinionAttributeException("Invalid price parameter");
 
         this.minionId = idCount++;
         this.type = type;
@@ -117,7 +103,7 @@ public abstract class MinionBase {
      * Returns the minions type
      * @return type
      */
-    public MinionType getType() {
+    public Config.MinionType getType() {
         return type;
     }
 
@@ -160,8 +146,8 @@ public abstract class MinionBase {
      * @param levelDifference The change in level to apply
      */
     public void modifyLevel(int levelDifference) {
-        if (level + levelDifference > MAX_MINION_LEVEL) {
-            level = MAX_MINION_LEVEL;
+        if (level + levelDifference > Config.MAX_MINION_LEVEL) {
+            level = Config.MAX_MINION_LEVEL;
         } else if (level + levelDifference < 1) {
             level = 1;
         } else {
@@ -174,7 +160,7 @@ public abstract class MinionBase {
      * @param attackModifier modifier
      */
     public void setAttackModifier(int attackModifier) throws InvalidMinionAttributeModifierException {
-        if (baseAttack + attackModifier < MIN_MINION_ATTACK || baseAttack + attackModifier > MAX_MINION_ATTACK) throw new InvalidMinionAttributeModifierException("Modifier caused attack to be too high/low");
+        if (baseAttack + attackModifier < Config.MIN_MINION_ATTACK || baseAttack + attackModifier > Config.MAX_MINION_ATTACK) throw new InvalidMinionAttributeModifierException("Modifier caused attack to be too high/low");
         this.attackModifier = attackModifier;
     }
 
@@ -183,7 +169,7 @@ public abstract class MinionBase {
      * @param defenseModifier modifier
      */
     public void setDefenseModifier(int defenseModifier) throws InvalidMinionAttributeModifierException {
-        if (baseDefense + defenseModifier < MIN_MINION_DEFENSE || baseDefense + defenseModifier > MAX_MINION_DEFENSE) throw new InvalidMinionAttributeModifierException("Modifier caused defense to be too high/low");
+        if (baseDefense + defenseModifier < Config.MIN_MINION_DEFENSE || baseDefense + defenseModifier > Config.MAX_MINION_DEFENSE) throw new InvalidMinionAttributeModifierException("Modifier caused defense to be too high/low");
         this.defenseModifier = defenseModifier;
     }
 
@@ -192,13 +178,13 @@ public abstract class MinionBase {
      * @param attackRangeModifier modifier
      */
     public void setAttackRangeModifier(int attackRangeModifier) throws InvalidMinionAttributeModifierException {
-        if (baseAttackRange + attackRangeModifier < 0 || baseAttackRange + attackRangeModifier > MAX_MINION_ATTACK_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
+        if (baseAttackRange + attackRangeModifier < Config.MIN_MINION_ATTACK_RANGE || baseAttackRange + attackRangeModifier > Config.MAX_MINION_ATTACK_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
         this.attackRangeModifier = attackRangeModifier;
 
     }
 
     public void setMovementRangeModifier(int rangeMovementModifier) throws InvalidMinionAttributeModifierException {
-        if (baseMovementRange + rangeMovementModifier < 0 || baseMovementRange + rangeMovementModifier > MAX_MINION_MOVEMENT_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
+        if (baseMovementRange + rangeMovementModifier < Config.MIN_MINION_MOVEMENT_RANGE || baseMovementRange + rangeMovementModifier > Config.MAX_MINION_MOVEMENT_RANGE) throw new InvalidMinionAttributeModifierException("Modifier caused range to be too high/low");
         this.movementRangeModifier = rangeMovementModifier;
 
     }
@@ -208,7 +194,7 @@ public abstract class MinionBase {
      * @param agilityModifier modifier
      */
     public void setAgilityModifier(int agilityModifier) throws InvalidMinionAttributeModifierException {
-        if (baseAgility + agilityModifier < 0 || baseAgility + agilityModifier > MAX_MINION_AGILITY) throw new InvalidMinionAttributeModifierException("Modifier caused agility to be too high/low");
+        if (baseAgility + agilityModifier < Config.MIN_MINION_AGILITY || baseAgility + agilityModifier > Config.MAX_MINION_AGILITY) throw new InvalidMinionAttributeModifierException("Modifier caused agility to be too high/low");
         this.agilityModifier = agilityModifier;
     }
 

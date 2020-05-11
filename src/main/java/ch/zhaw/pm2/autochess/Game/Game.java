@@ -3,6 +3,7 @@ package ch.zhaw.pm2.autochess.Game;
 import ch.zhaw.pm2.autochess.Board.BoardManager;
 import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
 import ch.zhaw.pm2.autochess.Board.exceptions.NoMinionFoundException;
+import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import ch.zhaw.pm2.autochess.Game.exceptions.InvalidIdentifierException;
 import ch.zhaw.pm2.autochess.Game.exceptions.InvalidTypeException;
@@ -11,7 +12,6 @@ import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
-import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
@@ -23,7 +23,7 @@ import java.util.Set;
 public class Game {
     private static int NO_WINNER = -1;
 
-    private ArrayList<HeroBase> heroArrayList = new ArrayList<>();
+    private ArrayList<HeroBase> heroArrayList;
     private BoardManager boardManager;
 
     public Game() throws IllegalArgumentException{
@@ -80,11 +80,13 @@ public class Game {
         return winner;
     }
 
-    public void addHero(HeroBase.HeroType heroType) throws InvalidTypeException {
+    public void addHero(Config.HeroType heroType) throws InvalidTypeException, IllegalGameStateException{
         try {
             heroArrayList.add(HeroBase.getHeroFromType(heroType));
         } catch (InvalidHeroTypeException e) {
             throw new InvalidTypeException(e.getMessage());
+        } catch (IllegalHeroValueException e) {
+            throw new IllegalGameStateException(e.getMessage());
         }
     }
 
@@ -102,7 +104,7 @@ public class Game {
     //Minion methods
     //***********************
 
-    public void buyMinion(int heroId, MinionBase.MinionType minionType) throws InvalidIdentifierException, InvalidTypeException, IllegalGameStateException{
+    public void buyMinion(int heroId, Config.MinionType minionType) throws InvalidIdentifierException, InvalidTypeException, IllegalGameStateException{
         if(isValidId(heroId)) {
             try {
                 HeroBase hero = getHero(heroId);
@@ -163,7 +165,7 @@ public class Game {
         }
     }
 
-    public MinionBase.MinionType getMinionType(int heroId, int minionId) throws InvalidTypeException, InvalidIdentifierException {
+    public Config.MinionType getMinionType(int heroId, int minionId) throws InvalidTypeException, InvalidIdentifierException {
         if(isValidId(heroId)) {
             try {
                 return getHero(heroId).getMinionType(minionId);

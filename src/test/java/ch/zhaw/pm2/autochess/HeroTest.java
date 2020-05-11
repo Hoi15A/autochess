@@ -30,7 +30,7 @@ public class HeroTest {
     }
 
     @Test
-    void testInitHero() {
+    void testInitHero() throws IllegalHeroValueException {
         hero = new HeroAlien();
         assertEquals(0, hero.getId());
         hero = new HeroAlien();
@@ -39,10 +39,11 @@ public class HeroTest {
 
     @Test
     void testIncreaseHealthValidAmount() throws IllegalHeroValueException {
-        hero = new HeroAlien(50, 50);
-        assertEquals(50, hero.getHealth());
+        hero = new HeroAlien(100, 50);
+        assertEquals(100, hero.getHealth());
 
-        hero.increaseHealth(30);
+        hero.decreaseHealth(40);
+        hero.increaseHealth(20);
         assertEquals(80, hero.getHealth());
 
         hero.increaseHealth(100);
@@ -50,7 +51,7 @@ public class HeroTest {
     }
 
     @Test
-    void testIncreaseHealthInvalidAmount() {
+    void testIncreaseHealthInvalidAmount() throws IllegalHeroValueException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getHealth());
 
@@ -74,7 +75,7 @@ public class HeroTest {
     }
 
     @Test
-    void testDecreaseHealthInvalidAmount() {
+    void testDecreaseHealthInvalidAmount() throws IllegalHeroValueException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getHealth());
 
@@ -98,7 +99,7 @@ public class HeroTest {
     }
 
     @Test
-    void testIncreaseFundsInvalidAmount() {
+    void testIncreaseFundsInvalidAmount() throws IllegalHeroValueException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
@@ -122,7 +123,7 @@ public class HeroTest {
     }
 
     @Test
-    void testDecreaseFundsInvalidAmount() {
+    void testDecreaseFundsInvalidAmount() throws IllegalHeroValueException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
@@ -140,23 +141,23 @@ public class HeroTest {
         hero = new HeroAlien(100,100);
         assertEquals(100, hero.getFunds());
 
-        hero.buyMinion(MinionBase.MinionType.WARRIOR);
+        hero.buyMinion(Config.MinionType.WARRIOR);
 
         assertEquals(90, hero.getFunds());
         assertEquals(1, hero.getMinionList().size());
     }
 
     @Test
-    void testBuyMinionFundsNotAvailable() {
+    void testBuyMinionFundsNotAvailable() throws IllegalHeroValueException {
         hero = new HeroAlien(100, 0);
         assertEquals(0, hero.getFunds());
 
-        assertThrows(IllegalFundsStateException.class, () -> hero.buyMinion(MinionBase.MinionType.WARRIOR));
+        assertThrows(IllegalFundsStateException.class, () -> hero.buyMinion(Config.MinionType.WARRIOR));
         assertEquals(0, hero.getMinionList().size());
     }
 
     @Test
-    void testBuyMinionNullMinionTyp() {
+    void testBuyMinionNullMinionTyp() throws IllegalHeroValueException {
         hero = new HeroAlien(100, 100);
         assertEquals(100, hero.getFunds());
 
@@ -171,7 +172,7 @@ public class HeroTest {
         assertEquals(1, hero.getMinionList().size());
 
         when(minionOne.getId()).thenReturn(3);
-        when(minionOne.getType()).thenReturn(MinionBase.MinionType.WARRIOR);
+        when(minionOne.getType()).thenReturn(Config.MinionType.WARRIOR);
         when(minionOne.getPrice()).thenReturn(10);
 
         hero.sellMinion(3);
@@ -181,13 +182,13 @@ public class HeroTest {
     }
 
     @Test
-    void testSellMinionInvalidMinionId() {
+    void testSellMinionInvalidMinionId() throws IllegalHeroValueException {
         hero = new HeroAlien(100, 0);
         hero.getMinionList().add(minionOne);
         assertEquals(1, hero.getMinionList().size());
 
         when(minionOne.getId()).thenReturn(3);
-        when(minionOne.getType()).thenReturn(MinionBase.MinionType.WARRIOR);
+        when(minionOne.getType()).thenReturn(Config.MinionType.WARRIOR);
 
         assertThrows(InvalidMinionIDException.class, () -> hero.sellMinion(1));
         assertEquals(1, hero.getMinionList().size());
@@ -202,7 +203,7 @@ public class HeroTest {
      */
 
     @Test
-    void testGetAllMinionIds() {
+    void testGetAllMinionIds() throws IllegalHeroValueException {
         hero = new HeroAlien(100, 100);
         hero.getMinionList().add(minionOne);
         hero.getMinionList().add(minionTwo);
