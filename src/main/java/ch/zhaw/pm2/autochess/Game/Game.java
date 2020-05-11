@@ -1,6 +1,8 @@
 package ch.zhaw.pm2.autochess.Game;
 
 import ch.zhaw.pm2.autochess.Board.BoardManager;
+import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
+import ch.zhaw.pm2.autochess.Board.exceptions.NoMinionFoundException;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import ch.zhaw.pm2.autochess.Game.exceptions.InvalidIdentifierException;
 import ch.zhaw.pm2.autochess.Game.exceptions.InvalidTypeException;
@@ -132,7 +134,7 @@ public class Game {
         }
     }
 
-    public void placeMinionOnBoard(int heroId, int minionId, int xPos, int yPos) throws InvalidIdentifierException, InvalidMinionIDException {
+    public void placeMinionOnBoard(int heroId, int minionId, int xPos, int yPos) throws InvalidIdentifierException, InvalidMinionIDException, InvalidPositionException {
         if(isValidId(heroId)) {
             boardManager.setMinionOnBoard(getHero(heroId).getMinion(minionId), new PositionVector(xPos, yPos));
         }else {
@@ -214,7 +216,11 @@ public class Game {
     //*******************************
 
     public void doBattle() throws IllegalGameStateException {
-        boardManager.doBattle();
+        try {
+            boardManager.doBattle();
+        }catch(NoMinionFoundException | InvalidPositionException e) {
+            throw new IllegalGameStateException(e.getMessage());
+        }
     }
 
     private void doHeroDamage() throws IllegalGameStateException {

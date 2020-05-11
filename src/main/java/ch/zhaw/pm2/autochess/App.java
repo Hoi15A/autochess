@@ -3,6 +3,7 @@
  */
 package ch.zhaw.pm2.autochess;
 
+import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
 import ch.zhaw.pm2.autochess.Game.Game;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import ch.zhaw.pm2.autochess.Game.exceptions.InvalidIdentifierException;
@@ -39,7 +40,7 @@ public class App {
             game.printBoard();
             System.out.println(" ");
 
-        } catch (InvalidTypeException | InvalidIdentifierException | IllegalGameStateException | InvalidMinionIDException e) {
+        } catch (InvalidTypeException | InvalidIdentifierException | IllegalGameStateException | InvalidMinionIDException | InvalidPositionException e) {
             System.out.println(e.getMessage());
         }
     }
