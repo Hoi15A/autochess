@@ -1,19 +1,17 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
-
 <?import javafx.scene.layout.RowConstraints?>
+
 <GridPane xmlns:fx="http://javafx.com/fxml"
           fx:controller="ch.zhaw.pm2.autochess.MainController" alignment="center"
           hgap="10" vgap="10" fx:id="mainGrid" gridLinesVisible="false">
     <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="720" minWidth="720" prefWidth="720" />
-        <ColumnConstraints hgrow="NEVER" maxWidth="200" minWidth="200" prefWidth="200" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="90" minHeight="90" prefHeight="90" vgrow="NEVER" fx:id="topRow"/>
-        <RowConstraints maxHeight="720" minHeight="720" prefHeight="720" vgrow="NEVER" fx:id="midRow"/>
-        <RowConstraints maxHeight="90" minHeight="90" prefHeight="90" vgrow="NEVER" fx:id="bottomRow"/>
+        <RowConstraints maxHeight="200" minHeight="200" prefHeight="200" vgrow="NEVER" fx:id="titleRow"/>
+        <RowConstraints maxHeight="300" minHeight="300" prefHeight="300" vgrow="NEVER" fx:id="menuRow"/>
     </rowConstraints>
 </GridPane>

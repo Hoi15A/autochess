@@ -12,9 +12,6 @@ public class MainApp extends Application {
     private static final Logger logger = Logger.getLogger(MainApp.class.getCanonicalName());
     private Stage primaryStage;
 
-    private static final int COLUMNS = 8;
-    private static final int ROWS = 8;
-
 
     public static void main(String[] args) {
         launch(args);
@@ -28,16 +25,16 @@ public class MainApp extends Application {
     private void startNewGame(Stage primaryStage) {
         this.primaryStage = primaryStage;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainGameWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/MainWindow.fxml"));
             Pane rootPane = loader.load();
-            rootPane.getStylesheets().add(String.valueOf(getClass().getResource("Stylesheet.css")));
+            rootPane.getStylesheets().add(String.valueOf(getClass().getResource("css/MainStylesheet.css")));
             rootPane.setId("pane");
             Scene scene = new Scene(rootPane);
 
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
-            primaryStage.setMinWidth(720);
-            primaryStage.setMinHeight(900);
+            primaryStage.setMinWidth(800);
+            primaryStage.setMinHeight(600);
             primaryStage.setTitle("SMAC");
             primaryStage.show();
         } catch(Exception e) {
