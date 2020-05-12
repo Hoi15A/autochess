@@ -8,7 +8,7 @@ import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierExc
 public class HeroSpaceMarine extends HeroBase {
 
     public HeroSpaceMarine() throws IllegalHeroValueException {
-        super(Config.MARINE_HEALTH, Config.MARINE_START_FUNDS);
+        super(Config.MARINE_HEALTH, Config.MARINE_START_FUNDS, Config.HeroType.SPACE_MARINE);
     }
 
     @Override

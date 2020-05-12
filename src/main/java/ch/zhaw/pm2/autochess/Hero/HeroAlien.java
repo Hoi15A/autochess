@@ -8,11 +8,11 @@ import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierExc
 public class HeroAlien extends HeroBase {
 
     public HeroAlien() throws IllegalHeroValueException {
-        super(Config.ALIEN_HEALTH, Config.ALIEN_START_FUNDS);
+        super(Config.ALIEN_HEALTH, Config.ALIEN_START_FUNDS, Config.HeroType.ALIEN);
     }
 
     public HeroAlien(int health, int startingFunds) throws IllegalHeroValueException {
-        super(health, startingFunds);
+        super(health, startingFunds, Config.HeroType.ALIEN);
     }
 
     @Override

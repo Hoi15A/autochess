@@ -8,7 +8,7 @@ import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierExc
 public class HeroEngineer extends HeroBase{
 
     public HeroEngineer() throws IllegalHeroValueException {
-        super(Config.ENG_HEALTH, Config.ENG_START_FUNDS);
+        super(Config.ENG_HEALTH, Config.ENG_START_FUNDS, Config.HeroType.ENGINEER);
     }
 
     @Override

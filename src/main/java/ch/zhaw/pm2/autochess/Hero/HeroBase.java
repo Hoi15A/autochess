@@ -36,14 +36,16 @@ public abstract class HeroBase {
     private int health;
     private final int maxHealth;
     private int funds;
+    private Config.HeroType heroType;
 
-    public HeroBase(int health, int funds) throws IllegalHeroValueException {
+    public HeroBase(int health, int funds, Config.HeroType heroType) throws IllegalHeroValueException {
         if(areValidParameters(health, funds)) {
             heroId = counterId;
             counterId++;
             maxHealth = health;
             this.health = maxHealth;
             this.funds = funds;
+            this.heroType = heroType;
         }else {
             throw new IllegalHeroValueException("Not valid hero parameters");
         }
@@ -81,13 +83,17 @@ public abstract class HeroBase {
 
     public int getId() { return heroId;}
 
+    public Config.HeroType getHeroType() {
+        return heroType;
+    }
+
     public boolean isAbilityAvailable() {
         return abilityAvailable;
     }
 
 
     public void increaseHealth(int value) throws IllegalHeroValueException{
-        if(value > 0 && value < Config.MAX_HERO_HEALTH*10) {
+        if(value >= 0 && value < Config.MAX_HERO_HEALTH*10) {
             int newHealth = health + value;
             if(newHealth <= maxHealth) {
                 health = newHealth;
@@ -100,7 +106,7 @@ public abstract class HeroBase {
     }
 
     public void decreaseHealth(int value) throws IllegalHeroValueException{
-        if(value > 0 && value < Config.MAX_HERO_HEALTH*10) {
+        if(value >= 0 && value < Config.MAX_HERO_HEALTH*10) {
             int newHealth = health - value;
             if(newHealth >= 0) {
                 health = newHealth;
@@ -113,7 +119,7 @@ public abstract class HeroBase {
     }
 
     public void increaseFunds(int value) throws IllegalHeroValueException{
-        if(value > 0 && value < Config.MAX_FUNDS*10) {
+        if(value >= 0 && value < Config.MAX_FUNDS*10) {
             int newFunds = funds + value;
             if(newFunds <= Config.MAX_FUNDS) {
                 funds = newFunds;
@@ -126,7 +132,7 @@ public abstract class HeroBase {
     }
 
     public void decreaseFunds(int value) throws IllegalHeroValueException, IllegalFundsStateException{
-        if(value > 0 && value < Config.MAX_FUNDS*10) {
+        if(value >= 0 && value < Config.MAX_FUNDS*10) {
             int newFunds = funds - value;
             if(newFunds >= 0) {
                 funds = newFunds;
