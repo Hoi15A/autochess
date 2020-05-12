@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.File;
@@ -15,7 +16,9 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     private File stylesheet = new File(String.valueOf(getClass().getResource("css/MainStylesheet.css")));
     private Text title;
-    private Text menu[];
+    private Text menuNewGame;
+    private Text menuHelp;
+    private VBox menuBox;
 
 
     @FXML
@@ -31,11 +34,16 @@ public class MainController implements Initializable {
         initializeMenu();
         initializeMenuTitle();
 
+        menuBox = new VBox();
+        menuBox.getChildren().add(menuNewGame);
+        menuBox.getChildren().add(menuHelp);
+
+
         mainGrid.add(title,0,0);
-        mainGrid.add(menu[0],0,1);
+        mainGrid.add(menuBox,0,1);
 
         //new Game Listener
-        menu[0].setOnMouseClicked(new EventHandler<MouseEvent>() {
+        menuNewGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("new game");
@@ -44,7 +52,7 @@ public class MainController implements Initializable {
         });
 
         //Help listener
-        menu[1].setOnMouseClicked(new EventHandler<MouseEvent>() {
+        menuHelp.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("help");
@@ -59,8 +67,10 @@ public class MainController implements Initializable {
     }
 
     private void initializeMenu(){
-        menu[0].setText("new Game");
-        menu[1].setText("Help");
+        menuNewGame = new Text("new Game");
+        menuNewGame.setId("menuNewGame");
+        menuHelp = new Text("help");
+        menuHelp.setId("menuHelp");
     }
 }
 
