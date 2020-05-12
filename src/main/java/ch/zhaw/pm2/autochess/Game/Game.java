@@ -26,9 +26,12 @@ public class Game {
     private ArrayList<HeroBase> heroArrayList;
     private BoardManager boardManager;
 
-    public Game() throws IllegalArgumentException{
+    public Game(Config.HeroType heroTypePlayer1, Config.HeroType heroTypePlayer2) throws IllegalArgumentException, IllegalGameStateException, InvalidTypeException {
         boardManager = new BoardManager();
         heroArrayList = new ArrayList<>();
+        addHero(heroTypePlayer1);
+        addHero(heroTypePlayer2);
+
     }
 
     public void printBoard() {
@@ -65,7 +68,7 @@ public class Game {
                 winner = true;
             }
         }
-        return true;
+        return winner;
     }
 
     public int getWinner() {
@@ -80,7 +83,7 @@ public class Game {
         return winner;
     }
 
-    public void addHero(Config.HeroType heroType) throws InvalidTypeException, IllegalGameStateException{
+    private void addHero(Config.HeroType heroType) throws InvalidTypeException, IllegalGameStateException{
         try {
             heroArrayList.add(HeroBase.getHeroFromType(heroType));
         } catch (InvalidHeroTypeException e) {

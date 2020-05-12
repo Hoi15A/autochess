@@ -27,21 +27,20 @@ public abstract class HeroBase {
         }
     }
 
-    private static int counterId = 0;
-    protected boolean abilityAvailable = true;
-
     private ArrayList<MinionBase> minionList = new ArrayList<>();
 
+    private static int heroCounter = 1;
     private final int heroId;
     private int health;
     private final int maxHealth;
     private int funds;
     private Config.HeroType heroType;
+    protected boolean abilityAvailable = true;
 
     public HeroBase(int health, int funds, Config.HeroType heroType) throws IllegalHeroValueException {
         if(areValidParameters(health, funds)) {
-            heroId = counterId;
-            counterId++;
+            this.heroId = heroCounter;
+            heroCounter++;
             maxHealth = health;
             this.health = maxHealth;
             this.funds = funds;
@@ -59,8 +58,8 @@ public abstract class HeroBase {
     }
 
     public HeroBase() {
-        heroId = counterId;
-        counterId++;
+        heroId = heroCounter;
+        heroCounter++;
         maxHealth = Config.MAX_HERO_HEALTH;
         health = Config.MAX_HERO_HEALTH;
         funds = Config.DEFAULT_START_FUNDS;
@@ -70,7 +69,7 @@ public abstract class HeroBase {
     //Hero methods
     //****************
     public static int getCounterId() {
-        return counterId;
+        return heroCounter;
     }
 
     public int getHealth() {
@@ -145,7 +144,7 @@ public abstract class HeroBase {
     }
 
     public static void resetCounter() {
-        counterId = 0;
+        heroCounter = 0;
     }
 
     public abstract void doAbility() throws InvalidMinionAttributeModifierException, IllegalHeroValueException;

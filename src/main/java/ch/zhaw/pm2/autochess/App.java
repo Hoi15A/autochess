@@ -17,16 +17,14 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
-        Game game = new Game();
         try {
-            game.addHero(Config.HeroType.ALIEN);
-            game.addHero(Config.HeroType.ENGINEER);
+            Game game = new Game(Config.HeroType.ALIEN, Config.HeroType.ENGINEER);
 
-            game.buyMinion(0, Config.MinionType.RANGER);
-            game.placeMinionOnBoard(0,0, 2,3);
+            game.buyMinion(1, Config.MinionType.RANGER);
+            game.placeMinionOnBoard(1,0, 2,3);
 
-            game.buyMinion(1, Config.MinionType.TANK);
-            game.placeMinionOnBoard(1,1, 6,3);
+            game.buyMinion(2, Config.MinionType.TANK);
+            game.placeMinionOnBoard(2,1, 6,3);
 
             System.out.println(" ");
             game.printBoard();
