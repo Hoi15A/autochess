@@ -1,4 +1,4 @@
-package ch.zhaw.pm2.autochess;
+package ch.zhaw.pm2.autochess.controller;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
