@@ -2,16 +2,17 @@ package ch.zhaw.pm2.autochess.Hero;
 
 import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 
 public class HeroAlien extends HeroBase {
 
-    public HeroAlien() throws IllegalHeroValueException {
+    public HeroAlien() throws IllegalHeroValueException, InvalidHeroTypeException {
         super(Config.ALIEN_HEALTH, Config.ALIEN_START_FUNDS, Config.HeroType.ALIEN);
     }
 
-    public HeroAlien(int health, int startingFunds) throws IllegalHeroValueException {
+    public HeroAlien(int health, int startingFunds) throws IllegalHeroValueException, InvalidHeroTypeException {
         super(health, startingFunds, Config.HeroType.ALIEN);
     }
 

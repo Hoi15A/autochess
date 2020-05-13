@@ -199,42 +199,6 @@ public class Game {
         }
     }
 
-    public int getMinionLevel(int heroId, int minionId) throws InvalidIdentifierException{
-        if(isValidId(heroId)) {
-            try {
-                return getHero(heroId).getMinionLevel(minionId);
-            }catch (InvalidMinionIDException e){
-                throw new InvalidIdentifierException(e.getMessage());
-            }
-        }else {
-            throw new InvalidIdentifierException("Not a valid Hero ID");
-        }
-    }
-
-    public void increaseMinionLevel(int heroId, int minionId) throws InvalidIdentifierException {
-        if(isValidId(heroId)) {
-            try {
-                getHero(heroId).increaseMinionLevel(minionId);
-            }catch (InvalidMinionIDException e){
-                throw new InvalidIdentifierException(e.getMessage());
-            }
-        }else {
-            throw new InvalidIdentifierException("Not a valid Hero ID");
-        }
-    }
-
-    public void decreaseMinionLevel(int heroId, int minionId) throws InvalidIdentifierException {
-        if(isValidId(heroId)) {
-            try {
-                getHero(heroId).decreaseMinionLevel(minionId);
-            }catch (InvalidMinionIDException e){
-                throw new InvalidIdentifierException(e.getMessage());
-            }
-        }else {
-            throw new InvalidIdentifierException("Not a valid Hero ID");
-        }
-    }
-
     //*******************************
     //BoardManager methods
     //*******************************

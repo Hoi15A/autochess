@@ -21,10 +21,10 @@ public class App {
             Game game = new Game(Config.HeroType.ALIEN, Config.HeroType.ENGINEER);
 
             game.buyMinion(1, Config.MinionType.RANGER);
-            game.placeMinionOnBoard(1,0, 2,3);
+            game.placeMinionOnBoard(1,0, new PositionVector(2,3));
 
             game.buyMinion(2, Config.MinionType.TANK);
-            game.placeMinionOnBoard(2,1, 6,3);
+            game.placeMinionOnBoard(2,1, new PositionVector(6,3));
 
             System.out.println(game.getInfoAllMinionsAsString(2));
 

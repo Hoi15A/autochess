@@ -4,6 +4,7 @@ import ch.zhaw.pm2.autochess.Hero.HeroAlien;
 import ch.zhaw.pm2.autochess.Hero.HeroBase;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
@@ -26,11 +27,11 @@ public class HeroTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        HeroBase.resetCounter();
+        HeroBase.resetIdCounter();
     }
 
     @Test
-    void testInitHero() throws IllegalHeroValueException {
+    void testInitHero() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien();
         assertEquals(0, hero.getId());
         hero = new HeroAlien();
@@ -38,7 +39,7 @@ public class HeroTest {
     }
 
     @Test
-    void testIncreaseHealthValidAmount() throws IllegalHeroValueException {
+    void testIncreaseHealthValidAmount() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(100, 50);
         assertEquals(100, hero.getHealth());
 
@@ -51,7 +52,7 @@ public class HeroTest {
     }
 
     @Test
-    void testIncreaseHealthInvalidAmount() throws IllegalHeroValueException {
+    void testIncreaseHealthInvalidAmount() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getHealth());
 
@@ -63,7 +64,7 @@ public class HeroTest {
     }
 
     @Test
-    void testDecreaseHealthValidAmount() throws IllegalHeroValueException {
+    void testDecreaseHealthValidAmount() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getHealth());
 
@@ -75,7 +76,7 @@ public class HeroTest {
     }
 
     @Test
-    void testDecreaseHealthInvalidAmount() throws IllegalHeroValueException {
+    void testDecreaseHealthInvalidAmount() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getHealth());
 
@@ -87,7 +88,7 @@ public class HeroTest {
     }
 
     @Test
-    void testIncreaseFundsValidAmount() throws IllegalHeroValueException {
+    void testIncreaseFundsValidAmount() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
@@ -99,7 +100,7 @@ public class HeroTest {
     }
 
     @Test
-    void testIncreaseFundsInvalidAmount() throws IllegalHeroValueException {
+    void testIncreaseFundsInvalidAmount() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
@@ -111,7 +112,7 @@ public class HeroTest {
     }
 
     @Test
-    void testDecreaseFundsValidAmount() throws IllegalHeroValueException, IllegalFundsStateException {
+    void testDecreaseFundsValidAmount() throws IllegalHeroValueException, IllegalFundsStateException, InvalidHeroTypeException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
@@ -123,7 +124,7 @@ public class HeroTest {
     }
 
     @Test
-    void testDecreaseFundsInvalidAmount() throws IllegalHeroValueException {
+    void testDecreaseFundsInvalidAmount() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(50, 50);
         assertEquals(50, hero.getFunds());
 
@@ -135,7 +136,7 @@ public class HeroTest {
     }
 
     @Test
-    void testBuyMinionFundsAvailable() throws MinionException, IllegalFundsStateException, IllegalHeroValueException {
+    void testBuyMinionFundsAvailable() throws MinionException, IllegalFundsStateException, IllegalHeroValueException, InvalidHeroTypeException {
         //todo: can't mock enum!? when(getPrice())
 
         hero = new HeroAlien(100,100);
@@ -148,7 +149,7 @@ public class HeroTest {
     }
 
     @Test
-    void testBuyMinionFundsNotAvailable() throws IllegalHeroValueException {
+    void testBuyMinionFundsNotAvailable() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(100, 0);
         assertEquals(0, hero.getFunds());
 
@@ -157,7 +158,7 @@ public class HeroTest {
     }
 
     @Test
-    void testBuyMinionNullMinionTyp() throws IllegalHeroValueException {
+    void testBuyMinionNullMinionTyp() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(100, 100);
         assertEquals(100, hero.getFunds());
 
@@ -166,7 +167,7 @@ public class HeroTest {
     }
 
     @Test
-    void testSellMinionValidMinionId() throws IllegalHeroValueException, InvalidMinionIDException {
+    void testSellMinionValidMinionId() throws IllegalHeroValueException, InvalidMinionIDException, InvalidHeroTypeException {
         hero = new HeroAlien(100, 0);
         hero.getMinionList().add(minionOne);
         assertEquals(1, hero.getMinionList().size());
@@ -182,7 +183,7 @@ public class HeroTest {
     }
 
     @Test
-    void testSellMinionInvalidMinionId() throws IllegalHeroValueException {
+    void testSellMinionInvalidMinionId() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(100, 0);
         hero.getMinionList().add(minionOne);
         assertEquals(1, hero.getMinionList().size());
@@ -203,7 +204,7 @@ public class HeroTest {
      */
 
     @Test
-    void testGetAllMinionIds() throws IllegalHeroValueException {
+    void testGetAllMinionIds() throws IllegalHeroValueException, InvalidHeroTypeException {
         hero = new HeroAlien(100, 100);
         hero.getMinionList().add(minionOne);
         hero.getMinionList().add(minionTwo);

@@ -2,12 +2,13 @@ package ch.zhaw.pm2.autochess.Hero;
 
 import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 
 public class HeroSpaceMarine extends HeroBase {
 
-    public HeroSpaceMarine() throws IllegalHeroValueException {
+    public HeroSpaceMarine() throws IllegalHeroValueException, InvalidHeroTypeException {
         super(Config.MARINE_HEALTH, Config.MARINE_START_FUNDS, Config.HeroType.SPACE_MARINE);
     }
 
