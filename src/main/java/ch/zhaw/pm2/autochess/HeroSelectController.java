@@ -2,7 +2,9 @@ package ch.zhaw.pm2.autochess;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -10,29 +12,55 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HeroSelectController implements Initializable {
-    private VBox hero1Box;
-    private VBox hero2Box;
-    private VBox hero3Box;
+    private Text player1;
+    private Text player2;
 
-    private ImageView hero1ImgV;
-    private ImageView hero2ImgV;
-    private ImageView hero3ImgV;
+    private VBox player1Hero1Box;
+    private VBox player1Hero2Box;
+    private VBox player1Hero3Box;
 
-    private Image hero1Img;
-    private Image hero2Img;
-    private Image hero3Img;
+    private VBox player2Hero1Box;
+    private VBox player2Hero2Box;
+    private VBox player2Hero3Box;
 
-    private RadioButton hero1Button;
-    private RadioButton hero2Button;
-    private RadioButton hero3Button;
+    private ImageView player1Hero1ImgV;
+    private ImageView player1Hero2ImgV;
+    private ImageView player1Hero3ImgV;
 
-    private ToggleGroup buttonGroup;
+    private ImageView player2Hero1ImgV;
+    private ImageView player2Hero2ImgV;
+    private ImageView player2Hero3ImgV;
+
+    private Image player1Hero1Img;
+    private Image player1Hero2Img;
+    private Image player1Hero3Img;
+
+    private Image player2Hero1Img;
+    private Image player2Hero2Img;
+    private Image player2Hero3Img;
+
+    private RadioButton player1Hero1Button;
+    private RadioButton player1Hero2Button;
+    private RadioButton player1Hero3Button;
+
+    private RadioButton player2Hero1Button;
+    private RadioButton player2Hero2Button;
+    private RadioButton player2Hero3Button;
+
+    private ToggleGroup player1ButtonGroup;
+    private ToggleGroup player2ButtonGroup;
 
     private Button nextButton;
 
@@ -43,14 +71,28 @@ public class HeroSelectController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeHeroImages();
         initializeHeroButtons();
-        initializeHeroBoxes();
+        initializePlayers();
+        initializePlayer();
 
+        //player1 title
+        mainGrid.add(player1,1,0);
+
+        //player1 images and buttons
+        mainGrid.add(player1Hero1Box,0,1);
+        mainGrid.add(player1Hero2Box,1,1);
+        mainGrid.add(player1Hero3Box,2,1);
+
+        //player2 title
+        mainGrid.add(player2,1,2);
+
+        //player2 images and buttons
+        mainGrid.add(player2Hero1Box,0,3);
+        mainGrid.add(player2Hero2Box,1,3);
+        mainGrid.add(player2Hero3Box,2,3);
+
+       //next button
         nextButton = new Button("next");
-
-        mainGrid.add(hero1Box,0,0);
-        mainGrid.add(hero2Box,1,0);
-        mainGrid.add(hero3Box,2,0);
-        mainGrid.add(nextButton,2,1);
+        mainGrid.add(nextButton,2,4);
 
 
         //nextbutton listener
@@ -58,53 +100,119 @@ public class HeroSelectController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 //check player and decide if player 2 has to choose or shop will display
+                loadShopWindow();
             }
         });
+    }
 
+    private void loadShopWindow(){
+        Stage heroSelectStage = new Stage();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/ShopWindow.fxml"));
+            Pane shopPane = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("SMAC");
+            stage.setScene(new Scene(shopPane, 800, 600));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Failed to create new Window.", e);
+        }
+    }
+
+    private void initializePlayers(){
+        player1 = new Text("Player 1");
+        player2 = new Text("Player 2");
 
     }
 
     private void initializeHeroImages(){
-        hero1Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
-        hero1ImgV = new ImageView(hero1Img);
-        hero1ImgV.setFitWidth(100);
-        hero1ImgV.setFitHeight(100);
+        //player 1
+        player1Hero1Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        player1Hero1ImgV = new ImageView(player1Hero1Img);
+        player1Hero1ImgV.setFitWidth(100);
+        player1Hero1ImgV.setFitHeight(100);
 
-        hero2Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
-        hero2ImgV = new ImageView(hero2Img);
-        hero2ImgV.setFitWidth(100);
-        hero2ImgV.setFitHeight(100);
+        player1Hero2Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        player1Hero2ImgV = new ImageView(player1Hero2Img);
+        player1Hero2ImgV.setFitWidth(100);
+        player1Hero2ImgV.setFitHeight(100);
 
-        hero3Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
-        hero3ImgV = new ImageView(hero3Img);
-        hero3ImgV.setFitWidth(100);
-        hero3ImgV.setFitHeight(100);
+        player1Hero3Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        player1Hero3ImgV = new ImageView(player1Hero3Img);
+        player1Hero3ImgV.setFitWidth(100);
+        player1Hero3ImgV.setFitHeight(100);
+
+        //player 2
+        player2Hero1Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        player2Hero1ImgV = new ImageView(player2Hero1Img);
+        player2Hero1ImgV.setFitWidth(100);
+        player2Hero1ImgV.setFitHeight(100);
+
+        player2Hero2Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        player2Hero2ImgV = new ImageView(player2Hero2Img);
+        player2Hero2ImgV.setFitWidth(100);
+        player2Hero2ImgV.setFitHeight(100);
+
+        player2Hero3Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        player2Hero3ImgV = new ImageView(player2Hero3Img);
+        player2Hero3ImgV.setFitWidth(100);
+        player2Hero3ImgV.setFitHeight(100);
     }
 
     private void initializeHeroButtons() {
-        buttonGroup = new ToggleGroup();
+        //player 1
+        player1ButtonGroup = new ToggleGroup();
 
-        hero1Button = new RadioButton();
-        hero2Button = new RadioButton();
-        hero3Button = new RadioButton();
+        player1Hero1Button = new RadioButton();
+        player1Hero2Button = new RadioButton();
+        player1Hero3Button = new RadioButton();
 
-        hero1Button.setToggleGroup(buttonGroup);
-        hero2Button.setToggleGroup(buttonGroup);
-        hero3Button.setToggleGroup(buttonGroup);
+        player1Hero1Button.setToggleGroup(player1ButtonGroup);
+        player1Hero2Button.setToggleGroup(player1ButtonGroup);
+        player1Hero3Button.setToggleGroup(player1ButtonGroup);
+
+        //player 2
+        player2ButtonGroup = new ToggleGroup();
+
+        player2Hero1Button = new RadioButton();
+        player2Hero2Button = new RadioButton();
+        player2Hero3Button = new RadioButton();
+
+        player2Hero1Button.setToggleGroup(player2ButtonGroup);
+        player2Hero2Button.setToggleGroup(player2ButtonGroup);
+        player2Hero3Button.setToggleGroup(player2ButtonGroup);
     }
 
-    private void initializeHeroBoxes() {
-        hero1Box = new VBox();
-        hero2Box = new VBox();
-        hero3Box = new VBox();
+    private void initializePlayer() {
+        //player 1
+        player1Hero1Box = new VBox();
+        player1Hero2Box = new VBox();
+        player1Hero3Box = new VBox();
 
-        hero1Box.getChildren().add(hero1ImgV);
-        hero1Box.getChildren().add(hero1Button);
+        player1Hero1Box.getChildren().add(player1Hero1ImgV);
+        player1Hero1Box.getChildren().add(player1Hero1Button);
 
-        hero2Box.getChildren().add(hero2ImgV);
-        hero2Box.getChildren().add(hero2Button);
+        player1Hero2Box.getChildren().add(player1Hero2ImgV);
+        player1Hero2Box.getChildren().add(player1Hero2Button);
 
-        hero3Box.getChildren().add(hero3ImgV);
-        hero3Box.getChildren().add(hero3Button);
+        player1Hero3Box.getChildren().add(player1Hero3ImgV);
+        player1Hero3Box.getChildren().add(player1Hero3Button);
+
+        //player 2
+        player2Hero1Box = new VBox();
+        player2Hero2Box = new VBox();
+        player2Hero3Box = new VBox();
+
+        player2Hero1Box.getChildren().add(player2Hero1ImgV);
+        player2Hero1Box.getChildren().add(player2Hero1Button);
+
+        player2Hero2Box.getChildren().add(player2Hero2ImgV);
+        player2Hero2Box.getChildren().add(player2Hero2Button);
+
+        player2Hero3Box.getChildren().add(player2Hero3ImgV);
+        player2Hero3Box.getChildren().add(player2Hero3Button);
     }
 }

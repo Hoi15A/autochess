@@ -8,10 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -81,11 +79,11 @@ public class MainController implements Initializable {
         Stage heroSelectStage = new Stage();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/HeroSelectWindow.fxml"));
-            Pane shopPane = loader.load();
+            Pane heroSelectPane = loader.load();
 
             Stage stage = new Stage();
             stage.setTitle("SMAC");
-            stage.setScene(new Scene(shopPane, 800, 600));
+            stage.setScene(new Scene(heroSelectPane, 800, 600));
             stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
