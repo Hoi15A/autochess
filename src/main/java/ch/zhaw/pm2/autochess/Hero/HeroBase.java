@@ -265,4 +265,20 @@ public abstract class HeroBase {
     public ArrayList<MinionBase> getMinionList() {
         return minionList;
     }
+
+    public String getMinionInfoAsString(int minionId) throws InvalidMinionIDException {
+        if(isValidId(minionId)) {
+            return getMinion(minionId).getInfoAsString();
+        } else {
+            throw new InvalidMinionIDException("Not a valid Minion ID");
+        }
+    }
+
+    public String getAllInfoAsString() {
+        StringBuilder sb = new StringBuilder();
+        for(MinionBase minion : minionList) {
+            sb.append(minion.getInfoAsString() + "\n");
+        }
+        return sb.toString();
+    }
 }

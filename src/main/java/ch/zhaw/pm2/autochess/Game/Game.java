@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class Game {
-    private static int NO_WINNER = -1;
+    private static final int NO_WINNER = -1;
 
-    private ArrayList<HeroBase> heroArrayList;
+    private final ArrayList<HeroBase> heroArrayList;
     private BoardManager boardManager;
 
     public Game(Config.HeroType heroTypePlayer1, Config.HeroType heroTypePlayer2) throws IllegalArgumentException, IllegalGameStateException, InvalidTypeException {
@@ -160,6 +160,26 @@ public class Game {
         }
     }
 
+    public String getInfoAllMinionsAsString(int heroId) throws InvalidIdentifierException {
+        if(isValidId(heroId)) {
+            return getHero(heroId).getAllInfoAsString();
+        }else {
+            throw new InvalidIdentifierException("Not a valid Hero ID");
+        }
+    }
+
+    public String getMinionInfoAsString(int heroId, int minionId) throws InvalidIdentifierException {
+        if(isValidId(heroId)) {
+            try {
+                return getHero(heroId).getMinionInfoAsString(minionId);
+            } catch (InvalidMinionIDException e) {
+               throw new InvalidIdentifierException(e.getMessage());
+            }
+        }else {
+            throw new InvalidIdentifierException("Not a valid Hero ID");
+        }
+    }
+
     public Set<Integer> getAllMinionIds(int heroId) throws InvalidIdentifierException{
         if(isValidId(heroId)) {
             return getHero(heroId).getAllMinionIds();
@@ -168,12 +188,12 @@ public class Game {
         }
     }
 
-    public Config.MinionType getMinionType(int heroId, int minionId) throws InvalidTypeException, InvalidIdentifierException {
+    public Config.MinionType getMinionType(int heroId, int minionId) throws InvalidIdentifierException {
         if(isValidId(heroId)) {
             try {
                 return getHero(heroId).getMinionType(minionId);
             }catch (InvalidMinionIDException e) {
-                throw new InvalidTypeException(e.getMessage());
+                throw new InvalidIdentifierException(e.getMessage());
             }
         }else {
             throw new InvalidIdentifierException("Not a valid Hero ID");

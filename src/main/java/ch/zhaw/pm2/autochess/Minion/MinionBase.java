@@ -257,4 +257,9 @@ public abstract class MinionBase {
     public PositionVector attack(MinionBase[][] board, PositionVector currentPos) {
         return strategy.attack(board, currentPos, getAttackRange());
     }
+
+    public String getInfoAsString() {
+        String info = "-ID: " + minionId + ", type:" + type + ", Lvl: " + level + ", HP: " + health;
+        return info;
+    }
 }

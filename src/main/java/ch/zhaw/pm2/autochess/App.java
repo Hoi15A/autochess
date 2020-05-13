@@ -26,6 +26,8 @@ public class App {
             game.buyMinion(2, Config.MinionType.TANK);
             game.placeMinionOnBoard(2,1, 6,3);
 
+            System.out.println(game.getInfoAllMinionsAsString(2));
+
             System.out.println(" ");
             game.printBoard();
             System.out.println(" ");
