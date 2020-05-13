@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -99,7 +100,8 @@ public class HeroSelectController implements Initializable {
         nextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //check player and decide if player 2 has to choose or shop will display
+                Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+                currentStage.close();
                 loadShopWindow();
             }
         });

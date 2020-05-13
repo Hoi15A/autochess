@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -52,6 +53,8 @@ public class ShopController implements Initializable {
         nextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+                currentStage.close();
                 loadGameWindow();
             }
         });
@@ -125,6 +128,5 @@ public class ShopController implements Initializable {
             }
         });
         shopMainGrid.add(lv,0,1);
-
     }
 }

@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -11,10 +12,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +50,8 @@ public class MainController implements Initializable {
         menuNewGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+                currentStage.close();
                 System.out.println("new game");
                 loadHeroSelectWindow();
 
@@ -76,16 +81,15 @@ public class MainController implements Initializable {
     }
 
     private void loadHeroSelectWindow(){
-        Stage heroSelectStage = new Stage();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/HeroSelectWindow.fxml"));
             Pane heroSelectPane = loader.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("SMAC");
-            stage.setScene(new Scene(heroSelectPane, 800, 600));
-            stage.setResizable(false);
-            stage.show();
+            Stage heroSelectStage = new Stage();
+            heroSelectStage.setTitle("SMAC");
+            heroSelectStage.setScene(new Scene(heroSelectPane, 800, 600));
+            heroSelectStage.setResizable(false);
+            heroSelectStage.show();
         } catch (IOException e) {
             Logger logger = Logger.getLogger(getClass().getName());
             logger.log(Level.SEVERE, "Failed to create new Window.", e);
