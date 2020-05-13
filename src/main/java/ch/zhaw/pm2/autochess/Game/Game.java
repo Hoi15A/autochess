@@ -34,10 +34,6 @@ public class Game {
 
     }
 
-    public void printBoard() {
-        boardManager.printBoard();
-    }
-
     //*******************************
     //Hero methods
     //*******************************
@@ -103,6 +99,22 @@ public class Game {
         }
     }
 
+    public int getHeroFunds(int heroId) throws InvalidIdentifierException {
+        if(isValidId(heroId)) {
+            return getHero(heroId).getFunds();
+        }else {
+            throw new InvalidIdentifierException("Not a valid Hero ID");
+        }
+    }
+
+    public boolean getHeroAbilityStatus(int heroId) throws InvalidIdentifierException {
+        if(isValidId(heroId)) {
+            return getHero(heroId).isAbilityAvailable();
+        }else {
+            throw new InvalidIdentifierException("Not a valid Hero ID");
+        }
+    }
+
     //***********************
     //Minion methods
     //***********************
@@ -139,22 +151,9 @@ public class Game {
         }
     }
 
-    public void placeMinionOnBoard(int heroId, int minionId, int xPos, int yPos) throws InvalidIdentifierException, InvalidMinionIDException, InvalidPositionException {
+    public void placeMinionOnBoard(int heroId, int minionId, PositionVector pos) throws InvalidIdentifierException, InvalidMinionIDException, InvalidPositionException {
         if(isValidId(heroId)) {
-            boardManager.setMinionOnBoard(getHero(heroId).getMinion(minionId), new PositionVector(xPos, yPos));
-        }else {
-            throw new InvalidIdentifierException("Not a valid Hero ID");
-        }
-    }
-
-    public void removeMinionFromBoard(int xPos, int yPos) {
-        //todo: BoardManager: find minion at x,y and remove from board
-    }
-
-    public int getMinionPos(int heroId, int minionId) throws InvalidIdentifierException{
-        if(isValidId(heroId)) {
-            //todo: BoardManager: find minion on board and return pos
-            return 0;
+            boardManager.setMinionOnBoard(getHero(heroId).getMinion(minionId), pos);
         }else {
             throw new InvalidIdentifierException("Not a valid Hero ID");
         }
@@ -237,8 +236,28 @@ public class Game {
     }
 
     //*******************************
-    //Battle methods
+    //BoardManager methods
     //*******************************
+
+    public void printBoard() {
+        boardManager.printBoard();
+    }
+
+    public void removeMinionFromBoard(int minionId) throws InvalidIdentifierException {
+        try {
+            boardManager.removeMinionFromBoard(minionId);
+        } catch (NoMinionFoundException e) {
+            throw new InvalidIdentifierException(e.getMessage());
+        }
+    }
+
+    public PositionVector getMinionPos(int minionId) throws InvalidIdentifierException{
+        try {
+            return boardManager.getMinionPosition(minionId);
+        } catch (NoMinionFoundException e) {
+            throw new InvalidIdentifierException(e.getMessage());
+        }
+    }
 
     public void doBattle() throws IllegalGameStateException {
         try {
@@ -258,7 +277,11 @@ public class Game {
         }
     }
 
-    public ArrayList<String> getBattleLog() {
-        return null;
+    public void clearBoard() {
+        boardManager.clearBoard();
+    }
+
+    public void getBattleLog() {
+
     }
 }

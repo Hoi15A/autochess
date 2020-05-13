@@ -15,11 +15,16 @@ public class BoardManager {
 
     private MinionBase[][] boardArray2d = new MinionBase[Config.BOARD_HEIGHT][Config.BOARD_WIDTH];
 
-    public BoardManager() {
-    }
-
     public MinionBase[][] getBoardArray2d() {
         return boardArray2d;
+    }
+
+    public void clearBoard() {
+        for(int i = 0; i < boardArray2d.length; i++) {
+            for(int j = 0; j < boardArray2d.length; j++) {
+                boardArray2d[i][j] = null;
+            }
+        }
     }
 
     public void setMinionOnBoard(MinionBase minion, PositionVector pos) throws InvalidPositionException {
