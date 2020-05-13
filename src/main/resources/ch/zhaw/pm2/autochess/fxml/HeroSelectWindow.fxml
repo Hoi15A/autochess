@@ -5,7 +5,7 @@
 
 <GridPane xmlns:fx="http://javafx.com/fxml"
           fx:controller="ch.zhaw.pm2.autochess.HeroSelectController" alignment="center"
-          hgap="10" vgap="10" fx:id="mainGrid" gridLinesVisible="false">
+          hgap="10" vgap="10" fx:id="mainGrid" gridLinesVisible="true">
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="200" minWidth="200" prefWidth="200" />
