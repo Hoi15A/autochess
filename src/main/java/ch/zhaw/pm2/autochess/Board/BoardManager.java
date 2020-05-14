@@ -1,20 +1,18 @@
 package ch.zhaw.pm2.autochess.Board;
 
 import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
-import ch.zhaw.pm2.autochess.Board.exceptions.NoMinionFoundException;
+import ch.zhaw.pm2.autochess.Board.exceptions.MinionNotOnBoardException;
 import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.PositionVector;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class BoardManager {
 
     private MinionBase[][] boardArray2d = new MinionBase[Config.BOARD_HEIGHT][Config.BOARD_WIDTH];
 
+    //ONLY FOR TESTING
     public MinionBase[][] getBoardArray2d() {
         return boardArray2d;
     }
@@ -27,59 +25,63 @@ public class BoardManager {
         }
     }
 
+    private MinionBase getContentFromPosition(PositionVector position) throws InvalidPositionException {
+        validatePosOnBoard(position);
+        return boardArray2d[position.getY()][position.getX()];
+    }
+
+    private void validatePosOnBoard(PositionVector position) throws InvalidPositionException {
+        if(position == null || position.getX() < 0 || position.getY() < 0 || position.getX() >= Config.BOARD_WIDTH || position.getY() >= Config.BOARD_HEIGHT) {
+            throw new InvalidPositionException("Invalid position: " + position + ". Valid between: " + Config.BOARD_WIDTH + " and " + Config.BOARD_HEIGHT);
+        }
+    }
+
+    private void validatePosEmpty(PositionVector position) throws InvalidPositionException {
+        validatePosOnBoard(position);
+        MinionBase minion = getContentFromPosition(position);
+        if(Objects.nonNull(minion)) {
+            throw new InvalidPositionException("Invalid position: " + position + ". Occupied by: " + minion);
+        }
+    }
+
     public void setMinionOnBoard(MinionBase minion, PositionVector pos) throws InvalidPositionException {
-        if(isValidPosition(pos) && getContentFromPosition(pos) == null && isMinionNotOnBoard(minion.getId())) {
-            boardArray2d[pos.getY()][pos.getX()] = minion;
-        } else {
-            throw new InvalidPositionException("Not a valid placement. Off board, occupied or minion already on board");
-        }
-    }
-
-    private MinionBase getContentFromPosition(PositionVector pos) {
-        return boardArray2d[pos.getY()][pos.getX()];
-    }
-
-    private boolean isValidPosition(PositionVector pos) {
-        if(pos != null) {
-            if(pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < Config.BOARD_WIDTH && pos.getY() < Config.BOARD_HEIGHT) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isMinionNotOnBoard(int minionId) {
+        validatePosOnBoard(pos);
+        validatePosEmpty(pos);
         try {
-            getMinionPosition(minionId);
-        } catch (NoMinionFoundException e) {
-            return true;
+            getMinionPosition(minion.getId());
+            throw new InvalidPositionException("Invalid placement (MinionID:" + minion.getId() + "). Already placed.");
+        }catch (MinionNotOnBoardException e) {
+            boardArray2d[pos.getY()][pos.getX()] = minion;
         }
-        return false;
     }
 
-    public void removeMinionFromBoard(int minionId) throws NoMinionFoundException {
+    public void removeMinionFromBoard(int minionId) throws MinionNotOnBoardException {
         PositionVector pos = getMinionPosition(minionId);
         boardArray2d[pos.getY()][pos.getX()] = null;
     }
 
-    public PositionVector getMinionPosition(int minionId) throws NoMinionFoundException {
+    public PositionVector getMinionPosition(int minionId) throws MinionNotOnBoardException {
+        PositionVector position = null;
         for(int i = 0; i < boardArray2d.length; i++) {
             for(int j = 0; j < boardArray2d.length; j++) {
                 MinionBase minion = boardArray2d[i][j];
-                if(minion != null && minion.getId() == minionId) {
-                    return new PositionVector(j, i);
+                if(Objects.nonNull(minion) && minion.getId() == minionId) {
+                    position = new PositionVector(j, i);
                 }
             }
         }
-        throw new NoMinionFoundException("No minion on board has that ID");
+        if(Objects.isNull(position)) {
+            throw new MinionNotOnBoardException("Invalid minion ID: " + minionId + ". Matches no minion on board");
+        }
+        return position;
     }
 
-    public ArrayList<MinionBase> getAllMinionsFromBoard() {
+    public ArrayList<MinionBase> getAllMinionsOnBoard() {
         ArrayList<MinionBase> listActiveMinions = new ArrayList<>();
         for(int i = 0; i < boardArray2d.length; i++) {
             for(int j = 0; j < boardArray2d.length; j++) {
                 MinionBase minion = boardArray2d[i][j];
-                if(minion != null) {
+                if(Objects.nonNull(minion)) {
                     listActiveMinions.add(minion);
                 }
             }
@@ -92,7 +94,7 @@ public class BoardManager {
         for(int i = 0; i < boardArray2d.length; i++) {
             for(int j = 0; j < boardArray2d.length; j++) {
                 MinionBase minion = boardArray2d[i][j];
-                if(minion != null && minion.getHeroId() == heroId) {
+                if(Objects.nonNull(minion) && minion.getHeroId() == heroId) {
                     listActiveMinions.add(minion);
                 }
             }
@@ -101,16 +103,27 @@ public class BoardManager {
     }
 
     public int getNumberOfMinionsPerHero(int heroId) {
-        int counter = 0;
-        for(MinionBase minion : getSpecHeroMinionsFromBoard(heroId)) {
-            counter++;
-        }
-        return counter;
+        return getSpecHeroMinionsFromBoard(heroId).size();
     }
 
-    public void doBattle() throws NoMinionFoundException, InvalidPositionException {
-        ArrayList<MinionBase> activeMinions = getAllMinionsFromBoard();
-        //todo: sort by agility;
+    private boolean checkEachHeroActiveMinions(ArrayList<MinionBase> activeMinions) {
+        //todo: maybe check with getNumberOfMinionsOfHero (Would need to know hero Id for that)
+        Set<Integer> heroSet = new HashSet<>();
+        for(MinionBase minion : activeMinions) {
+            heroSet.add(minion.getHeroId());
+        }
+        boolean isGreaterOneHero = false;
+        if(heroSet.size() > 1) {
+            isGreaterOneHero = true;
+        }
+        return isGreaterOneHero;
+    }
+
+    public void doBattle() throws MinionNotOnBoardException, InvalidPositionException {
+        ArrayList<MinionBase> activeMinions = getAllMinionsOnBoard();
+        //todo: sort by agility
+        //todo: implement battleLog
+        //todo: replace prints with battleLog
         
         System.out.println("All active minions");
         for(MinionBase minion : activeMinions) {
@@ -119,14 +132,14 @@ public class BoardManager {
         System.out.println(" ");
 
         int loopCounter = 0;
-        while(checkEachHeroActiveMinions(activeMinions) && loopCounter < Config.MAX_BATTLE_LOOPS){
+        while(checkEachHeroActiveMinions(activeMinions) && loopCounter <= Config.MAX_BATTLE_LOOPS){
             for(Iterator<MinionBase> it = activeMinions.iterator(); it.hasNext(); ) {
                 MinionBase minion = it.next();
                 if(minion.getHealth() > 0) {
                     System.out.print("Current : ");
                     minion.printInfo();
-                    moveMinion(minion);
-                    attackMinion(minion);
+                    minionDoMove(minion);
+                    minionDoAttack(minion);
                 } else {
                     it.remove();
                 }
@@ -135,31 +148,35 @@ public class BoardManager {
         }
     }
 
-    private void moveMinion(MinionBase minion) throws NoMinionFoundException, InvalidPositionException {
-        //todo: check valid move? i.e still on board? or assumption move is correct?
+    private void minionDoMove(MinionBase minion) throws MinionNotOnBoardException, InvalidPositionException {
+        //todo: replace prints with battleLog
         PositionVector currentPos = getMinionPosition(minion.getId());
-        PositionVector moveVector = minion.move(boardArray2d, currentPos);
-        if(moveVector != null) {
-            if(isValidPosition(moveVector)) {
-                removeMinionFromBoard(minion.getId());
-                PositionVector newPos = PositionVector.add(currentPos, moveVector);
-                setMinionOnBoard(minion, newPos);
-                System.out.println("-- MOVED: minion " + minion.getId() + " " + "From: " + currentPos + " To: " + newPos);
-            }else {
-                throw new InvalidPositionException("Not a valid position");
-            }
-        } else {
+        PositionVector movePosition = minion.move(boardArray2d, currentPos);
+        if(movePosition == null) {
             System.out.println("-- NO_MOVE: minion " + minion.getId() + " " + "Pos" + currentPos);
+        } else {
+            validatePosOnBoard(movePosition);
+            validatePosEmpty(movePosition);
+            removeMinionFromBoard(minion.getId());
+            PositionVector newPos = PositionVector.add(currentPos, movePosition);
+            setMinionOnBoard(minion, newPos);
+            System.out.println("-- MOVED: minion " + minion.getId() + " " + "From: " + currentPos + " To: " + newPos);
         }
     }
 
-    private void attackMinion(MinionBase attacker) throws NoMinionFoundException, InvalidPositionException {
-        //todo: check valid attack vector? i.e still on board? or assumption move is correct?
+    private void minionDoAttack(MinionBase attacker) throws MinionNotOnBoardException, InvalidPositionException {
+        //todo: replace prints with battleLog
         PositionVector currentPos = getMinionPosition(attacker.getId());
-        PositionVector attackVector = attacker.attack(boardArray2d, currentPos);
-        if (attackVector != null) {
-            if (isValidPosition(attackVector) && getContentFromPosition(attackVector) != null) {
-                MinionBase defender = getContentFromPosition(attackVector);
+        PositionVector attackPosition = attacker.attack(boardArray2d, currentPos);
+
+        if (attackPosition == null) {
+            System.out.println("-- NO_ATTACK: minion " + attacker.getId() + " " + "Pos" + getMinionPosition(attacker.getId()));
+        } else {
+            validatePosOnBoard(attackPosition);
+            if(getContentFromPosition(attackPosition) == null) {
+                throw new InvalidPositionException("Not a valid position on board or no defender found");
+            }else {
+                MinionBase defender = getContentFromPosition(attackPosition);
                 int damage = (defender.getDefense() - attacker.getAttack());
                 defender.changeHealth(damage);
                 System.out.println("-- ATTACK: attacker " + attacker.getId() + getMinionPosition(attacker.getId()));
@@ -169,26 +186,11 @@ public class BoardManager {
                     removeMinionFromBoard(defender.getId());
                     System.out.println("-- DEATH: minion " + attacker.getId());
                 }
-            } else {
-                throw new InvalidPositionException("Not a valid position on board or no defender found");
             }
-        }else {
-            System.out.println("-- NO_ATTACK: minion " + attacker.getId() + " " + "Pos" + getMinionPosition(attacker.getId()));
         }
     }
 
-    private boolean checkEachHeroActiveMinions(ArrayList<MinionBase> activeMinions) {
-        Set<Integer> heroSet = new HashSet<>();
-        for(MinionBase minion : activeMinions) {
-            heroSet.add(minion.getHeroId());
-        }
-        if(heroSet.size() > 1) {
-            return true;
-        }
-        return false;
-    }
-
-
+    //ONLY NEEDED WITHOUT GUI
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -208,6 +210,7 @@ public class BoardManager {
         return sb.toString();
     }
 
+    //ONLY NEED WITHOUT GUI
     public void printBoard() {
         System.out.print(toString());
     }

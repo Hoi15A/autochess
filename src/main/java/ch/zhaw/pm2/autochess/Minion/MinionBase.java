@@ -65,7 +65,7 @@ public abstract class MinionBase {
     public MinionBase(Config.MinionType type, MoveStrategy strategy, int price, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws MinionException {
         if (type == null) throw new InvalidMinionTypeException("MinionType may not be null");
         if (strategy == null) throw new InvalidMinionAttributeException("Strategy may not be null");
-        if (health > Config.MAX_MINION_HEALTH || health <= Config.MIN_MINION_HEALTH) throw new InvalidMinionAttributeException("Invalid health parameter");
+        if (health > Config.MAX_MINION_HEALTH || health < Config.MIN_MINION_HEALTH) throw new InvalidMinionAttributeException("Invalid health parameter");
         if (attack > Config.MAX_MINION_ATTACK || attack < Config.MIN_MINION_ATTACK) throw new InvalidMinionAttributeException("Invalid attack parameter");
         if (defense > Config.MAX_MINION_DEFENSE || defense < Config.MIN_MINION_DEFENSE) throw new InvalidMinionAttributeException("Invalid defence parameter");
         if (movementRange > Config.MAX_MINION_MOVEMENT_RANGE || movementRange < Config.MIN_MINION_MOVEMENT_RANGE) throw new InvalidMinionAttributeException("Invalid movement range parameter");

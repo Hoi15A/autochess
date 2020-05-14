@@ -1,11 +1,11 @@
 package ch.zhaw.pm2.autochess.Board.exceptions;
 
-public class NoMinionFoundException extends BoardManagerException {
+public class MinionNotOnBoardException extends BoardManagerException {
     /**
      * Default constructor
      * @param message Error message
      */
-    public NoMinionFoundException(String message) {
+    public MinionNotOnBoardException(String message) {
         super(message);
     }
     /**
@@ -13,7 +13,7 @@ public class NoMinionFoundException extends BoardManagerException {
      * @param message Error message
      * @param thrown {@link Throwable}
      */
-    public NoMinionFoundException(String message, Throwable thrown) {
+    public MinionNotOnBoardException(String message, Throwable thrown) {
         super(message, thrown);
     }
 
