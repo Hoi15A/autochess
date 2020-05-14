@@ -3,23 +3,35 @@
  */
 package ch.zhaw.pm2.autochess;
 
-import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.settings.GameSettings;
+import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
+import ch.zhaw.pm2.autochess.Game.Game;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsReductionException;
 
-public class App extends GameApplication{
-	    public String getGreeting() {
-	        return "Hello world.";
-	    }
+public class App {
+    public String getGreeting() {
+        return "Hello world.";
+    }
 
-	    public static void main(String[] args) {
-	        System.out.println(new App().getGreeting());
-	        launch(args);
-	    }
+    public static void main(String[] args) throws IllegalGameStateException, IllegalFundsReductionException, InvalidPositionException {
+        System.out.println(new App().getGreeting());
 
-	@Override
-	protected void initSettings(GameSettings settings) {
-        settings.setWidth(800);
-        settings.setHeight(600);
-        settings.setTitle("SMAC");
-	}
+            Game game = new Game(Config.HeroType.ALIEN, Config.HeroType.ENGINEER);
+
+            game.buyMinion(1, Config.MinionType.RANGER);
+            game.placeMinionOnBoard(1,0, new PositionVector(2,3));
+
+            game.buyMinion(2, Config.MinionType.TANK);
+            game.placeMinionOnBoard(2,1, new PositionVector(6,3));
+
+            System.out.println(" ");
+            game.printBoard();
+            System.out.println(" ");
+
+            game.doBattle();
+
+            System.out.println(" ");
+            game.printBoard();
+            System.out.println(" ");
+    }
 }
