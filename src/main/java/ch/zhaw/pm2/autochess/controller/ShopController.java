@@ -1,4 +1,9 @@
 package ch.zhaw.pm2.autochess.controller;
+import ch.zhaw.pm2.autochess.Config;
+import ch.zhaw.pm2.autochess.Game.Game;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsReductionException;
+import com.sun.tools.javac.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -33,9 +38,20 @@ public class ShopController implements Initializable {
     private GridPane player1SellPane;
     private GridPane player2SellPane;
 
+    private ListView<String> p1MinionList;
+    private ObservableList<String> p1Items;
+
+    protected Button nextButton;
+
+    private Game game;
 
     @FXML
     private GridPane shopMainGrid;
+
+    public ShopController(Game game){
+        this.game = game;
+        nextButton = new Button("next");
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,34 +73,8 @@ public class ShopController implements Initializable {
         shopMainGrid.add(player2SellPane,1,2);
 
 
-        Button nextButton = new Button("next");
+
         shopMainGrid.add(nextButton,1,4);
-
-        nextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-                currentStage.close();
-                loadGameWindow();
-            }
-        });
-    }
-
-    private void loadGameWindow(){
-        Stage heroSelectStage = new Stage();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/GameWindow.fxml"));
-            Pane gamePane = loader.load();
-
-            Stage gamestage = new Stage();
-            gamestage.setTitle("SMAC");
-            gamestage.setScene(new Scene(gamePane, 800, 600));
-            gamestage.setResizable(false);
-            gamestage.show();
-        } catch (IOException e) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "Failed to create new Window.", e);
-        }
     }
 
     private void initializePlayerText(){
@@ -130,7 +120,7 @@ public class ShopController implements Initializable {
         p1BuyTank.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //buyMinion(int heroId, Config.MinionType minionType)
+             //   buyMinion(int heroId, Config.MinionType minionType)
                 //todo refresh list
             }
         });
@@ -206,8 +196,16 @@ public class ShopController implements Initializable {
         p2BuyRanger.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //buyMinion(int heroId, Config.MinionType minionType)
-                //todo refresh list
+              /*  try {
+                    mainApp.game.buyMinion(2, Config.MinionType.RANGER);
+                }catch(IllegalGameStateException illegalGameStateException) {
+                    System.out.println(illegalGameStateException.getStackTrace());
+                }catch (IllegalFundsReductionException illegalFundsReductionException) {
+                    System.out.println(illegalFundsReductionException.getStackTrace());
+                }*/
+             //   String c = "Ranger"+(p1MinionList.getItems().size()+1);
+               // p1MinionList.getItems().add(p1MinionList.getItems().size(), c);
+
             }
         });
     }
@@ -273,8 +271,9 @@ public class ShopController implements Initializable {
     }
 
     private void initializeMinionList(){
-        ListView<String> p1MinionList = new ListView<String>();
-        ObservableList<String> p1Items =FXCollections.observableArrayList ();
+         p1MinionList = new ListView<String>();
+         p1Items =FXCollections.observableArrayList ();
+
         /*todo
         getAllMinionIds(int heroId) -> getMinionInfoAsString(int heroId, int minionId)
         iterate over minion list and add every minion to this list

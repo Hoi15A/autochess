@@ -1,5 +1,6 @@
 package ch.zhaw.pm2.autochess.controller;
 
+import ch.zhaw.pm2.autochess.Game.Game;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,12 +26,20 @@ import java.util.logging.Logger;
 public class MainMenuController implements Initializable {
     private File stylesheet = new File(String.valueOf(getClass().getResource("css/MainMenuStylesheet.css")));
     private Text title;
-    private Text menuNewGame;
+    protected Text menuNewGame;
     private Text menuHelp;
     private VBox menuBox;
 
+
     @FXML
     GridPane mainGrid;
+
+    public MainMenuController(Game game){
+        System.out.println("yep");
+        menuNewGame = new Text("new Game");
+        menuNewGame.setId("menuNewGame");
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,18 +53,6 @@ public class MainMenuController implements Initializable {
 
         mainGrid.add(title,0,0);
         mainGrid.add(menuBox,0,1);
-
-        //new Game Listener
-        menuNewGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-                currentStage.close();
-                System.out.println("new game");
-                loadHeroSelectWindow();
-
-            }
-        });
 
         //Help listener
         menuHelp.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -73,26 +70,8 @@ public class MainMenuController implements Initializable {
     }
 
     private void initializeMenu(){
-        menuNewGame = new Text("new Game");
-        menuNewGame.setId("menuNewGame");
         menuHelp = new Text("help");
         menuHelp.setId("menuHelp");
-    }
-
-    private void loadHeroSelectWindow(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/HeroSelectWindow.fxml"));
-            Pane heroSelectPane = loader.load();
-
-            Stage heroSelectStage = new Stage();
-            heroSelectStage.setTitle("SMAC");
-            heroSelectStage.setScene(new Scene(heroSelectPane, 800, 600));
-            heroSelectStage.setResizable(false);
-            heroSelectStage.show();
-        } catch (IOException e) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "Failed to create new Window.", e);
-        }
     }
 }
 

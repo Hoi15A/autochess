@@ -1,11 +1,12 @@
 package ch.zhaw.pm2.autochess.controller;
 
+import ch.zhaw.pm2.autochess.Config;
+import ch.zhaw.pm2.autochess.Game.Game;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -13,16 +14,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class HeroSelectController implements Initializable {
     private Text player1;
@@ -63,13 +60,20 @@ public class HeroSelectController implements Initializable {
     private ToggleGroup player1ButtonGroup;
     private ToggleGroup player2ButtonGroup;
 
-    private Button nextButton;
+    protected Button nextButton;
 
-  //  private Config.HeroType heroTypePlayer1;
-  //  private Config.HeroType heroTypePlayer2;
+    private Config.HeroType heroTypePlayer1;
+    private Config.HeroType heroTypePlayer2;
+
+    private Game game;
 
     @FXML
     GridPane mainGrid;
+
+    public HeroSelectController(Game game) {
+        this.game = game;
+        nextButton = new Button("next");
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -79,96 +83,61 @@ public class HeroSelectController implements Initializable {
         initializePlayer();
 
         //player1 title
-        mainGrid.add(player1,1,0);
+        mainGrid.add(player1, 1, 0);
 
         //player1 images and buttons
-        mainGrid.add(player1Hero1Box,0,1);
-        mainGrid.add(player1Hero2Box,1,1);
-        mainGrid.add(player1Hero3Box,2,1);
+        mainGrid.add(player1Hero1Box, 0, 1);
+        mainGrid.add(player1Hero2Box, 1, 1);
+        mainGrid.add(player1Hero3Box, 2, 1);
 
         //player2 title
-        mainGrid.add(player2,1,2);
+        mainGrid.add(player2, 1, 2);
 
         //player2 images and buttons
-        mainGrid.add(player2Hero1Box,0,3);
-        mainGrid.add(player2Hero2Box,1,3);
-        mainGrid.add(player2Hero3Box,2,3);
+        mainGrid.add(player2Hero1Box, 0, 3);
+        mainGrid.add(player2Hero2Box, 1, 3);
+        mainGrid.add(player2Hero3Box, 2, 3);
 
-       //next button
+        //next button
         nextButton = new Button("next");
-        mainGrid.add(nextButton,2,4);
-
-
-        //nextbutton listener
-        nextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (player1Hero1Button.equals(player1ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player1Hero1Button");
-                    //heroTypePlayer1 = ALIEN
-                }else if (player1Hero2Button.equals(player1ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player1Hero2Button");
-                    //heroTypePlayer1 = SpSPACEMARINER
-                }else if (player1Hero3Button.equals(player1ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player1Hero3Button");
-                    //heroTypePlayer1 = ENGINEER
-                }else {
-                    System.out.println("yeet");
-                }
-
-                if (player2Hero1Button.equals(player2ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player2Hero1Button");
-                    //heroTypePlayer2 = ALIEN
-                }else if (player2Hero2Button.equals(player2ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player2Hero2Button");
-                    //heroTypePlayer2 = SpSPACEMARINER
-                }else if (player2Hero3Button.equals(player2ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player2Hero3Button");
-                    //heroTypePlayer2 = ENGINEER
-                }else {
-                    System.out.println("yeet");
-                }
-
-                try {
-                 //   Game game new Game(heroTypePlayer1, heroTypePlayer2);
-                }catch(Exception e){
-                    System.out.println("invalid");
-                    /*todo
-                    popup fals nicht geht!
-                     */
-                }
-
-                Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-                currentStage.close();
-                loadShopWindow();
-            }
-        });
+        mainGrid.add(nextButton, 2, 4);
     }
 
-    private void loadShopWindow(){
-        Stage heroSelectStage = new Stage();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/ShopWindow.fxml"));
-            Pane shopPane = loader.load();
+    public void nextButtonClicked() {
+        if (player1Hero1Button.equals(player1ButtonGroup.getSelectedToggle())) {
+            heroTypePlayer1 = Config.HeroType.ALIEN;
+        } else if (player1Hero2Button.equals(player1ButtonGroup.getSelectedToggle())) {
+            heroTypePlayer1 = Config.HeroType.SPACE_MARINE;
+        } else if (player1Hero3Button.equals(player1ButtonGroup.getSelectedToggle())) {
+            heroTypePlayer1 = Config.HeroType.ENGINEER;
+        } else {
+            System.out.println("yeet");
+        }
 
-            Stage stage = new Stage();
-            stage.setTitle("SMAC");
-            stage.setScene(new Scene(shopPane, 800, 600));
-            stage.setResizable(false);
-            stage.show();
-        } catch (IOException e) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "Failed to create new Window.", e);
+        if (player2Hero1Button.equals(player2ButtonGroup.getSelectedToggle())) {
+            heroTypePlayer2 = Config.HeroType.ALIEN;
+        } else if (player2Hero2Button.equals(player2ButtonGroup.getSelectedToggle())) {
+            heroTypePlayer2 = Config.HeroType.SPACE_MARINE;
+        } else if (player2Hero3Button.equals(player2ButtonGroup.getSelectedToggle())) {
+            heroTypePlayer2 = Config.HeroType.ENGINEER;
+        } else {
+            System.out.println("yeet");
+        }
+
+        try {
+            game = new Game(heroTypePlayer1, heroTypePlayer2);
+        } catch (IllegalGameStateException e) {
+            System.out.println(e.getStackTrace());
         }
     }
 
-    private void initializePlayers(){
+    private void initializePlayers() {
         player1 = new Text("Player 1");
         player2 = new Text("Player 2");
 
     }
 
-    private void initializeHeroImages(){
+    private void initializeHeroImages() {
         //player 1
         player1Hero1Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
         player1Hero1ImgV = new ImageView(player1Hero1Img);

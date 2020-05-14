@@ -4,7 +4,7 @@
 
 <?import javafx.scene.layout.RowConstraints?>
 <GridPane xmlns:fx="http://javafx.com/fxml"
-          fx:controller="ch.zhaw.pm2.autochess.controller.GameController" alignment="center"
+          alignment="center"
           hgap="10" vgap="10" fx:id="gameMainGrid" gridLinesVisible="true">
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
     <columnConstraints>

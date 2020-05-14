@@ -1,5 +1,6 @@
 package ch.zhaw.pm2.autochess.controller;
 
+import ch.zhaw.pm2.autochess.Game.Game;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.ColumnConstraints;
@@ -17,8 +18,14 @@ public class GameController implements Initializable {
     private static final int FIELD_COLS = 8;
     private static final int FIELD_ROWS = 8;
 
+    private Game game;
+
     @FXML
     private GridPane gameMainGrid;
+
+    public GameController(Game game) {
+        this.game = game;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
