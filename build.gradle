@@ -38,7 +38,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'ch.zhaw.pm2.autochess.MainApp'
+    mainClassName = 'ch.zhaw.pm2.autochess.controller.MainApp'
 }
 
 test {
