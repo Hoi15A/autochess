@@ -65,6 +65,9 @@ public class HeroSelectController implements Initializable {
 
     private Button nextButton;
 
+  //  private Config.HeroType heroTypePlayer1;
+  //  private Config.HeroType heroTypePlayer2;
+
     @FXML
     GridPane mainGrid;
 
@@ -100,6 +103,41 @@ public class HeroSelectController implements Initializable {
         nextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if (player1Hero1Button.equals(player1ButtonGroup.getSelectedToggle())) {
+                    System.out.println("player1Hero1Button");
+                    //heroTypePlayer1 = ALIEN
+                }else if (player1Hero2Button.equals(player1ButtonGroup.getSelectedToggle())) {
+                    System.out.println("player1Hero2Button");
+                    //heroTypePlayer1 = SpSPACEMARINER
+                }else if (player1Hero3Button.equals(player1ButtonGroup.getSelectedToggle())) {
+                    System.out.println("player1Hero3Button");
+                    //heroTypePlayer1 = ENGINEER
+                }else {
+                    System.out.println("yeet");
+                }
+
+                if (player2Hero1Button.equals(player2ButtonGroup.getSelectedToggle())) {
+                    System.out.println("player2Hero1Button");
+                    //heroTypePlayer2 = ALIEN
+                }else if (player2Hero2Button.equals(player2ButtonGroup.getSelectedToggle())) {
+                    System.out.println("player2Hero2Button");
+                    //heroTypePlayer2 = SpSPACEMARINER
+                }else if (player2Hero3Button.equals(player2ButtonGroup.getSelectedToggle())) {
+                    System.out.println("player2Hero3Button");
+                    //heroTypePlayer2 = ENGINEER
+                }else {
+                    System.out.println("yeet");
+                }
+
+                try {
+                 //   Game game new Game(heroTypePlayer1, heroTypePlayer2);
+                }catch(Exception e){
+                    System.out.println("invalid");
+                    /*todo
+                    popup fals nicht geht!
+                     */
+                }
+
                 Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
                 currentStage.close();
                 loadShopWindow();
@@ -182,6 +220,10 @@ public class HeroSelectController implements Initializable {
         player2Hero1Button = new RadioButton();
         player2Hero2Button = new RadioButton();
         player2Hero3Button = new RadioButton();
+
+        player1Hero1Button.setId("player1Hero1Button");
+        player2Hero2Button.setId("player2Hero2Button");
+        player2Hero3Button.setId("player2Hero3Button");
 
         player2Hero1Button.setToggleGroup(player2ButtonGroup);
         player2Hero2Button.setToggleGroup(player2ButtonGroup);
