@@ -1,31 +1,32 @@
 package ch.zhaw.pm2.autochess.Hero;
 
 import ch.zhaw.pm2.autochess.Config;
-import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroAttributeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 
 public class HeroAlien extends HeroBase {
 
-    public HeroAlien() throws IllegalHeroValueException, InvalidHeroTypeException {
+    public HeroAlien() throws InvalidHeroTypeException, InvalidHeroAttributeException {
         super(Config.ALIEN_HEALTH, Config.ALIEN_START_FUNDS, Config.HeroType.ALIEN);
     }
 
     //ONLY FOR TESTING
-    public HeroAlien(int health, int startingFunds) throws IllegalHeroValueException, InvalidHeroTypeException {
+    public HeroAlien(int health, int startingFunds) throws InvalidHeroTypeException, InvalidHeroAttributeException {
         super(health, startingFunds, Config.HeroType.ALIEN);
     }
 
     @Override
-    public void doAbility() throws InvalidMinionAttributeModifierException, IllegalHeroValueException {
+    public void doAbility() throws InvalidMinionAttributeModifierException, IllegalValueException {
         if (abilityAvailable) {
             for (MinionBase minion : getMinionList()) {
                 minion.setMovementRangeModifier(Config.ALIEN_ABILITY_MOVE_RANGE);
             }
             abilityAvailable = false;
         } else {
-            throw new IllegalHeroValueException("Ability not available");
+            throw new IllegalValueException("Ability not available");
         }
     }
 

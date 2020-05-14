@@ -3,7 +3,7 @@ package ch.zhaw.pm2.autochess.Hero.exceptions;
 /**
  * Custom exception super class for exceptions in hero class
  */
-public class HeroException extends Exception {
+public abstract class HeroException extends Exception {
     /**
      * Default constructor
      * @param message Error message

@@ -5,14 +5,11 @@ import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
 import ch.zhaw.pm2.autochess.Board.exceptions.MinionNotOnBoardException;
 import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
-import ch.zhaw.pm2.autochess.Game.exceptions.InvalidIdentifierException;
 import ch.zhaw.pm2.autochess.Hero.HeroBase;
-import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.*;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
-import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.PositionVector;
 
 import java.util.ArrayList;
@@ -59,7 +56,7 @@ public class Game {
     //Hero methods
     //*******************************
 
-    private void validateHeroId(int heroId) throws InvalidIdentifierException {
+    private void validateHeroId(int heroId) throws IllegalGameStateException {
         boolean searching = true;
         for(HeroBase hero : heroArrayList) {
             if(hero.getId() == heroId) {
@@ -67,19 +64,19 @@ public class Game {
             }
         }
         if(searching) {
-            throw new InvalidIdentifierException("Invalid hero ID: " + heroId);
+            throw new IllegalGameStateException("Invalid hero ID: " + heroId);
         }
     }
 
     private void addHero(Config.HeroType heroType) throws IllegalGameStateException{
         try {
             heroArrayList.add(HeroBase.getHeroFromType(heroType));
-        } catch (InvalidHeroTypeException | IllegalHeroValueException e) {
+        } catch (InvalidHeroTypeException | InvalidHeroAttributeException e) {
             throw new IllegalGameStateException(e.getMessage());
         }
     }
 
-    private HeroBase getHero(int heroId) throws InvalidIdentifierException {
+    private HeroBase getHero(int heroId) throws IllegalGameStateException {
         validateHeroId(heroId);
         HeroBase foundHero = null;
         for(HeroBase hero : heroArrayList) {
@@ -91,25 +88,24 @@ public class Game {
         return foundHero;
     }
 
-    public int getHeroFunds(int heroId) throws InvalidIdentifierException {
+    public int getHeroFunds(int heroId) throws IllegalGameStateException {
         return getHero(heroId).getFunds();
-
     }
 
-    public int getHeroHealth(int heroId) throws InvalidIdentifierException {
+    public int getHeroHealth(int heroId) throws IllegalGameStateException {
         return getHero(heroId).getHealth();
 
     }
 
-    public void doHeroAbility(int heroId) throws IllegalGameStateException, InvalidIdentifierException {
+    public void doHeroAbility(int heroId) throws IllegalGameStateException {
         try {
             getHero(heroId).doAbility();
-        } catch(InvalidMinionAttributeModifierException | IllegalHeroValueException e) {
+        } catch(InvalidMinionAttributeModifierException | IllegalValueException e) {
             throw new IllegalGameStateException(e.getMessage());
         }
     }
 
-    public boolean getHeroAbilityStatus(int heroId) throws InvalidIdentifierException {
+    public boolean getHeroAbilityStatus(int heroId) throws IllegalGameStateException {
         return getHero(heroId).isAbilityAvailable();
     }
 
@@ -117,51 +113,46 @@ public class Game {
     //Minion methods
     //***********************
 
-    public void buyMinion(int heroId, Config.MinionType minionType) throws InvalidIdentifierException,IllegalFundsStateException, IllegalGameStateException {
+    public void buyMinion(int heroId, Config.MinionType minionType) throws IllegalFundsReductionException, IllegalGameStateException {
         try {
             HeroBase hero = getHero(heroId);
             hero.buyMinion(minionType);
-        } catch (IllegalHeroValueException | MinionException e) {
+        } catch (IllegalValueException | InvalidMinionTypeException | InvalidMinionAttributeException | InvalidMinionAttributeModifierException e) {
             throw new IllegalGameStateException(e.getMessage());
         }
     }
 
-    public void sellMinion(int heroId, int minionId) throws InvalidIdentifierException, IllegalGameStateException{
+    public void sellMinion(int heroId, int minionId) throws IllegalGameStateException, InvalidMinionIDException {
         try {
             HeroBase hero = getHero(heroId);
             hero.sellMinion(minionId);
-        } catch (InvalidMinionIDException e) {
-            throw new InvalidIdentifierException(e.getMessage());
-        } catch (IllegalHeroValueException e) {
+        } catch (IllegalValueException e) {
             throw new IllegalGameStateException(e.getMessage());
         }
     }
 
-    public void placeMinionOnBoard(int heroId, int minionId, PositionVector pos) throws InvalidIdentifierException, InvalidPositionException {
+    public void placeMinionOnBoard(int heroId, int minionId, PositionVector pos) throws InvalidPositionException, IllegalGameStateException {
         try {
             boardManager.setMinionOnBoard(getHero(heroId).getMinion(minionId), pos);
-        }catch (InvalidMinionIDException e) {
-            throw new InvalidIdentifierException(e.getMessage());
-        }
-    }
-
-    public String getMinionInfoAsString(int heroId, int minionId) throws InvalidIdentifierException {
-        try {
-            return getHero(heroId).getMinionInfoAsString(minionId);
         } catch (InvalidMinionIDException e) {
-           throw new InvalidIdentifierException(e.getMessage());
+            throw new IllegalGameStateException(e.getMessage());
         }
+
     }
 
-    public Set<Integer> getAllMinionIds(int heroId) throws InvalidIdentifierException{
+    public String getMinionInfoAsString(int heroId, int minionId) throws IllegalGameStateException, InvalidMinionIDException {
+            return getHero(heroId).getMinionInfoAsString(minionId);
+    }
+
+    public Set<Integer> getAllMinionIds(int heroId) throws IllegalGameStateException {
         return getHero(heroId).getAllMinionIds();
     }
 
-    public Config.MinionType getMinionType(int heroId, int minionId) throws InvalidIdentifierException {
+    public Config.MinionType getMinionType(int heroId, int minionId) throws IllegalGameStateException {
         try {
             return getHero(heroId).getMinionType(minionId);
-        }catch (InvalidMinionIDException e) {
-            throw new InvalidIdentifierException(e.getMessage());
+        } catch (InvalidMinionIDException e) {
+            throw new IllegalGameStateException(e.getMessage());
         }
     }
 
@@ -181,6 +172,7 @@ public class Game {
         try {
             boardManager.doBattle();
             doHeroDamage();
+            distributeFunds();
             boardManager.clearBoard();
         }catch(MinionNotOnBoardException | InvalidPositionException e) {
             throw new IllegalGameStateException(e.getMessage());
@@ -192,9 +184,13 @@ public class Game {
             for(HeroBase hero : heroArrayList) {
                 hero.decreaseHealth(boardManager.getNumberOfMinionsPerHero(hero.getId()));
             }
-        }catch (IllegalHeroValueException e) {
+        }catch (IllegalValueException e) {
             throw new IllegalGameStateException(e.getMessage());
         }
+    }
+
+    private void distributeFunds() {
+
     }
 
     public void getBattleLog() {

@@ -34,7 +34,7 @@ public abstract class MinionBase {
     private int movementRangeModifier = 0;
     private int agilityModifier = 0;
 
-    public static MinionBase newMinionFromType(Config.MinionType minionType, int heroId) throws InvalidMinionTypeException, MinionException {
+    public static MinionBase newMinionFromType(Config.MinionType minionType, int heroId) throws InvalidMinionTypeException, InvalidMinionAttributeException {
         MinionBase newMinion;
 
         switch (minionType) {
@@ -62,7 +62,7 @@ public abstract class MinionBase {
      * @param attackRange The attackRange the minion can move in
      * @param agility The priority at which the minion can make its move
      */
-    public MinionBase(Config.MinionType type, MoveStrategy strategy, int price, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws MinionException {
+    public MinionBase(Config.MinionType type, MoveStrategy strategy, int price, int health, int attack, int defense, int movementRange, int attackRange, int agility, int heroId) throws InvalidMinionAttributeException, InvalidMinionTypeException {
         if (type == null) throw new InvalidMinionTypeException("MinionType may not be null");
         if (strategy == null) throw new InvalidMinionAttributeException("Strategy may not be null");
         if (health > Config.MAX_MINION_HEALTH || health < Config.MIN_MINION_HEALTH) throw new InvalidMinionAttributeException("Invalid health parameter");

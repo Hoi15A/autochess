@@ -1,26 +1,27 @@
 package ch.zhaw.pm2.autochess.Hero;
 
 import ch.zhaw.pm2.autochess.Config;
-import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalValueException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroAttributeException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 
 public class HeroSpaceMarine extends HeroBase {
 
-    public HeroSpaceMarine() throws IllegalHeroValueException, InvalidHeroTypeException {
+    public HeroSpaceMarine() throws InvalidHeroTypeException, InvalidHeroAttributeException {
         super(Config.MARINE_HEALTH, Config.MARINE_START_FUNDS, Config.HeroType.SPACE_MARINE);
     }
 
     @Override
-    public void doAbility() throws InvalidMinionAttributeModifierException, IllegalHeroValueException {
+    public void doAbility() throws InvalidMinionAttributeModifierException, IllegalValueException {
         if (abilityAvailable) {
             for(MinionBase minion : getMinionList()) {
                 minion.setAttackModifier(Config.MARINE_ABILITY_ATTACK);
             }
             abilityAvailable = false;
         } else {
-            throw new IllegalHeroValueException("Ability not available");
+            throw new IllegalValueException("Ability not available");
         }
     }
 

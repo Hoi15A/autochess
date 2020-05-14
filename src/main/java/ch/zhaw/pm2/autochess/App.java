@@ -6,16 +6,14 @@ package ch.zhaw.pm2.autochess;
 import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
 import ch.zhaw.pm2.autochess.Game.Game;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
-import ch.zhaw.pm2.autochess.Game.exceptions.InvalidIdentifierException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsReductionException;
 
 public class App {
     public String getGreeting() {
         return "Hello world.";
     }
 
-    public static void main(String[] args) throws IllegalGameStateException, InvalidIdentifierException, IllegalFundsStateException, InvalidPositionException {
+    public static void main(String[] args) throws IllegalGameStateException, IllegalFundsReductionException, InvalidPositionException {
         System.out.println(new App().getGreeting());
 
             Game game = new Game(Config.HeroType.ALIEN, Config.HeroType.ENGINEER);

@@ -3,7 +3,7 @@ package ch.zhaw.pm2.autochess.Minion.exceptions;
 /**
  * Custom exception super class for exceptions in minion class
  */
-public class MinionException extends Exception{
+public abstract class MinionException extends Exception{
     /**
      * Default constructor
      * @param message Error message

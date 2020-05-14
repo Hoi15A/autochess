@@ -1,23 +1,22 @@
-package ch.zhaw.pm2.autochess.Game.exceptions;
+package ch.zhaw.pm2.autochess.Hero.exceptions;
 
 /**
- * Custom exception super class for exceptions in game class
+ * Thrown if the given value is negative or exceeds allowed max
  */
-public abstract class GameException extends Exception {
+public class IllegalValueException extends HeroException{
     /**
      * Default constructor
      * @param message Error message
      */
-    public GameException(String message) {
+    public IllegalValueException(String message) {
         super(message);
     }
-
     /**
      * Constructor with extra parameter
      * @param message Error message
      * @param thrown {@link Throwable}
      */
-    public GameException(String message, Throwable thrown) {
+    public IllegalValueException(String message, Throwable thrown) {
         super(message, thrown);
     }
 }

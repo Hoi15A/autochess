@@ -1,6 +1,6 @@
 package ch.zhaw.pm2.autochess.Board.exceptions;
 
-public class BoardManagerException extends Exception{
+public abstract class BoardManagerException extends Exception{
     /**
      * Default constructor
      * @param message Error message

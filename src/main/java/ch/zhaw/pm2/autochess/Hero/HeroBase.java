@@ -1,20 +1,17 @@
 package ch.zhaw.pm2.autochess.Hero;
 
 import ch.zhaw.pm2.autochess.Config;
-import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsStateException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalHeroValueException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidHeroTypeException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.*;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
 import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
-import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
 
 import java.util.*;
 
 public abstract class HeroBase {
 
-    public static HeroBase getHeroFromType(Config.HeroType heroType) throws InvalidHeroTypeException, IllegalHeroValueException {
+    public static HeroBase getHeroFromType(Config.HeroType heroType) throws InvalidHeroTypeException, InvalidHeroAttributeException {
         switch (heroType) {
             case ALIEN:
                 return new HeroAlien();
@@ -38,7 +35,7 @@ public abstract class HeroBase {
     private int funds;
     protected boolean abilityAvailable = true;
 
-    public HeroBase(int health, int funds, Config.HeroType heroType) throws IllegalHeroValueException, InvalidHeroTypeException {
+    public HeroBase(int health, int funds, Config.HeroType heroType) throws InvalidHeroTypeException, InvalidHeroAttributeException {
         validateHeroParameters(health, funds);
         validateHeroType(heroType);
         this.heroId = heroCounter;
@@ -49,12 +46,12 @@ public abstract class HeroBase {
         this.heroType = heroType;
     }
 
-    private void validateHeroParameters(int health, int funds) throws IllegalHeroValueException {
+    private void validateHeroParameters(int health, int funds) throws InvalidHeroAttributeException {
         if (health > Config.MAX_HERO_HEALTH || health < Config.MIN_HERO_HEALTH) {
-            throw new IllegalHeroValueException("Illegal hero health: " + health + ". Valid between: " + Config.MIN_HERO_HEALTH + " and " + Config.MAX_HERO_HEALTH);
+            throw new InvalidHeroAttributeException("Illegal hero health: " + health + ". Valid between: " + Config.MIN_HERO_HEALTH + " and " + Config.MAX_HERO_HEALTH);
         }
         if (funds > Config.MAX_FUNDS || funds < Config.MIN_FUNDS) {
-            throw new IllegalHeroValueException("Illegal hero funds: " + funds + ". Valid between: " + Config.MIN_FUNDS + " and " + Config.MAX_FUNDS);
+            throw new InvalidHeroAttributeException("Illegal hero funds: " + funds + ". Valid between: " + Config.MIN_FUNDS + " and " + Config.MAX_FUNDS);
 
         }
     }
@@ -95,7 +92,7 @@ public abstract class HeroBase {
         return abilityAvailable;
     }
 
-    public void increaseHealth(int value) throws IllegalHeroValueException {
+    public void increaseHealth(int value) throws IllegalValueException {
         validateLegalHeroValue(value);
         int newHealth = health + value;
         if (newHealth <= maxHealth) {
@@ -105,7 +102,7 @@ public abstract class HeroBase {
         }
     }
 
-    public void decreaseHealth(int value) throws IllegalHeroValueException {
+    public void decreaseHealth(int value) throws IllegalValueException {
         validateLegalHeroValue(value);
         int newHealth = health - value;
         if (newHealth >= 0) {
@@ -115,7 +112,7 @@ public abstract class HeroBase {
         }
     }
 
-    public void increaseFunds(int value) throws IllegalHeroValueException {
+    public void increaseFunds(int value) throws IllegalValueException {
         validateLegalHeroValue(value);
         int newFunds = funds + value;
         if (newFunds <= Config.MAX_FUNDS) {
@@ -125,19 +122,19 @@ public abstract class HeroBase {
         }
     }
 
-    public void decreaseFunds(int value) throws IllegalHeroValueException, IllegalFundsStateException {
+    public void decreaseFunds(int value) throws IllegalValueException, IllegalFundsReductionException {
         validateLegalHeroValue(value);
         int newFunds = funds - value;
         if (newFunds >= 0) {
             funds = newFunds;
         } else {
-            throw new IllegalFundsStateException("Funds not available");
+            throw new IllegalFundsReductionException("Funds not available");
         }
     }
 
-    private void validateLegalHeroValue(int value) throws IllegalHeroValueException {
+    private void validateLegalHeroValue(int value) throws IllegalValueException {
         if (value < 0 || value > MAX_LEGAL_VALUE) {
-            throw new IllegalHeroValueException("Illegal hero value: " + value + "-> Negative or greater allowed max: " + MAX_LEGAL_VALUE);
+            throw new IllegalValueException("Illegal hero value: " + value + "-> Negative or greater allowed max: " + MAX_LEGAL_VALUE);
         }
     }
 
@@ -145,7 +142,7 @@ public abstract class HeroBase {
         heroCounter = 0;
     }
 
-    public abstract void doAbility() throws InvalidMinionAttributeModifierException, IllegalHeroValueException;
+    public abstract void doAbility() throws InvalidMinionAttributeModifierException, IllegalValueException;
 
     public abstract void buffMinion(MinionBase minion) throws InvalidMinionAttributeModifierException;
 
@@ -175,7 +172,7 @@ public abstract class HeroBase {
         return found;
     }
 
-    public void buyMinion(Config.MinionType minionType) throws IllegalHeroValueException, IllegalFundsStateException, MinionException {
+    public void buyMinion(Config.MinionType minionType) throws IllegalValueException, IllegalFundsReductionException, InvalidMinionTypeException, InvalidMinionAttributeException, InvalidMinionAttributeModifierException {
         if (isValidMinionType(minionType)) {
             MinionBase minion = MinionBase.newMinionFromType(minionType, heroId);
             Objects.requireNonNull(minion, "Attempted add minion null");
@@ -187,7 +184,7 @@ public abstract class HeroBase {
         }
     }
 
-    public void sellMinion(int minionId) throws IllegalHeroValueException, InvalidMinionIDException {
+    public void sellMinion(int minionId) throws IllegalValueException, InvalidMinionIDException {
         isValidId(minionId);
         int price = getMinion(minionId).getPrice();
         removeMinion(minionId);
