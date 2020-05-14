@@ -2,7 +2,7 @@ package ch.zhaw.pm2.autochess;
 
 import ch.zhaw.pm2.autochess.Board.BoardManager;
 import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
-import ch.zhaw.pm2.autochess.Board.exceptions.NoMinionFoundException;
+import ch.zhaw.pm2.autochess.Board.exceptions.MinionNotOnBoardException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
@@ -11,7 +11,6 @@ import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 public class BoardManagerTest {
     private BoardManager boardManager;
@@ -75,7 +74,7 @@ public class BoardManagerTest {
     }
 
     @Test
-    public void testRemoveMinionFromBoardValidId() throws InvalidPositionException, NoMinionFoundException {
+    public void testRemoveMinionFromBoardValidId() throws InvalidPositionException, MinionNotOnBoardException {
         PositionVector positionVector = new PositionVector(2,7);
         MinionBase[][] board = boardManager.getBoardArray2d();
         assertEquals(null,board[7][2]);
@@ -91,12 +90,12 @@ public class BoardManagerTest {
         MinionBase[][] board = boardManager.getBoardArray2d();
         assertEquals(null,board[7][2]);
 
-        assertThrows(NoMinionFoundException.class, () -> boardManager.removeMinionFromBoard(0));
+        assertThrows(MinionNotOnBoardException.class, () -> boardManager.removeMinionFromBoard(0));
 
     }
 
     @Test
-    public void testGetMinionPositionValidId() throws InvalidPositionException, NoMinionFoundException {
+    public void testGetMinionPositionValidId() throws InvalidPositionException, MinionNotOnBoardException {
         PositionVector positionVector = new PositionVector(2,7);
         MinionBase[][] board = boardManager.getBoardArray2d();
 
@@ -122,7 +121,7 @@ public class BoardManagerTest {
             }
         }
 
-        assertThrows(NoMinionFoundException.class, () -> boardManager.getMinionPosition(0));
+        assertThrows(MinionNotOnBoardException.class, () -> boardManager.getMinionPosition(0));
     }
 
 

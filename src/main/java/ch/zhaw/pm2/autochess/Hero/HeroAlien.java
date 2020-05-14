@@ -12,6 +12,7 @@ public class HeroAlien extends HeroBase {
         super(Config.ALIEN_HEALTH, Config.ALIEN_START_FUNDS, Config.HeroType.ALIEN);
     }
 
+    //ONLY FOR TESTING
     public HeroAlien(int health, int startingFunds) throws IllegalHeroValueException, InvalidHeroTypeException {
         super(health, startingFunds, Config.HeroType.ALIEN);
     }
