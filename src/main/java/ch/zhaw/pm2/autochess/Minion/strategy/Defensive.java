@@ -28,9 +28,7 @@ public class Defensive extends MoveStrategy {
 
         PositionVector targetPosition = null;
 
-        // Pick the nearest enemy as a direction to move in
-        List<PositionVector> l = getNonFriendlyPositions(board, self);
-        List<PositionVector> enemies = findPositionsInRange(l, position, ACTIVATION_RANGE);
+        List<PositionVector> enemies = findPositionsInRange(getNonFriendlyPositions(board, self), position, ACTIVATION_RANGE);
         double shortest = 0.0;
         PositionVector targetEnemy = null;
         for (PositionVector possibleTarget : enemies) {
@@ -41,7 +39,6 @@ public class Defensive extends MoveStrategy {
             }
         }
 
-        // Calc distances between enemy & possible positions and pick
         shortest = 0.0;
 
         List<PositionVector> possiblePositions = findPositionsInRange(getUnoccupiedSpaces(board), position, self.getMovementRange());
@@ -74,7 +71,6 @@ public class Defensive extends MoveStrategy {
 
         List<PositionVector> possibleTargets = findPositionsInRange(getNonFriendlyPositions(board, self), position, self.getAttackRange());
 
-        // find nearest target in range
         double shortest = 0.0;
         if (!possibleTargets.isEmpty()) {
             for (PositionVector possibleTarget : possibleTargets) {
