@@ -1,0 +1,27 @@
+#title {
+    -fx-font: 40 arial;
+}
+
+#menuNewGame{
+    -fx-font: 30 arial;
+}
+#menuNewGame:hover {
+    -fx-fill: red;
+}
+#menuNewGame:pressed {
+   -fx-fill: blue;
+}
+
+#menuHelp{
+    -fx-font: 30 arial;
+}
+#menuHelp:hover {
+    -fx-fill: red;
+}
+
+#menuHelp:pressed {
+   -fx-fill: blue;
+}
+
+
+
