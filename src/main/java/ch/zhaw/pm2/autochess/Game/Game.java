@@ -96,6 +96,11 @@ public class Game {
 
     }
 
+    public int getHeroHealth(int heroId) throws InvalidIdentifierException {
+        return getHero(heroId).getHealth();
+
+    }
+
     public void doHeroAbility(int heroId) throws IllegalGameStateException, InvalidIdentifierException {
         try {
             getHero(heroId).doAbility();
@@ -164,10 +169,6 @@ public class Game {
     //BoardManager methods
     //*******************************
 
-    public void printBoard() {
-        boardManager.printBoard();
-    }
-
     public void removeMinionFromBoard(int minionId) throws MinionNotOnBoardException {
         boardManager.removeMinionFromBoard(minionId);
     }
@@ -179,6 +180,8 @@ public class Game {
     public void doBattle() throws IllegalGameStateException {
         try {
             boardManager.doBattle();
+            doHeroDamage();
+            boardManager.clearBoard();
         }catch(MinionNotOnBoardException | InvalidPositionException e) {
             throw new IllegalGameStateException(e.getMessage());
         }
@@ -194,11 +197,11 @@ public class Game {
         }
     }
 
-    public void clearBoard() {
-        boardManager.clearBoard();
-    }
-
     public void getBattleLog() {
 
+    }
+
+    public void printBoard() {
+        boardManager.printBoard();
     }
 }
