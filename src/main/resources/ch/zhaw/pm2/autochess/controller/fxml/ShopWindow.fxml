@@ -4,7 +4,7 @@
 
 <?import javafx.scene.layout.RowConstraints?>
 <GridPane xmlns:fx="http://javafx.com/fxml"
-          fx:controller="ch.zhaw.pm2.autochess.ShopController" alignment="center"
+          fx:controller="ch.zhaw.pm2.autochess.controller.ShopController" alignment="center"
           hgap="10" vgap="10" fx:id="shopMainGrid" gridLinesVisible="true">
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
     <columnConstraints>
@@ -13,8 +13,9 @@
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="50" minHeight="50" prefHeight="50" vgrow="NEVER"/>
+        <RowConstraints maxHeight="150" minHeight="150" prefHeight="150" vgrow="NEVER"/>
+        <RowConstraints maxHeight="50" minHeight="50" prefHeight="50" vgrow="NEVER"/>
         <RowConstraints maxHeight="250" minHeight="250" prefHeight="250" vgrow="NEVER"/>
-        <RowConstraints maxHeight="200" minHeight="200" prefHeight="200" vgrow="NEVER"/>
         <RowConstraints maxHeight="30" minHeight="30" prefHeight="30" vgrow="NEVER"/>
     </rowConstraints>
 </GridPane>
