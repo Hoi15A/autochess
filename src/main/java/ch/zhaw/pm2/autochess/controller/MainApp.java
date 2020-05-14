@@ -91,7 +91,8 @@ public class MainApp extends Application {
         heroSelectController.nextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                heroSelectController.nextButtonClicked();
+                heroSelectController.nextButtonClicked(heroSelectStage);
+                game = heroSelectController.game;
                 heroSelectStage.close();
                 loadShopWindow();
             }
