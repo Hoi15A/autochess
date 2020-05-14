@@ -17,12 +17,35 @@ public class GameController implements Initializable {
     private static final int FIELD_COLS = 8;
     private static final int FIELD_ROWS = 8;
 
-
     @FXML
     private GridPane gameMainGrid;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        /*todo
+        -Minion list display -> liste alles minions in besitz anzeigen -> getAllMinionIds(int heroId) -> getMinionInfoAsString(int heroId, int minionId)
+             iterieren und anzeigen
+        -place minion: TextFiel (minionID) TextField (fieldposX) TextField (fieldposY) Button
+           button.onClick  -> get values x&Y (check not empty) -> set boarder red (falss empty)
+           x&Y -> positionVector
+           -> placeMinionOnBoard(int heroId, int minionId, PositionVector pos)
+           -> updateBoard -> getAllMinionIDS(heroID) iterate ->  getMinionPos(int minionId) if(no exc) -> draw minionType on grid   else -> do nothing
+
+         -remove minion: TextFiel (minionID) button: set boarder red (falls empty)
+         button.onClick  -> get Id -> removeMinionFromBoard(int minionId)
+         -> updateBoard -> getAllMinionIDS(heroID) iterate ->  getMinionPos(int minionId) if(no exc) -> draw minionType on grid   else -> do nothing
+
+         -Health: healthbar -> getHeroHealth(int heroID) -> show as bar idk
+
+         -Battle button: button.onClick -> doBattle()
+           after battle -> animate battleLog -> getBattleLog() -> draw
+           after battle -> doHeroDamage() -> display somehow hero health
+           after battle -> distributeFunds() -> display same as health
+           after battle -> clearBoard()
+           after battle -> getWinner() if winner(1 or 2) -> game over(back to main menu)  else(-1) -> open shop
+         */
+
         initializeFieldGrid();
         initializePlayerGrid();
 
