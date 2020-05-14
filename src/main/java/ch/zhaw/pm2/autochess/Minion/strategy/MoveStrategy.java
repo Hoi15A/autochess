@@ -5,6 +5,7 @@ import ch.zhaw.pm2.autochess.PositionVector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class MoveStrategy {
 
@@ -41,7 +42,7 @@ public abstract class MoveStrategy {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                 MinionBase current = board[row][col];
-                if (current != null && current.getId() != self.getId() && current.getHeroId() != self.getHeroId()) {
+                if (Objects.nonNull(current) && current.getId() != self.getId() && current.getHeroId() != self.getHeroId()) {
                     positions.add(new PositionVector(col, row));
                 }
             }

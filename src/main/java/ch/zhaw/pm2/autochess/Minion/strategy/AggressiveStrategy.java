@@ -4,6 +4,7 @@ import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.PositionVector;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * An Aggressive variation of the MoveStrategy.
@@ -40,7 +41,7 @@ public class AggressiveStrategy extends MoveStrategy {
         shortest = 0.0;
 
         List<PositionVector> possiblePositions = findPositionsInRange(getUnoccupiedSpaces(board), position, self.getMovementRange());
-        if (targetEnemy != null) {
+        if (Objects.nonNull(targetEnemy)) {
             for (PositionVector possiblePosition : possiblePositions) {
                 double distance = calculateDistance(possiblePosition, targetEnemy);
                 if (shortest == 0.0 || distance < shortest) {
@@ -68,6 +69,7 @@ public class AggressiveStrategy extends MoveStrategy {
      */
     @Override
     public PositionVector attack(MinionBase[][] board, PositionVector position, MinionBase self) {
+        // TODO: Deal with duplication
         PositionVector targetPosition = null;
 
         List<PositionVector> possibleTargets = findPositionsInRange(getNonFriendlyPositions(board, self), position, self.getAttackRange());
