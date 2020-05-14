@@ -22,13 +22,12 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MainController implements Initializable {
-    private File stylesheet = new File(String.valueOf(getClass().getResource("css/MainStylesheet.css")));
+public class MainMenuController implements Initializable {
+    private File stylesheet = new File(String.valueOf(getClass().getResource("css/MainMenuStylesheet.css")));
     private Text title;
     private Text menuNewGame;
     private Text menuHelp;
     private VBox menuBox;
-
 
     @FXML
     GridPane mainGrid;
