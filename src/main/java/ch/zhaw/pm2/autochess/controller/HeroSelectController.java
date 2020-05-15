@@ -159,9 +159,9 @@ public class HeroSelectController implements Initializable {
         //player 1
         p1ToggleGroup = new ToggleGroup();
 
-        p1H1RadioButton = new RadioButton();
-        p1H2RadioButton = new RadioButton();
-        p1H3RadioButton = new RadioButton();
+        p1H1RadioButton = new RadioButton(Config.HeroType.ALIEN.toString());
+        p1H2RadioButton = new RadioButton(Config.HeroType.ENGINEER.toString());
+        p1H3RadioButton = new RadioButton(Config.HeroType.SPACE_MARINE.toString());
 
         p1H1RadioButton.setSelected(true);
 
@@ -172,9 +172,9 @@ public class HeroSelectController implements Initializable {
         //player 2
         p2ToggleGroup = new ToggleGroup();
 
-        p2H1RadioButton = new RadioButton();
-        p2H2RadioButton = new RadioButton();
-        p2H3RadioButton = new RadioButton();
+        p2H1RadioButton = new RadioButton(Config.HeroType.ALIEN.toString());
+        p2H2RadioButton = new RadioButton(Config.HeroType.ENGINEER.toString());
+        p2H3RadioButton = new RadioButton(Config.HeroType.SPACE_MARINE.toString());
 
         p2H1RadioButton.setSelected(true);
 
@@ -224,17 +224,17 @@ public class HeroSelectController implements Initializable {
         if (p1H1RadioButton.equals(p1ToggleGroup.getSelectedToggle())) {
             heroTypeP1 = Config.HeroType.ALIEN;
         } else if (p1H2RadioButton.equals(p1ToggleGroup.getSelectedToggle())) {
-            heroTypeP1 = Config.HeroType.SPACE_MARINE;
-        } else if (p1H3RadioButton.equals(p1ToggleGroup.getSelectedToggle())) {
             heroTypeP1 = Config.HeroType.ENGINEER;
+        } else if (p1H3RadioButton.equals(p1ToggleGroup.getSelectedToggle())) {
+            heroTypeP1 = Config.HeroType.SPACE_MARINE;
         }
 
         if (p2H1RadioButton.equals(p2ToggleGroup.getSelectedToggle())) {
             heroTypeP2 = Config.HeroType.ALIEN;
         } else if (p2H2RadioButton.equals(p2ToggleGroup.getSelectedToggle())) {
-            heroTypeP2 = Config.HeroType.SPACE_MARINE;
-        } else if (p2H3RadioButton.equals(p2ToggleGroup.getSelectedToggle())) {
             heroTypeP2 = Config.HeroType.ENGINEER;
+        } else if (p2H3RadioButton.equals(p2ToggleGroup.getSelectedToggle())) {
+            heroTypeP2 = Config.HeroType.SPACE_MARINE;
         }
 
         try {
