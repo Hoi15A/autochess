@@ -221,8 +221,4 @@ public class Game {
         return boardManager.getBattleLogs();
     }
 
-    //ONLY NEEDED WITHOUT GUI
-    public void printBoard() {
-        boardManager.printBoard();
-    }
 }

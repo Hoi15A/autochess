@@ -296,17 +296,6 @@ public abstract class MinionBase {
         return baseAgility + agilityModifier;
     }
 
-    public void printInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Minion | ");
-        sb.append("ID: " + minionId + "| ");
-        sb.append("Type: " + type.toString() + "| ");
-        sb.append("Hero " + heroId + "| ");
-        sb.append("Health " + health + "| ");
-
-        System.out.println(sb.toString());
-    }
-
     /**
      * Use the minions strategy to calculate the next move and return it.
      *
@@ -336,10 +325,5 @@ public abstract class MinionBase {
      */
     public String getInfoAsString() {
         return "ID: " + minionId + ", type:" + type + ", HP: " + health;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(minionId);
     }
 }

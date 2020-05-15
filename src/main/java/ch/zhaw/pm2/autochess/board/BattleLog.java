@@ -156,7 +156,6 @@ public class BattleLog {
         return actorType;
     }
 
-    //ONLY NEEDED WITHOUT GUI
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

@@ -215,41 +215,27 @@ public class BoardManager {
      */
     public void doBattle() throws MinionNotOnBoardException, InvalidPositionException {
         ArrayList<MinionBase> activeMinions = getAllMinionsOnBoard();
-        //todo: sort by agility
-        //todo: remove prints
-        /*
-        System.out.println("All active minions");
-        for(MinionBase minion : activeMinions) {
-            minion.printInfo();
-        }
-        System.out.println(" ");
-         */
+
         int loopCounter = 0;
         while(checkEachHeroActiveMinions() && loopCounter < Config.MAX_BATTLE_LOOPS){
             for(Iterator<MinionBase> it = activeMinions.iterator(); it.hasNext(); ) {
                 MinionBase minion = it.next();
                 if(minion.getHealth() > 0) {
-                    //System.out.print("Current : ");
-                    //minion.printInfo();
                     minionDoMove(minion);
                     minionDoAttack(minion);
                 } else {
-                    //System.out.println("Removed dead minion from list");
                     it.remove();
                 }
-                printBoard();
             }
             loopCounter++;
         }
     }
 
     private void minionDoMove(MinionBase minion) throws MinionNotOnBoardException, InvalidPositionException {
-        //todo: remove prints
         PositionVector currentPos = getMinionPosition(minion.getId());
         PositionVector movePosition = minion.move(boardArray2d, currentPos);
         BattleLog log = new BattleLog();
         if(movePosition == null) {
-            //System.out.println("-- NO_MOVE: minion " + minion.getId() + " " + "Pos" + currentPos);
             log.setNoMoveLog(minion.getId(), currentPos);
 
         } else {
@@ -258,18 +244,15 @@ public class BoardManager {
             removeMinionFromBoard(minion.getId());
             setMinionOnBoard(minion, movePosition);
             log.setMoveLog(minion.getId(), currentPos, movePosition, minion.getType());
-            //System.out.println("-- MOVED: minion " + minion.getId() + " " + "From: " + currentPos + " To: " + movePosition);
         }
         battleLogs.add(log);
     }
 
     private void minionDoAttack(MinionBase attacker) throws MinionNotOnBoardException, InvalidPositionException {
-        //todo: remove prints
         PositionVector currentPos = getMinionPosition(attacker.getId());
         PositionVector attackPosition = attacker.attack(boardArray2d, currentPos);
 
         if (attackPosition == null) {
-            //System.out.println("-- NO_ATTACK: minion " + attacker.getId() + " " + "Pos" + getMinionPosition(attacker.getId()));
             BattleLog log = new BattleLog();
             log.setNoAttackLog(attacker.getId(), getMinionPosition(attacker.getId()));
             battleLogs.add(log);
@@ -282,49 +265,19 @@ public class BoardManager {
 
                 int damage = (attacker.getAttack() - defender.getDefense());
                 defender.decreaseHealth(damage);
-                //System.out.println("-- ATTACK: attacker " + attacker.getId() + getMinionPosition(attacker.getId()));
-                //System.out.println("           defender " + defender.getId() + getMinionPosition(defender.getId()));
-                //System.out.println("           attack " + attacker.getAttack() + ", defence " + defender.getDefense() + ", damage " + damage);
 
                 BattleLog log = new BattleLog();
                 log.setAttackLog(attacker.getId(), getMinionPosition(attacker.getId()), defender.getId(), getMinionPosition(defender.getId()), damage);
                 battleLogs.add(log);
                 if (defender.getHealth() <= 0) {
                     removeMinionFromBoard(defender.getId());
-                    //System.out.println("-- DEATH: minion " + defender.getId());
                     BattleLog deathLog = new BattleLog();
                     deathLog.setDeathLog(defender.getId(), getMinionPosition(defender.getId()));
                     battleLogs.add(deathLog);
                     removeMinionFromBoard(defender.getId());
-                    System.out.println("-- DEATH: minion " + defender.getId());
                 }
             }
         }
-    }
-
-    //ONLY NEEDED WITHOUT GUI
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for(int row = 0; row < boardArray2d.length; row++) {
-            for(int col = 0; col < boardArray2d[row].length; col++) {
-                sb.append("|");
-                if(boardArray2d[row][col] == null) {
-                    sb.append(row + "" + col);
-                }else {
-                    sb.append(" " + boardArray2d[row][col].toString());
-                }
-                sb.append("|");
-            }
-            sb.append("\n");
-        }
-        sb.append("\n");
-        return sb.toString();
-    }
-
-    //ONLY NEED WITHOUT GUI
-    public void printBoard() {
-        System.out.print(toString());
     }
 
 }

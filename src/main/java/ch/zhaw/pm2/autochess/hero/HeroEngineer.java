@@ -33,7 +33,6 @@ public class HeroEngineer extends HeroBase{
     @Override
     public void buffMinion(MinionBase minion) throws InvalidMinionAttributeModifierException {
         minion.setDefenseModifier(Config.ENG_BUFF_DEF);
-        //todo: change max health not health
         minion.increaseHealth(Config.ENG_BUFF_HP);
     }
 }
