@@ -16,13 +16,26 @@ public class App {
     public static void main(String[] args) throws IllegalGameStateException, IllegalFundsReductionException, InvalidPositionException {
         System.out.println(new App().getGreeting());
 
+        try {
             Game game = new Game(Config.HeroType.ALIEN, Config.HeroType.ENGINEER);
 
-            game.buyMinion(1, Config.MinionType.RANGER);
-            game.placeMinionOnBoard(1,0, new PositionVector(2,2));
+            game.buyMinion(1, Config.MinionType.WARRIOR);
+            game.buyMinion(1, Config.MinionType.WARRIOR);
+            game.buyMinion(1, Config.MinionType.WARRIOR);
+            game.buyMinion(1, Config.MinionType.WARRIOR);
+            game.placeMinionOnBoard(1, 0, new PositionVector(0, 0));
+            game.placeMinionOnBoard(1, 1, new PositionVector(1,0));
+            game.placeMinionOnBoard(1, 2, new PositionVector(2, 0));
+            game.placeMinionOnBoard(1, 3, new PositionVector(3, 0));
 
-            game.buyMinion(2, Config.MinionType.TANK);
-            game.placeMinionOnBoard(2,1, new PositionVector(7,7));
+            game.buyMinion(2, Config.MinionType.WARRIOR);
+            game.buyMinion(2, Config.MinionType.WARRIOR);
+            game.buyMinion(2, Config.MinionType.WARRIOR);
+            game.buyMinion(2, Config.MinionType.WARRIOR);
+            game.placeMinionOnBoard(2, 4, new PositionVector(0, 7));
+            game.placeMinionOnBoard(2, 5, new PositionVector(1,7));
+            game.placeMinionOnBoard(2, 6, new PositionVector(2, 7));
+            game.placeMinionOnBoard(2, 7, new PositionVector(3, 7));
 
             System.out.println(" ");
             game.printBoard();
@@ -30,8 +43,8 @@ public class App {
 
             game.doBattle();
 
-            System.out.println(" ");
-            game.printBoard();
-            System.out.println(" ");
+        }catch (IllegalFundsReductionException | InvalidPositionException e) {
+            e.printStackTrace();
+        }
     }
 }

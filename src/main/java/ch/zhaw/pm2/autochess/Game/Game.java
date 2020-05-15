@@ -135,7 +135,7 @@ public class Game {
 
     public void placeMinionOnBoard(int heroId, int minionId, PositionVector pos) throws InvalidPositionException, IllegalGameStateException {
         try {
-            boardManager.setMinionOnBoard(getHero(heroId).getMinion(minionId), pos);
+            boardManager.placeMinionOnBoard(getHero(heroId).getMinion(minionId), pos);
         } catch (InvalidMinionIDException e) {
             throw new IllegalGameStateException(e.getMessage());
         }

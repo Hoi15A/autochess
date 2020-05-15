@@ -6,6 +6,7 @@ import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.PositionVector;
+import javafx.geometry.Pos;
 
 import java.util.*;
 
@@ -66,11 +67,16 @@ public class BoardManager {
         }
     }
 
-    public void setMinionOnBoard(MinionBase minion, PositionVector pos) throws InvalidPositionException, IllegalGameStateException {
+    public void placeMinionOnBoard(MinionBase minion, PositionVector pos) throws IllegalGameStateException, InvalidPositionException {
+        Objects.requireNonNull(minion, "Minion to place is null");
+        validatePosZone(pos, minion.getHeroId());
+        setMinionOnBoard(minion, pos);
+    }
+
+    private void setMinionOnBoard(MinionBase minion, PositionVector pos) throws InvalidPositionException {
         Objects.requireNonNull(minion, "Minion to place is null");
         validatePosOnBoard(pos);
         validatePosEmpty(pos);
-        validatePosZone(pos, minion.getHeroId());
         try {
             getMinionPosition(minion.getId());
             throw new InvalidPositionException("Invalid placement (MinionID:" + minion.getId() + "). Already placed.");
@@ -166,6 +172,7 @@ public class BoardManager {
                 } else {
                     it.remove();
                 }
+                printBoard();
             }
             loopCounter++;
         }
