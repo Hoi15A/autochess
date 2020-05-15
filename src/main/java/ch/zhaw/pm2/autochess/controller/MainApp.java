@@ -4,7 +4,6 @@ import ch.zhaw.pm2.autochess.Game.Game;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -14,39 +13,71 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Mainclass of the Application
+ * Holds a Game and handles windows to displays
+ */
 public class MainApp extends Application {
     private static final Logger logger = Logger.getLogger(MainApp.class.getCanonicalName());
     protected Game game;
 
+    //MainMenu data fields
     private MainMenuController mainMenuController;
-    private HeroSelectController heroSelectController;
-    private ShopController shopController;
-    private GameController gameController;
-
     private Stage mainMenuStage;
-    private Stage heroSelectStage;
-    private Stage shopStage;
-    private Stage gameStage;
+    private FXMLLoader mainMenuLoader;
+    private Pane mainMenuPane;
+    private Scene mainMenuScene;
 
+    //HeroSelect data fields
+    private HeroSelectController heroSelectController;
+    private Stage heroSelectStage;
+    private FXMLLoader heroSelectLoader;
+
+    //Shop data fields
+    private ShopController shopController;
+    private Stage shopStage;
+    private FXMLLoader shopLoader;
+
+    //Game data fields
+    private GameController gameController;
+    private Stage gameStage;
+    private FXMLLoader gameLoader;
+
+
+    /**
+     * Main Method of the application.
+     * Launches the App.
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Thiss Method loads the the MainMenu.
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         loadMainMenu();
     }
 
+    /**
+     * This Method loads the MainMenuWindow
+     */
     private void loadMainMenu() {
         mainMenuStage = new Stage();
         mainMenuController = new MainMenuController(game);
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/MainMenuWindow.fxml"));
-            loader.setController(mainMenuController);
-            Pane mainMenuPane = loader.load();
+            mainMenuLoader = new FXMLLoader(getClass().getResource("fxml/MainMenuWindow.fxml"));
+            mainMenuLoader.setController(mainMenuController);
+
+            mainMenuPane = mainMenuLoader.load();
             mainMenuPane.getStylesheets().add(String.valueOf(getClass().getResource("css/MainMenuStylesheet.css")));
             mainMenuPane.setId("mainMenuPane");
-            Scene mainMenuScene = new Scene(mainMenuPane);
+
+            mainMenuScene = new Scene(mainMenuPane);
 
             mainMenuStage.setResizable(false);
             mainMenuStage.setScene(mainMenuScene);
@@ -55,7 +86,7 @@ public class MainApp extends Application {
             mainMenuStage.setTitle("SMAC");
             mainMenuStage.show();
         } catch(Exception e) {
-            logger.log(Level.SEVERE, "Error starting up UI" + e.getMessage());
+            logger.log(Level.SEVERE, "Error starting up MainMenu" + e.getMessage());
         }
         mainMenuController.menuNewGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -66,6 +97,9 @@ public class MainApp extends Application {
         });
     }
 
+    /**
+     * This Method loads the HeroSelectWindow
+     */
     protected void loadHeroSelectWindow(){
         heroSelectStage = new Stage();
         heroSelectController = new HeroSelectController(game);
@@ -99,6 +133,9 @@ public class MainApp extends Application {
         });
     }
 
+    /**
+     * This Method loads the ShopWindow
+     */
     protected void loadShopWindow(){
         shopStage = new Stage();
         shopController = new ShopController(game);
@@ -131,6 +168,9 @@ public class MainApp extends Application {
         });
     }
 
+    /**
+     * This Method loads the GameWindow
+     */
     private void loadGameWindow(){
         gameStage = new Stage();
         gameController = new GameController(game);
@@ -143,15 +183,29 @@ public class MainApp extends Application {
             gamePane.setId("shopPane");
             Scene gameScene = new Scene(gamePane);
 
-            shopStage.setResizable(false);
-            shopStage.setScene(gameScene);
-            shopStage.setMinWidth(800);
-            shopStage.setMinHeight(600);
-            shopStage.setTitle("SMAC");
-            shopStage.show();
+            gameStage.setResizable(false);
+            gameStage.setScene(gameScene);
+            gameStage.setMinWidth(800);
+            gameStage.setMinHeight(600);
+            gameStage.setTitle("SMAC");
+            gameStage.show();
         } catch (IOException e) {
             Logger logger = Logger.getLogger(getClass().getName());
             logger.log(Level.SEVERE, "Failed to create new Window.", e);
         }
+        gameController.battleButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gameController.doBattle();
+                if(game.getWinner() == -1){
+                    loadShopWindow();
+                    gameStage.close();
+                }else if(game.getWinner() == 1){
+                    //todo display winner and back to main menu
+                }else if(game.getWinner() == 2){
+                    //todo display winner and back to main menu
+                }
+            }
+        });
     }
 }
