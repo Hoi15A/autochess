@@ -170,6 +170,7 @@ public class BoardManager {
                     minionDoMove(minion);
                     minionDoAttack(minion);
                 } else {
+                    System.out.println("Removed dead minion from list");
                     it.remove();
                 }
                 printBoard();
@@ -191,10 +192,9 @@ public class BoardManager {
             validatePosOnBoard(movePosition);
             validatePosEmpty(movePosition);
             removeMinionFromBoard(minion.getId());
-            PositionVector newPos = PositionVector.add(currentPos, movePosition);
-            setMinionOnBoard(minion, newPos);
-            System.out.println("-- MOVED: minion " + minion.getId() + " " + "From: " + currentPos + " To: " + newPos);
-            log.setMoveLog(minion.getId(), currentPos, newPos);
+            setMinionOnBoard(minion, movePosition);
+            System.out.println("-- MOVED: minion " + minion.getId() + " " + "From: " + currentPos + " To: " + movePosition);
+            log.setMoveLog(minion.getId(), currentPos, movePosition);
         }
         battleLogs.add(log);
     }
@@ -225,7 +225,7 @@ public class BoardManager {
                 battleLogs.add(log);
                 if (defender.getHealth() <= 0) {
                     removeMinionFromBoard(defender.getId());
-                    System.out.println("-- DEATH: minion " + attacker.getId());
+                    System.out.println("-- DEATH: minion " + defender.getId());
                     BattleLog deathLog = new BattleLog();
                     deathLog.setDeathLog(defender.getId());
                     battleLogs.add(deathLog);

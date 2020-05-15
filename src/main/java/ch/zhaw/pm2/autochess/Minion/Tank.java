@@ -10,9 +10,5 @@ public class Tank extends MinionBase {
         super(Config.MinionType.TANK, new DefensiveStrategy(), Config.TANK_PRICE, Config.TANK_HEALTH, Config.TANK_ATTACK, Config.TANK_DEFENCE, Config.TANK_MOVEMENT_RANGE, Config.TANK_ATTACK_RANGE, Config.TANK_AGILITY, heroId);
     }
 
-    @Override
-    public String toString() {
-        return "T";
-    }
 
 }

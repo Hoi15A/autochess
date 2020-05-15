@@ -9,7 +9,7 @@ public final class Config {
     //BoardManager
     public static final int BOARD_HEIGHT = 8;
     public static final int BOARD_WIDTH =8;
-    public static final int MAX_BATTLE_LOOPS = 10;
+    public static final int MAX_BATTLE_LOOPS = 20;
     public static final int PLACE_ZONE_HEIGHT = 2;
 
     //HeroBase
@@ -91,6 +91,4 @@ public final class Config {
     public static final int RANGER_MOVEMENT_RANGE = 3;
     public static final int RANGER_ATTACK_RANGE = 4;
     public static final int RANGER_AGILITY = 3;
-
-
 }

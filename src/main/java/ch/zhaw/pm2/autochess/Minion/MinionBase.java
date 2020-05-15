@@ -262,4 +262,9 @@ public abstract class MinionBase {
         String info = "-ID: " + minionId + ", type:" + type + ", Lvl: " + level + ", HP: " + health;
         return info;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(minionId);
+    }
 }
