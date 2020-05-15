@@ -61,6 +61,7 @@ public class GameController implements Initializable {
 
     private Button p1PlaceButton;
     private Button p1RemoveButton;
+    private Button p1UseAbilityButton;
 
 
     //Player 2 data fields (p1 = player1 h1 = hero 1)
@@ -78,6 +79,7 @@ public class GameController implements Initializable {
 
     private Button p2PlaceButton;
     private Button p2RemoveButton;
+    private Button p2UseAbilityButton;
 
 
     @FXML
@@ -98,6 +100,7 @@ public class GameController implements Initializable {
         initializePlayer2PlaceMinionSection();
         initializePlayer1RemoveMinionSection();
         initializePlayer2RemoveMinionSection();
+        initializeBattleAndAbilityButtons();
         addComponentsToMainGrid();
     }
 
@@ -112,8 +115,9 @@ public class GameController implements Initializable {
         gameMainGrid.add(player1SectionGridPane, 0, 0);
         gameMainGrid.add(player2SectionGridPane, 2, 0);
 
-        battleButton = new Button("Battle");
         gameMainGrid.add(battleButton, 1, 1);
+        gameMainGrid.add(p1UseAbilityButton, 0, 1);
+        gameMainGrid.add(p2UseAbilityButton, 2, 1);
     }
 
     private void initializeFieldGrid() {
@@ -213,6 +217,10 @@ public class GameController implements Initializable {
 
         p1PlaceSectionGridPane = new GridPane();
 
+        p1fieldPosXTextField.setPromptText("X-Axis");
+        p1fieldPosYTextField.setPromptText("Y-Axis");
+        p1PlaceMinionIdTextField.setPromptText("MinionID");
+
         for (int i = 0; i < 2; i++) {
             ColumnConstraints column = new ColumnConstraints(75);
             p1PlaceSectionGridPane.getColumnConstraints().add(column);
@@ -265,6 +273,10 @@ public class GameController implements Initializable {
 
         p2PlaceSectionGridPane = new GridPane();
 
+        p2fieldPosXTextField.setPromptText("X-Axis");
+        p2fieldPosYTextField.setPromptText("Y-Axis");
+        p2PlaceMinionIdTextField.setPromptText("MinionID");
+
         for (int i = 0; i < 2; i++) {
             ColumnConstraints column = new ColumnConstraints(75);
             p2PlaceSectionGridPane.getColumnConstraints().add(column);
@@ -314,6 +326,8 @@ public class GameController implements Initializable {
         p1RemoveButton = new Button("remove");
         p1RemoveSectionGridPane = new GridPane();
 
+        p1RemoveMinionIdTextField.setPromptText("MinionID");
+
         for (int i = 0; i < 2; i++) {
             ColumnConstraints column = new ColumnConstraints(75);
             p1RemoveSectionGridPane.getColumnConstraints().add(column);
@@ -353,6 +367,8 @@ public class GameController implements Initializable {
         p2RemoveButton = new Button("remove");
         p2RemoveSectionGridPane = new GridPane();
 
+        p2RemoveMinionIdTextField.setPromptText("MinionID");
+
         for (int i = 0; i < 2; i++) {
             ColumnConstraints column = new ColumnConstraints(75);
             p2RemoveSectionGridPane.getColumnConstraints().add(column);
@@ -387,19 +403,6 @@ public class GameController implements Initializable {
         });
     }
 
-    private void doAttack(int actorId, PositionVector actorPos, int defenderId, PositionVector defenderPos, int damage) {
-        //Animation attack eg. field red
-    }
-
-    private void doMove(int actorId, PositionVector actorPos, PositionVector actorNewPos, Config.MinionType minionType) {
-        removeMinionFromGrid(actorPos);
-        fieldSectionGridPane.add(new Text(minionType.toString()), actorNewPos.getX(), actorNewPos.getY());
-    }
-
-    private void doDeath(PositionVector deadMinionPos) {
-        removeMinionFromGrid(deadMinionPos);
-    }
-
     protected void doBattle() {
         try {
             game.doBattle();
@@ -429,6 +432,19 @@ public class GameController implements Initializable {
         }
     }
 
+    private void doAttack(int actorId, PositionVector actorPos, int defenderId, PositionVector defenderPos, int damage) {
+        //Animation attack eg. field red
+    }
+
+    private void doMove(int actorId, PositionVector actorPos, PositionVector actorNewPos, Config.MinionType minionType) {
+        removeMinionFromGrid(actorPos);
+        fieldSectionGridPane.add(new Text(minionType.toString()), actorNewPos.getX(), actorNewPos.getY());
+    }
+
+    private void doDeath(PositionVector deadMinionPos) {
+        removeMinionFromGrid(deadMinionPos);
+    }
+
     private void observeTextField(TextField textField) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (textField.getText().matches("\\d*")) {
@@ -453,5 +469,35 @@ public class GameController implements Initializable {
             }
         } catch (ConcurrentModificationException e) {
         }
+    }
+
+    private void initializeBattleAndAbilityButtons() {
+        battleButton = new Button("Battle");
+        p1UseAbilityButton = new Button("Use Ability");
+        p2UseAbilityButton = new Button("Use Ability");
+
+        p1UseAbilityButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    game.doHeroAbility(1);
+                    p1UseAbilityButton.setDisable(true);
+                } catch (IllegalGameStateException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        p2UseAbilityButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    game.doHeroAbility(2);
+                    p2UseAbilityButton.setDisable(true);
+                } catch (IllegalGameStateException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
