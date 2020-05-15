@@ -3,6 +3,7 @@ package ch.zhaw.pm2.autochess;
 import ch.zhaw.pm2.autochess.Board.BoardManager;
 import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
 import ch.zhaw.pm2.autochess.Board.exceptions.MinionNotOnBoardException;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
@@ -24,7 +25,7 @@ public class BoardManagerTest {
     }
 
     @Test
-    public void testSetMinionOnBoardValidPosition() throws InvalidPositionException {
+    public void testSetMinionOnBoardValidPosition() throws InvalidPositionException, IllegalGameStateException {
         PositionVector positionVector = new PositionVector(0,0);
         MinionBase[][] board = boardManager.getBoardArray2d();
 
@@ -67,14 +68,14 @@ public class BoardManagerTest {
     }
 
     @Test
-    public void testSetMinionOnBoardInvalidPositionOccupied() throws InvalidPositionException {
+    public void testSetMinionOnBoardInvalidPositionOccupied() throws InvalidPositionException, IllegalGameStateException {
         PositionVector positionVector = new PositionVector(2,7);
         boardManager.setMinionOnBoard(minionOne, positionVector);
         assertThrows(InvalidPositionException.class, () -> boardManager.setMinionOnBoard(minionTwo, new PositionVector(15,5)));
     }
 
     @Test
-    public void testRemoveMinionFromBoardValidId() throws InvalidPositionException, MinionNotOnBoardException {
+    public void testRemoveMinionFromBoardValidId() throws InvalidPositionException, MinionNotOnBoardException, IllegalGameStateException {
         PositionVector positionVector = new PositionVector(2,7);
         MinionBase[][] board = boardManager.getBoardArray2d();
         assertEquals(null,board[7][2]);
@@ -95,7 +96,7 @@ public class BoardManagerTest {
     }
 
     @Test
-    public void testGetMinionPositionValidId() throws InvalidPositionException, MinionNotOnBoardException {
+    public void testGetMinionPositionValidId() throws InvalidPositionException, MinionNotOnBoardException, IllegalGameStateException {
         PositionVector positionVector = new PositionVector(2,7);
         MinionBase[][] board = boardManager.getBoardArray2d();
 

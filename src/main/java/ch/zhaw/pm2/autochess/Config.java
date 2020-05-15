@@ -1,11 +1,16 @@
 package ch.zhaw.pm2.autochess;
 
-public class Config {
+public final class Config {
+
+    //Game
+    public static final int HERO_ID_1 = 1;
+    public static final int HERO_ID_2 = 2;
 
     //BoardManager
     public static final int BOARD_HEIGHT = 8;
     public static final int BOARD_WIDTH =8;
     public static final int MAX_BATTLE_LOOPS = 10;
+    public static final int PLACE_ZONE_HEIGHT = 2;
 
     //HeroBase
     public enum HeroType {

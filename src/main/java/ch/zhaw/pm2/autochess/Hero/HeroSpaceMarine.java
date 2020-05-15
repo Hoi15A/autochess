@@ -9,8 +9,13 @@ import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierExc
 
 public class HeroSpaceMarine extends HeroBase {
 
-    public HeroSpaceMarine() throws InvalidHeroTypeException, InvalidHeroAttributeException {
-        super(Config.MARINE_HEALTH, Config.MARINE_START_FUNDS, Config.HeroType.SPACE_MARINE);
+    /**
+     * Constructor for concrete Space Marine hero.
+     * @throws InvalidHeroTypeException thrown if {@link Config} enum value is invalid
+     * @throws InvalidHeroAttributeException thrown if {@link Config} parameter values are invalid
+     */
+    public HeroSpaceMarine(int heroId) throws InvalidHeroTypeException, InvalidHeroAttributeException {
+        super(Config.MARINE_HEALTH, Config.MARINE_START_FUNDS, Config.HeroType.SPACE_MARINE, heroId);
     }
 
     @Override

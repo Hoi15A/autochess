@@ -24,14 +24,14 @@ public abstract class HeroBase {
      * @throws InvalidHeroTypeException thrown if {@link Config} enum value is invalid
      * @throws InvalidHeroAttributeException thrown if {@link Config} parameter values are invalid
      */
-    public static HeroBase getHeroFromType(Config.HeroType heroType) throws InvalidHeroTypeException, InvalidHeroAttributeException {
+    public static HeroBase newHeroFromType(Config.HeroType heroType, int heroId) throws InvalidHeroTypeException, InvalidHeroAttributeException {
         switch (heroType) {
             case ALIEN:
-                return new HeroAlien();
+                return new HeroAlien(heroId);
             case ENGINEER:
-                return new HeroEngineer();
+                return new HeroEngineer(heroId);
             case SPACE_MARINE:
-                return new HeroSpaceMarine();
+                return new HeroSpaceMarine(heroId);
             default:
                 throw new InvalidHeroTypeException("Given HeroType does not exist");
         }
@@ -40,7 +40,7 @@ public abstract class HeroBase {
     private ArrayList<MinionBase> minionList = new ArrayList<>();
 
     private static final int MAX_LEGAL_VALUE = 1000;
-    private static int heroCounter = 1;
+    //private static int heroCounter = 1;
     private final int heroId;
     private final int maxHealth;
     private final Config.HeroType heroType;
@@ -56,11 +56,12 @@ public abstract class HeroBase {
      * @throws InvalidHeroTypeException thrown if {@link Config} enum value is invalid
      * @throws InvalidHeroAttributeException thrown if {@link Config} parameter values are invalid
      */
-    public HeroBase(int health, int funds, Config.HeroType heroType) throws InvalidHeroTypeException, InvalidHeroAttributeException {
+    public HeroBase(int health, int funds, Config.HeroType heroType, int heroId) throws InvalidHeroTypeException, InvalidHeroAttributeException {
         validateHeroParameters(health, funds);
         validateHeroType(heroType);
-        this.heroId = heroCounter;
-        heroCounter++;
+        this.heroId = heroId;
+        //this.heroId = heroCounter;
+        //heroCounter++;
         this.maxHealth = health;
         this.health = maxHealth;
         this.funds = funds;
@@ -79,8 +80,8 @@ public abstract class HeroBase {
 
     private void validateHeroType(Config.HeroType heroTypeToCheck) throws InvalidHeroTypeException {
         boolean searching = true;
-        for (Config.HeroType heroType : Config.HeroType.values()) {
-            if (heroTypeToCheck.equals(heroType)) {
+        for (Config.HeroType heroTypeValue : Config.HeroType.values()) {
+            if (heroTypeToCheck.equals(heroTypeValue)) {
                 searching = false;
             }
         }
@@ -200,13 +201,16 @@ public abstract class HeroBase {
         }
     }
 
+
     /**
      * Reset the unique ID counter for minions.
      * Used for testing
      */
+    /*
     public static void resetIdCounter() {
         heroCounter = 0;
     }
+     */
 
     /**
      * Abstract method for hero ability. Abilities can be activated to modify the attributes of the heroes minions.

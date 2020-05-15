@@ -3,6 +3,7 @@ package ch.zhaw.pm2.autochess.Board;
 import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
 import ch.zhaw.pm2.autochess.Board.exceptions.MinionNotOnBoardException;
 import ch.zhaw.pm2.autochess.Config;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
 import ch.zhaw.pm2.autochess.PositionVector;
 
@@ -26,6 +27,14 @@ public class BoardManager {
         }
     }
 
+    public void clearBattleLogs() {
+        battleLogs.clear();
+    }
+
+    public List<BattleLog> getBattleLogs() {
+        return battleLogs;
+    }
+
     private MinionBase getContentFromPosition(PositionVector position) throws InvalidPositionException {
         validatePosOnBoard(position);
         return boardArray2d[position.getY()][position.getX()];
@@ -33,7 +42,7 @@ public class BoardManager {
 
     private void validatePosOnBoard(PositionVector position) throws InvalidPositionException {
         if(position == null || position.getX() < 0 || position.getY() < 0 || position.getX() >= Config.BOARD_WIDTH || position.getY() >= Config.BOARD_HEIGHT) {
-            throw new InvalidPositionException("Invalid position: " + position + ". Valid between: " + Config.BOARD_WIDTH + " and " + Config.BOARD_HEIGHT);
+            throw new InvalidPositionException("Invalid position: " + position + ". Valid between: " + (Config.BOARD_WIDTH-1) + " and " + (Config.BOARD_HEIGHT-1));
         }
     }
 
@@ -45,9 +54,23 @@ public class BoardManager {
         }
     }
 
-    public void setMinionOnBoard(MinionBase minion, PositionVector pos) throws InvalidPositionException {
+    private void validatePosZone(PositionVector position, int heroId) throws InvalidPositionException, IllegalGameStateException {
+        if(heroId == Config.HERO_ID_1 || heroId == Config.HERO_ID_2) {
+            if (heroId == Config.HERO_ID_1 && position.getY() > Config.PLACE_ZONE_HEIGHT) {
+                throw new InvalidPositionException("Invalid position: " + position + ". Not in this hero's placement zone ");
+            } else if (heroId == Config.HERO_ID_2 && position.getY() < Config.BOARD_HEIGHT - Config.PLACE_ZONE_HEIGHT) {
+                throw new InvalidPositionException("Invalid position: " + position + ". Not in this hero's placement zone ");
+            }
+        } else {
+            throw new IllegalGameStateException("Invalid hero ID: " + heroId + ". Not a config value");
+        }
+    }
+
+    public void setMinionOnBoard(MinionBase minion, PositionVector pos) throws InvalidPositionException, IllegalGameStateException {
+        Objects.requireNonNull(minion, "Minion to place is null");
         validatePosOnBoard(pos);
         validatePosEmpty(pos);
+        validatePosZone(pos, minion.getHeroId());
         try {
             getMinionPosition(minion.getId());
             throw new InvalidPositionException("Invalid placement (MinionID:" + minion.getId() + "). Already placed.");
@@ -120,11 +143,10 @@ public class BoardManager {
         return isGreaterOneHero;
     }
 
-    public void doBattle() throws MinionNotOnBoardException, InvalidPositionException {
+    public void doBattle() throws MinionNotOnBoardException, InvalidPositionException, IllegalGameStateException {
         ArrayList<MinionBase> activeMinions = getAllMinionsOnBoard();
         //todo: sort by agility
-        //todo: implement battleLog
-        //todo: replace prints with battleLog
+        //todo: remove prints
         
         System.out.println("All active minions");
         for(MinionBase minion : activeMinions) {
@@ -149,8 +171,8 @@ public class BoardManager {
         }
     }
 
-    private void minionDoMove(MinionBase minion) throws MinionNotOnBoardException, InvalidPositionException {
-        //todo: replace prints with battleLog
+    private void minionDoMove(MinionBase minion) throws MinionNotOnBoardException, InvalidPositionException, IllegalGameStateException {
+        //todo: remove prints
         PositionVector currentPos = getMinionPosition(minion.getId());
         PositionVector movePosition = minion.move(boardArray2d, currentPos);
         BattleLog log = new BattleLog();
@@ -171,7 +193,7 @@ public class BoardManager {
     }
 
     private void minionDoAttack(MinionBase attacker) throws MinionNotOnBoardException, InvalidPositionException {
-        //todo: replace prints with battleLog
+        //todo: remove prints
         PositionVector currentPos = getMinionPosition(attacker.getId());
         PositionVector attackPosition = attacker.attack(boardArray2d, currentPos);
 

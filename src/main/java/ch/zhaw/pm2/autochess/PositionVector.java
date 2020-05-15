@@ -6,7 +6,7 @@ package ch.zhaw.pm2.autochess;
  *
  * Created by mach 21.01.2020
  */
-public final class PositionVector implements Cloneable {
+public final class PositionVector {
     private int x; // horizontal component (position / velocity)
     private int y; // vertical component (position / velocity)
 
