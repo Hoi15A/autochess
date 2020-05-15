@@ -1,8 +1,8 @@
 package ch.zhaw.pm2.autochess.controller;
 
 import ch.zhaw.pm2.autochess.Config;
-import ch.zhaw.pm2.autochess.Game.Game;
-import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.game.Game;
+import ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

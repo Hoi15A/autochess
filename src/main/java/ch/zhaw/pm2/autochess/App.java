@@ -3,12 +3,10 @@
  */
 package ch.zhaw.pm2.autochess;
 
-import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
-import ch.zhaw.pm2.autochess.Game.Game;
-import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsReductionException;
-
-import java.sql.SQLOutput;
+import ch.zhaw.pm2.autochess.board.exceptions.InvalidPositionException;
+import ch.zhaw.pm2.autochess.game.Game;
+import ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.hero.exceptions.IllegalFundsReductionException;
 
 public class App {
     public String getGreeting() {

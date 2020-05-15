@@ -1,10 +1,10 @@
 package ch.zhaw.pm2.autochess;
 
-import ch.zhaw.pm2.autochess.Game.Game;
-import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
-import ch.zhaw.pm2.autochess.Hero.HeroBase;
-import ch.zhaw.pm2.autochess.Hero.exceptions.*;
-import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
+import ch.zhaw.pm2.autochess.game.Game;
+import ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.hero.HeroBase;
+import ch.zhaw.pm2.autochess.hero.exceptions.*;
+import ch.zhaw.pm2.autochess.minion.exceptions.MinionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

@@ -1,7 +1,7 @@
 package ch.zhaw.pm2.autochess;
 
-import ch.zhaw.pm2.autochess.Minion.MinionBase;
-import ch.zhaw.pm2.autochess.Minion.strategy.AggressiveStrategy;
+import ch.zhaw.pm2.autochess.minion.MinionBase;
+import ch.zhaw.pm2.autochess.minion.strategy.AggressiveStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

@@ -1,11 +1,11 @@
 package ch.zhaw.pm2.autochess;
 
-import ch.zhaw.pm2.autochess.Hero.HeroAlien;
-import ch.zhaw.pm2.autochess.Hero.HeroBase;
-import ch.zhaw.pm2.autochess.Hero.exceptions.*;
-import ch.zhaw.pm2.autochess.Minion.MinionBase;
-import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
-import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
+import ch.zhaw.pm2.autochess.hero.HeroAlien;
+import ch.zhaw.pm2.autochess.hero.HeroBase;
+import ch.zhaw.pm2.autochess.hero.exceptions.*;
+import ch.zhaw.pm2.autochess.minion.MinionBase;
+import ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionTypeException;
+import ch.zhaw.pm2.autochess.minion.exceptions.MinionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

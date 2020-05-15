@@ -1,10 +1,10 @@
 package ch.zhaw.pm2.autochess;
 
-import ch.zhaw.pm2.autochess.Board.BoardManager;
-import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
-import ch.zhaw.pm2.autochess.Board.exceptions.MinionNotOnBoardException;
-import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
-import ch.zhaw.pm2.autochess.Minion.MinionBase;
+import ch.zhaw.pm2.autochess.board.BoardManager;
+import ch.zhaw.pm2.autochess.board.exceptions.InvalidPositionException;
+import ch.zhaw.pm2.autochess.board.exceptions.MinionNotOnBoardException;
+import ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.minion.MinionBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
 import org.junit.jupiter.api.Test;
@@ -14,8 +14,6 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardManagerTest {
 

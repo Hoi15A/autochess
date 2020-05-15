@@ -1,12 +1,12 @@
 package ch.zhaw.pm2.autochess.controller;
 
-import ch.zhaw.pm2.autochess.Board.BattleLog;
-import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
-import ch.zhaw.pm2.autochess.Board.exceptions.MinionNotOnBoardException;
+import ch.zhaw.pm2.autochess.board.BattleLog;
+import ch.zhaw.pm2.autochess.board.exceptions.InvalidPositionException;
+import ch.zhaw.pm2.autochess.board.exceptions.MinionNotOnBoardException;
 import ch.zhaw.pm2.autochess.Config;
-import ch.zhaw.pm2.autochess.Game.Game;
-import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
+import ch.zhaw.pm2.autochess.game.Game;
+import ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.PositionVector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

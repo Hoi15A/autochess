@@ -1,11 +1,9 @@
 package ch.zhaw.pm2.autochess.controller;
 
-import ch.zhaw.pm2.autochess.Board.BattleLog;
-import ch.zhaw.pm2.autochess.Game.Game;
-import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.board.BattleLog;
+import ch.zhaw.pm2.autochess.game.Game;
+import ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

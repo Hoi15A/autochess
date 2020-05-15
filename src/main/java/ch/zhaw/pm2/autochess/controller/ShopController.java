@@ -1,10 +1,10 @@
 package ch.zhaw.pm2.autochess.controller;
 
 import ch.zhaw.pm2.autochess.Config;
-import ch.zhaw.pm2.autochess.Game.Game;
-import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsReductionException;
-import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
+import ch.zhaw.pm2.autochess.game.Game;
+import ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.hero.exceptions.IllegalFundsReductionException;
+import ch.zhaw.pm2.autochess.hero.exceptions.InvalidMinionIDException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;

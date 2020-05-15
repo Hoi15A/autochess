@@ -1,14 +1,14 @@
 package ch.zhaw.pm2.autochess;
 
-import ch.zhaw.pm2.autochess.Minion.MinionBase;
-import ch.zhaw.pm2.autochess.Minion.Ranger;
-import ch.zhaw.pm2.autochess.Minion.Tank;
-import ch.zhaw.pm2.autochess.Minion.Warrior;
-import ch.zhaw.pm2.autochess.Minion.strategy.AggressiveStrategy;
-import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeException;
-import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierException;
-import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
-import ch.zhaw.pm2.autochess.Minion.exceptions.MinionException;
+import ch.zhaw.pm2.autochess.minion.MinionBase;
+import ch.zhaw.pm2.autochess.minion.Ranger;
+import ch.zhaw.pm2.autochess.minion.Tank;
+import ch.zhaw.pm2.autochess.minion.Warrior;
+import ch.zhaw.pm2.autochess.minion.strategy.AggressiveStrategy;
+import ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionAttributeException;
+import ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionAttributeModifierException;
+import ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionTypeException;
+import ch.zhaw.pm2.autochess.minion.exceptions.MinionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

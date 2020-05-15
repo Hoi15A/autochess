@@ -1,6 +1,6 @@
 package ch.zhaw.pm2.autochess.controller;
 
-import ch.zhaw.pm2.autochess.Game.Game;
+import ch.zhaw.pm2.autochess.game.Game;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
