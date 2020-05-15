@@ -10,9 +10,4 @@ public class Ranger extends MinionBase {
     public Ranger(int heroId) throws InvalidMinionAttributeException, InvalidMinionTypeException {
         super(Config.MinionType.RANGER, new CowardStrategy(), Config.RANGER_PRICE, Config.RANGER_HEALTH, Config.RANGER_ATTACK, Config.RANGER_DEFENCE, Config.RANGER_MOVEMENT_RANGE, Config.RANGER_ATTACK_RANGE, Config.RANGER_AGILITY, heroId);
     }
-
-    @Override
-    public String toString() {
-        return "R";
-    }
 }

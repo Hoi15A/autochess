@@ -9,13 +9,18 @@ import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionAttributeModifierExc
 
 public class HeroAlien extends HeroBase {
 
-    public HeroAlien() throws InvalidHeroTypeException, InvalidHeroAttributeException {
-        super(Config.ALIEN_HEALTH, Config.ALIEN_START_FUNDS, Config.HeroType.ALIEN);
+    /**
+     * Constructor for concrete Alien hero.
+     * @throws InvalidHeroTypeException thrown if {@link Config} enum value is invalid
+     * @throws InvalidHeroAttributeException thrown if {@link Config} parameter values are invalid
+     */
+    public HeroAlien(int heroId) throws InvalidHeroTypeException, InvalidHeroAttributeException {
+        super(Config.ALIEN_HEALTH, Config.ALIEN_START_FUNDS, Config.HeroType.ALIEN, heroId);
     }
 
     //ONLY FOR TESTING
-    public HeroAlien(int health, int startingFunds) throws InvalidHeroTypeException, InvalidHeroAttributeException {
-        super(health, startingFunds, Config.HeroType.ALIEN);
+    public HeroAlien(int health, int startingFunds, int heroId) throws InvalidHeroTypeException, InvalidHeroAttributeException {
+        super(health, startingFunds, Config.HeroType.ALIEN, heroId);
     }
 
     @Override

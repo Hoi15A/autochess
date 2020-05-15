@@ -27,7 +27,6 @@ public abstract class MinionBase {
     private final int heroId;
     private final int price;
     private int health;
-    private int level = 1;
     private int attackModifier = 0;
     private int defenseModifier = 0;
     private int attackRangeModifier = 0;
@@ -133,26 +132,8 @@ public abstract class MinionBase {
         return health;
     }
 
-    /**
-     * Returns the minions level
-     * @return level
-     */
-    public int getLevel() {
-        return level;
-    }
-
-    /**
-     * Alter the minions level
-     * @param levelDifference The change in level to apply
-     */
-    public void modifyLevel(int levelDifference) {
-        if (level + levelDifference > Config.MAX_MINION_LEVEL) {
-            level = Config.MAX_MINION_LEVEL;
-        } else if (level + levelDifference < 1) {
-            level = 1;
-        } else {
-            level += levelDifference;
-        }
+    public void resetHealth() {
+        health = maxHealth;
     }
 
     /**
@@ -251,15 +232,20 @@ public abstract class MinionBase {
     }
 
     public PositionVector move(MinionBase[][] board, PositionVector currentPos) {
-        return strategy.move(board, currentPos, getMovementRange());
+        return strategy.move(board, currentPos, this);
     }
 
     public PositionVector attack(MinionBase[][] board, PositionVector currentPos) {
-        return strategy.attack(board, currentPos, getAttackRange());
+        return strategy.attack(board, currentPos, this);
     }
 
     public String getInfoAsString() {
-        String info = "-ID: " + minionId + ", type:" + type + ", Lvl: " + level + ", HP: " + health;
+        String info = "-ID: " + minionId + ", type:" + type + ", HP: " + health;
         return info;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(minionId);
     }
 }
