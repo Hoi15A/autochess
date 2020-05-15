@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -65,7 +66,7 @@ public class HeroSelectController implements Initializable {
     private Config.HeroType heroTypePlayer1;
     private Config.HeroType heroTypePlayer2;
 
-    private Game game;
+    protected Game game;
 
     @FXML
     GridPane mainGrid;
@@ -103,7 +104,7 @@ public class HeroSelectController implements Initializable {
         mainGrid.add(nextButton, 2, 4);
     }
 
-    public void nextButtonClicked() {
+    public void nextButtonClicked(Stage currentStage) {
         if (player1Hero1Button.equals(player1ButtonGroup.getSelectedToggle())) {
             heroTypePlayer1 = Config.HeroType.ALIEN;
         } else if (player1Hero2Button.equals(player1ButtonGroup.getSelectedToggle())) {
@@ -126,8 +127,15 @@ public class HeroSelectController implements Initializable {
 
         try {
             game = new Game(heroTypePlayer1, heroTypePlayer2);
-        } catch (IllegalGameStateException e) {
-            System.out.println(e.getStackTrace());
+        } catch (IllegalGameStateException illegalGameStateException) {
+            /* todo popup
+            final Popup popup = new Popup();
+            popup.setX(300);
+            popup.setY(200);
+            popup.getContent().addAll(new Text("something went wrong"));
+            popup.show(currentStage);
+            */
+            System.out.println(illegalGameStateException.getStackTrace());
         }
     }
 
@@ -179,6 +187,8 @@ public class HeroSelectController implements Initializable {
         player1Hero2Button = new RadioButton();
         player1Hero3Button = new RadioButton();
 
+        player1Hero1Button.setSelected(true);
+
         player1Hero1Button.setToggleGroup(player1ButtonGroup);
         player1Hero2Button.setToggleGroup(player1ButtonGroup);
         player1Hero3Button.setToggleGroup(player1ButtonGroup);
@@ -189,6 +199,8 @@ public class HeroSelectController implements Initializable {
         player2Hero1Button = new RadioButton();
         player2Hero2Button = new RadioButton();
         player2Hero3Button = new RadioButton();
+
+        player2Hero1Button.setSelected(true);
 
         player1Hero1Button.setId("player1Hero1Button");
         player2Hero2Button.setId("player2Hero2Button");
