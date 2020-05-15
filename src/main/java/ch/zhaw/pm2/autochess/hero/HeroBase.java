@@ -13,6 +13,7 @@ import ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionTypeException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -344,7 +345,7 @@ public abstract class HeroBase {
      * Getter method for the minion list this hero holds
      * @return minion list
      */
-    public ArrayList<MinionBase> getMinionList() {
+    public List<MinionBase> getMinionList() {
         return minionList;
     }
 

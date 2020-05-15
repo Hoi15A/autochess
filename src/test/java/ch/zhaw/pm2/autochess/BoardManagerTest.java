@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -171,7 +172,7 @@ public class BoardManagerTest {
         ArrayList<MinionBase> referenceList = new ArrayList<>();
         referenceList.add(minionOne);
         referenceList.add(minionTwo);
-        ArrayList<MinionBase> boardManagerList = boardManager.getAllMinionsOnBoard();
+        List<MinionBase> boardManagerList = boardManager.getAllMinionsOnBoard();
 
         for(int i = 0; i < referenceList.size(); i++ ) {
             assertEquals(referenceList.get(i), boardManagerList.get(i));
@@ -185,9 +186,9 @@ public class BoardManagerTest {
 
         when(minionOne.getHeroId()).thenReturn(HERO_ID_1);
         when(minionTwo.getHeroId()).thenReturn(HERO_ID_2);
-        ArrayList<MinionBase> referenceList = new ArrayList<>();
+        List<MinionBase> referenceList = new ArrayList<>();
         referenceList.add(minionOne);
-        ArrayList<MinionBase> boardManagerList = boardManager.getSpecHeroMinionsFromBoard(HERO_ID_1);
+        List<MinionBase> boardManagerList = boardManager.getSpecHeroMinionsFromBoard(HERO_ID_1);
 
         for(int i = 0; i < referenceList.size(); i++ ) {
             assertEquals(referenceList.get(i), boardManagerList.get(i));

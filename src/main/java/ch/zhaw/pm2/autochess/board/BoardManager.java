@@ -157,8 +157,8 @@ public class BoardManager {
      * Getter method for all placed minions on board
      * @return List of {@link MinionBase} objects
      */
-    public ArrayList<MinionBase> getAllMinionsOnBoard() {
-        ArrayList<MinionBase> listActiveMinions = new ArrayList<>();
+    public List<MinionBase> getAllMinionsOnBoard() {
+        List<MinionBase> listActiveMinions = new ArrayList<>();
         for(int i = 0; i < boardArray2d.length; i++) {
             for(int j = 0; j < boardArray2d.length; j++) {
                 MinionBase minion = boardArray2d[i][j];
@@ -175,8 +175,8 @@ public class BoardManager {
      * @param heroId int hero ID value to match
      * @return List of {@link MinionBase} objects
      */
-    public ArrayList<MinionBase> getSpecHeroMinionsFromBoard(int heroId) {
-        ArrayList<MinionBase> listActiveMinions = new ArrayList<>();
+    public List<MinionBase> getSpecHeroMinionsFromBoard(int heroId) {
+        List<MinionBase> listActiveMinions = new ArrayList<>();
         for(int i = 0; i < boardArray2d.length; i++) {
             for(int j = 0; j < boardArray2d.length; j++) {
                 MinionBase minion = boardArray2d[i][j];
@@ -214,7 +214,7 @@ public class BoardManager {
      * @throws InvalidPositionException thrown if the given position to set minion is not valid
      */
     public void doBattle() throws MinionNotOnBoardException, InvalidPositionException {
-        ArrayList<MinionBase> activeMinions = getAllMinionsOnBoard();
+        List<MinionBase> activeMinions = getAllMinionsOnBoard();
 
         int loopCounter = 0;
         while(checkEachHeroActiveMinions() && loopCounter < Config.MAX_BATTLE_LOOPS){
