@@ -1,4 +1,4 @@
-# Report 24.04.2020
+# Report
 
 ## Discussion Points:
 1. Intentions for project
@@ -6,6 +6,7 @@
 3. First basic structure
 4. First basic features
 5. Design/Theme
+6. Ongoing decisions
 
 ### 1. Intentions for current project based on feedback of first project:
 	- More branches -> Feature based not class based
@@ -54,3 +55,16 @@
 	- Theme: Space -> Astronauts, Aliens etc
 	- Cartoonish style, dark design
 	- Board visualization: Top down with Players side left and right
+    
+### 6. Ongoing decisions
+    - BoardManager holds 2D board with placed Minions
+    - Minion Position only known to BoardManager
+    - Minion attributes can be modified
+    - Battle organized by BoardManager
+    - Battle generate list of BattleLog objects for GUI to display
+    - Minion holds Strategy object. Minion called directily from BoardManager to make move or attack
+    - Three Strategies: Aggressive, Coward, Defensive
+    - Hero has persitent buff and one time ability to modify minions
+    - Gui consists of mulitple controllers for FXML
+    - Game initializes explicitly two heroes for game
+    - Config class to hold all constant values
