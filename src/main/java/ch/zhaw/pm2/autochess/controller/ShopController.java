@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -21,6 +22,10 @@ import java.util.ResourceBundle;
 public class ShopController implements Initializable {
     private Text player1Text;
     private Text player2Text;
+    private int p1Funds;
+    private int p2Funds;
+
+
 
     private GridPane player1BuyPane;
     private GridPane player2BuyPane;
@@ -62,21 +67,29 @@ public class ShopController implements Initializable {
         -getCoin to display coins  -> getHeroFunds(int heroId)
          */
 
-
-        shopMainGrid.add(player1Text, 0, 0);
-        shopMainGrid.add(player2Text, 1, 0);
         shopMainGrid.add(player1BuyPane, 0, 1);
         shopMainGrid.add(player2BuyPane, 1, 1);
         shopMainGrid.add(player1SellPane, 0, 2);
         shopMainGrid.add(player2SellPane, 1, 2);
 
-
         shopMainGrid.add(nextButton, 1, 4);
     }
 
     private void initializePlayerText() {
-        player1Text = new Text("Player 1 Shop");
-        player2Text = new Text("Player 2 Shop");
+        try {
+            p1Funds = game.getHeroFunds(1);
+            p2Funds = game.getHeroFunds(2);
+        } catch (IllegalGameStateException e) {
+            e.printStackTrace();
+        }
+        player1Text = new Text("Player 1 Shop | cash: "+p1Funds);
+        player2Text = new Text("Player 2 Shop | cash: "+p2Funds);
+
+        shopMainGrid.getChildren().remove(player1Text);
+        shopMainGrid.getChildren().remove(player2Text);
+
+        shopMainGrid.add(player1Text, 0, 0);
+        shopMainGrid.add(player2Text, 1, 0);
     }
 
     private void initializePlayerBuyView() {
@@ -103,15 +116,15 @@ public class ShopController implements Initializable {
         Button p1BuyRanger = new Button("buy");
 
         player1BuyPane.add(new Label("Tank"), 0, 0);
-        player1BuyPane.add(new Label("10$"), 1, 0);
+        player1BuyPane.add(new Label(Config.TANK_PRICE+" $"), 1, 0);
         player1BuyPane.add(p1BuyTank, 2, 0);
 
         player1BuyPane.add(new Label("Warrior"), 0, 1);
-        player1BuyPane.add(new Label("10$"), 1, 1);
+        player1BuyPane.add(new Label(Config.WARRIOR_PRICE+" $"), 1, 1);
         player1BuyPane.add(p1BuyWarrior, 2, 1);
 
         player1BuyPane.add(new Label("Ranger"), 0, 2);
-        player1BuyPane.add(new Label("10$"), 1, 2);
+        player1BuyPane.add(new Label(Config.RANGER_PRICE+" $"), 1, 2);
         player1BuyPane.add(p1BuyRanger, 2, 2);
 
         p1BuyTank.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -124,6 +137,7 @@ public class ShopController implements Initializable {
                 } catch (IllegalFundsReductionException e) {
                     e.printStackTrace();
                 }
+                initializePlayerText();
                 reloadMinionList();
             }
         });
@@ -138,6 +152,7 @@ public class ShopController implements Initializable {
                 } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
+                initializePlayerText();
                 reloadMinionList();
             }
         });
@@ -152,6 +167,7 @@ public class ShopController implements Initializable {
                 } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
+                initializePlayerText();
                 reloadMinionList();
             }
         });
@@ -254,6 +270,12 @@ public class ShopController implements Initializable {
         player1SellPane.add(p1minionIDFiel, 0, 0);
         player1SellPane.add(p1SellButton, 1, 0);
 
+        p1minionIDFiel.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!p1minionIDFiel.getText().matches("\\d*")) {
+                p1minionIDFiel.setText(p1minionIDFiel.getText().replaceAll("[^\\d]", ""));
+            }
+        });
+
         p1SellButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -266,6 +288,7 @@ public class ShopController implements Initializable {
                     System.out.println(invalidMinionIDException.getStackTrace());
                 }
                 reloadMinionList();
+                p1minionIDFiel.setText("");
             }
         });
 
@@ -289,6 +312,12 @@ public class ShopController implements Initializable {
         player2SellPane.add(p2minionIDFiel, 0, 0);
         player2SellPane.add(p2SellButton, 1, 0);
 
+        p2minionIDFiel.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!p2minionIDFiel.getText().matches("\\d*")) {
+                p2minionIDFiel.setText(p2minionIDFiel.getText().replaceAll("[^\\d]", ""));
+            }
+        });
+
         p2SellButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -301,6 +330,7 @@ public class ShopController implements Initializable {
                     System.out.println(invalidMinionIDException.getStackTrace());
                 }
                 reloadMinionList();
+                p2minionIDFiel.setText("");
             }
         });
     }
