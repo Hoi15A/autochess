@@ -1,0 +1,5 @@
+#fieldGrid{
+    -fx-grid-lines-visible: true;
+    -fx-padding: 0;
+    -fx-background-position: center center;
+}
