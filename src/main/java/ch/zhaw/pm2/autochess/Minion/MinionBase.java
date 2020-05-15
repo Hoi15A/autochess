@@ -251,11 +251,11 @@ public abstract class MinionBase {
     }
 
     public PositionVector move(MinionBase[][] board, PositionVector currentPos) {
-        return strategy.move(board, currentPos, getMovementRange());
+        return strategy.move(board, currentPos, this);
     }
 
     public PositionVector attack(MinionBase[][] board, PositionVector currentPos) {
-        return strategy.attack(board, currentPos, getAttackRange());
+        return strategy.attack(board, currentPos, this);
     }
 
     public String getInfoAsString() {
