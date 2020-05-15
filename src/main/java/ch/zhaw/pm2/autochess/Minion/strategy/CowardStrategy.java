@@ -52,7 +52,8 @@ public class CowardStrategy extends MoveStrategy {
 
     /**
      * Will always attack the closest minion within attack range.
-     * Same as the aggressive strategy.
+     * This is a duplicate of the aggressive attack strategy. It has been purposefully not been put in the superclass
+     * as in future it could be made unique per strategy.
      *
      * @param board    Current board state.
      * @param position The position that the movement should be based on.
@@ -61,7 +62,6 @@ public class CowardStrategy extends MoveStrategy {
      */
     @Override
     public PositionVector attack(MinionBase[][] board, PositionVector position, MinionBase self) {
-        // TODO: Deal with duplication
         PositionVector targetPosition = null;
 
         List<PositionVector> possibleTargets = findPositionsInRange(getNonFriendlyPositions(board, self), position, self.getAttackRange());

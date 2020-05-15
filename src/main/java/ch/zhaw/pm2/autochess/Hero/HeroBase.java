@@ -25,15 +25,19 @@ public abstract class HeroBase {
      * @throws InvalidHeroAttributeException thrown if {@link Config} parameter values are invalid
      */
     public static HeroBase newHeroFromType(Config.HeroType heroType, int heroId) throws InvalidHeroTypeException, InvalidHeroAttributeException {
-        switch (heroType) {
-            case ALIEN:
-                return new HeroAlien(heroId);
-            case ENGINEER:
-                return new HeroEngineer(heroId);
-            case SPACE_MARINE:
-                return new HeroSpaceMarine(heroId);
-            default:
-                throw new InvalidHeroTypeException("Given HeroType does not exist");
+        if(heroType == null) {
+            throw new InvalidHeroTypeException("HeroType cannot be null");
+        } else {
+            switch (heroType) {
+                case ALIEN:
+                    return new HeroAlien(heroId);
+                case ENGINEER:
+                    return new HeroEngineer(heroId);
+                case SPACE_MARINE:
+                    return new HeroSpaceMarine(heroId);
+                default:
+                    throw new InvalidHeroTypeException("Given HeroType does not exist");
+            }
         }
     }
 
@@ -326,6 +330,9 @@ public abstract class HeroBase {
         return minionIdSet;
     }
 
+    /**
+     * Reset health of all minions this hero holds
+     */
     public void resetAllMinionHealth() {
         for(MinionBase minion : minionList) {
             minion.resetHealth();
