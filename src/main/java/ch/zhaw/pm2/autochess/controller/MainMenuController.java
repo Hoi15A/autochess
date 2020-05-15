@@ -21,6 +21,7 @@ public class MainMenuController implements Initializable {
     protected Text menuNewGame;
     private Text menuHelp;
     private VBox menuBox;
+    private Text linkText;
 
     @FXML
     GridPane mainGrid;
@@ -30,6 +31,7 @@ public class MainMenuController implements Initializable {
         menuNewGame = new Text("NEW GAME");
         menuHelp = new Text("HELP");
         menuBox = new VBox();
+        linkText = new Text("https://github.zhaw.ch/PM2-IT19bWIN-benf-runm/gruppe05-alalau-projekt2-autochess/blob/develop/README.md");
     }
 
     @Override
@@ -45,11 +47,11 @@ public class MainMenuController implements Initializable {
         mainGrid.add(menuBox,0,1);
 
         //Help listener
-        menuHelp.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        menuHelp.setOnMouseClicked(new EventHandler<>() {
             @Override
             public void handle(MouseEvent event) {
-                //todo
-                System.out.println("link to redme");
+                menuBox.getChildren().remove(linkText);
+                menuBox.getChildren().add(linkText);
             }
         });
     }

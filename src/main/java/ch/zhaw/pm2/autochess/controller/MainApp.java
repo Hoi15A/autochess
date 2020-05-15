@@ -187,7 +187,7 @@ public class MainApp extends Application {
             Pane gamePane = loader.load();
 
             gamePane.getStylesheets().add(String.valueOf(getClass().getResource("css/GameStylesheet.css")));
-            gamePane.setId("shopPane");
+            gamePane.setId("gamePane");
             Scene gameScene = new Scene(gamePane);
 
             gameStage.setResizable(false);
@@ -204,17 +204,18 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent event) {
                 gameController.doBattle();
+
+                ListView<String> battleLogList = new ListView<>();
+
+                for(BattleLog battleLog : game.getBattleLog()){
+                    String battleLogString = battleLog.toString();
+                    battleLogList.getItems().add(battleLogString);
+
+                }
+
                 if (game.getWinner() == -1) {
                     loadShopWindow();
                     gameStage.close();
-
-                    ListView<String> battleLogList = new ListView<String>();
-
-                    for(BattleLog battleLog : game.getBattleLog()){
-                        String battleLogString = battleLog.toString();
-                        battleLogList.getItems().add(battleLogString);
-
-                    }
 
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
@@ -241,6 +242,8 @@ public class MainApp extends Application {
                     dialog.initOwner(mainMenuStage);
                     VBox dialogVbox = new VBox(20);
                     dialogVbox.getChildren().add(new Text("Game Over!  Player " + game.getWinner() + " won"));
+                    dialogVbox.getChildren().add(new Text("BattleLog:"));
+                    dialogVbox.getChildren().add(battleLogList);
                     Scene dialogScene = new Scene(dialogVbox, 400, 200);
                     dialog.setScene(dialogScene);
                     dialog.show();
