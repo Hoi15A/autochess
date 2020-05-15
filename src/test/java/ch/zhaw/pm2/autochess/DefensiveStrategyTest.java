@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class DefensiveStrategyTest {
@@ -17,10 +19,20 @@ public class DefensiveStrategyTest {
     @Mock private MinionBase dummyMinion;
     private DefensiveStrategy strategy;
 
+    private final static int HERO_ID_A = 0;
+    private final static int HERO_ID_B = 1;
+    private final static int DEF_MINION_ATK_RANGE = 1;
+    private final static int DEF_MINION_MOV_RANGE = 1;
+    private final static int DEF_MINION_ID = 0;
+    private final static int DUMMY_MINION_ID = 1;
+    private final static int ROWS = 8;
+    private final static int COLS = 8;
+    private final static PositionVector TOP_LEFT = new PositionVector(0, 0);
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        board = new MinionBase[8][8];
+        board = new MinionBase[ROWS][COLS];
 
         strategy = new DefensiveStrategy();
     }
@@ -28,11 +40,9 @@ public class DefensiveStrategyTest {
     @Test
     void testNoTargetNoMove() {
         board[0][0] = defMinion;
-
         setUpDefensiveMinionMock();
 
-        PositionVector resultPos = strategy.move(board, new PositionVector(0, 0), defMinion);
-
+        PositionVector resultPos = strategy.move(board, TOP_LEFT, defMinion);
         assertNull(resultPos);
     }
 
@@ -44,13 +54,13 @@ public class DefensiveStrategyTest {
         board[7][7] = dummyMinion;
         setUpDummyMinionMock();
 
-        PositionVector result = strategy.move(board, new PositionVector(0, 0), defMinion);
+        PositionVector result = strategy.move(board, TOP_LEFT, defMinion);
         assertNull(result);
 
         board[7][7] = null;
         board[1][1] = dummyMinion;
 
-        result = strategy.move(board, new PositionVector(0, 0), defMinion);
+        result = strategy.move(board, TOP_LEFT, defMinion);
         assertEquals(new PositionVector(1, 0), result);
     }
 
@@ -66,7 +76,7 @@ public class DefensiveStrategyTest {
         board[0][0] = defMinion;
         setUpDefensiveMinionMock();
 
-        PositionVector resultPos = strategy.attack(board, new PositionVector(0, 0), defMinion);
+        PositionVector resultPos = strategy.attack(board, TOP_LEFT, defMinion);
         assertNull(resultPos);
     }
 
@@ -78,31 +88,31 @@ public class DefensiveStrategyTest {
         board[1][1] = dummyMinion;
         setUpDummyMinionMock();
 
-        PositionVector resultPos = strategy.attack(board, new PositionVector(0, 0), defMinion);
+        PositionVector resultPos = strategy.attack(board, TOP_LEFT, defMinion);
         assertEquals(new PositionVector(1, 1), resultPos);
 
         board[1][0] = dummyMinion;
-        resultPos = strategy.attack(board, new PositionVector(0, 0), defMinion);
+        resultPos = strategy.attack(board, TOP_LEFT, defMinion);
         assertEquals(new PositionVector(0, 1), resultPos);
     }
 
     @Test
     void testNullAttack() {
         assertThrows(NullPointerException.class, () -> {
-            PositionVector result = strategy.attack(null, null, null);
+            strategy.attack(null, null, null);
         });
     }
 
 
     private void setUpDefensiveMinionMock() {
-        when(defMinion.getMovementRange()).thenReturn(1);
-        when(defMinion.getAttackRange()).thenReturn(1);
-        when(defMinion.getId()).thenReturn(0);
-        when(defMinion.getHeroId()).thenReturn(0);
+        when(defMinion.getMovementRange()).thenReturn(DEF_MINION_MOV_RANGE);
+        when(defMinion.getAttackRange()).thenReturn(DEF_MINION_ATK_RANGE);
+        when(defMinion.getId()).thenReturn(DEF_MINION_ID);
+        when(defMinion.getHeroId()).thenReturn(HERO_ID_A);
     }
 
     private void setUpDummyMinionMock() {
-        when(dummyMinion.getId()).thenReturn(2);
-        when(dummyMinion.getHeroId()).thenReturn(1);
+        when(dummyMinion.getId()).thenReturn(DUMMY_MINION_ID);
+        when(dummyMinion.getHeroId()).thenReturn(HERO_ID_B);
     }
 }
