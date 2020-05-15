@@ -65,7 +65,6 @@ public class AggressiveStrategy extends MoveStrategy {
      */
     @Override
     public PositionVector attack(MinionBase[][] board, PositionVector position, MinionBase self) {
-        // TODO: Deal with duplication
         PositionVector targetPosition = null;
 
         List<PositionVector> possibleTargets = findPositionsInRange(getNonFriendlyPositions(board, self), position, self.getAttackRange());
