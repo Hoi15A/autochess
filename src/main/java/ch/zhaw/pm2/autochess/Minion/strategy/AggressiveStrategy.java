@@ -51,10 +51,6 @@ public class AggressiveStrategy extends MoveStrategy {
             }
         }
 
-        // If the calculated move is the same position as the minion, do nothing
-        if (position.equals(targetPosition)) {
-            targetPosition = null;
-        }
 
         return targetPosition;
     }
