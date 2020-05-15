@@ -27,8 +27,8 @@ public class MainMenuController implements Initializable {
 
     public MainMenuController(Game game){
         menuTitle = new Text("SMAC");
-        menuNewGame = new Text("new Game");
-        menuHelp = new Text("help");
+        menuNewGame = new Text("NEW GAME");
+        menuHelp = new Text("HELP");
         menuBox = new VBox();
     }
 
