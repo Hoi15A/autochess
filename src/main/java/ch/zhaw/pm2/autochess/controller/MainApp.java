@@ -1,11 +1,15 @@
 package ch.zhaw.pm2.autochess.controller;
 
+import ch.zhaw.pm2.autochess.Board.BattleLog;
 import ch.zhaw.pm2.autochess.Game.Game;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -205,6 +209,15 @@ public class MainApp extends Application {
                 if (game.getWinner() == -1) {
                     loadShopWindow();
                     gameStage.close();
+
+                    ListView<String> battleLogList = new ListView<String>();
+
+                    for(BattleLog battleLog : game.getBattleLog()){
+                        String battleLogString = battleLog.toString();
+                        battleLogList.getItems().add(battleLogString);
+
+                    }
+
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initOwner(shopStage);
@@ -213,10 +226,13 @@ public class MainApp extends Application {
                     try {
                         dialogVbox.getChildren().add(new Text("Player1: "+game.getHeroHealth(1)+" health"));
                         dialogVbox.getChildren().add(new Text("Player2: "+game.getHeroHealth(2)+" health"));
+                        dialogVbox.getChildren().add(new Text("BattleLog:"));
+                        dialogVbox.getChildren().add(battleLogList);
+
                     } catch (IllegalGameStateException e) {
                         e.printStackTrace();
                     }
-                    Scene dialogScene = new Scene(dialogVbox, 400, 200);
+                    Scene dialogScene = new Scene(dialogVbox, 400, 300);
                     dialog.setScene(dialogScene);
                     dialog.show();
                 } else {
