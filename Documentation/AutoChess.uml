@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>ch.zhaw.pm2.autochess.controller.MainApp</OriginalElement>
+  <nodes>
+    <node x="1553.5" y="731.0">ch.zhaw.pm2.autochess.minion.Ranger</node>
+    <node x="1220.0" y="2815.0">ch.zhaw.pm2.autochess.controller.HeroSelectController</node>
+    <node x="2225.0" y="0.0">ch.zhaw.pm2.autochess.BoardManagerTest</node>
+    <node x="240.0" y="3080.0">ch.zhaw.pm2.autochess.CowardStrategyTest</node>
+    <node x="408.0" y="2950.0">ch.zhaw.pm2.autochess.board.exceptions.InvalidPositionException</node>
+    <node x="1198.0" y="0.0">ch.zhaw.pm2.autochess.minion.MinionBase</node>
+    <node x="2246.0" y="2815.0">ch.zhaw.pm2.autochess.controller.ShopController</node>
+    <node x="1781.0" y="0.0">javafx.application.Application</node>
+    <node x="523.0" y="2685.0">ch.zhaw.pm2.autochess.minion.strategy.CowardStrategy</node>
+    <node x="766.0" y="1777.0">ch.zhaw.pm2.autochess.board.BattleLog</node>
+    <node x="902.0" y="650.0">ch.zhaw.pm2.autochess.hero.HeroAlien</node>
+    <node x="382.0" y="1777.0">ch.zhaw.pm2.autochess.MinionTest</node>
+    <node x="1400.5" y="731.0">ch.zhaw.pm2.autochess.minion.Warrior</node>
+    <node x="1562.0" y="2815.0">ch.zhaw.pm2.autochess.controller.GameController</node>
+    <node x="2588.0" y="2815.0">ch.zhaw.pm2.autochess.HeroTest</node>
+    <node x="1267.5" y="731.0">ch.zhaw.pm2.autochess.minion.Tank</node>
+    <node x="0.0" y="2420.0">ch.zhaw.pm2.autochess.hero.exceptions.IllegalValueException</node>
+    <node x="1532.0" y="2420.0">ch.zhaw.pm2.autochess.hero.exceptions.IllegalFundsReductionException</node>
+    <node x="1046.0" y="2685.0">ch.zhaw.pm2.autochess.minion.strategy.AggressiveStrategy</node>
+    <node x="0.0" y="3080.0">ch.zhaw.pm2.autochess.DefensiveStrategyTest</node>
+    <node x="788.0" y="2285.0">ch.zhaw.pm2.autochess.hero.exceptions.HeroException</node>
+    <node x="2509.0" y="2685.0">ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionTypeException</node>
+    <node x="0.0" y="0.0">ch.zhaw.pm2.autochess.Config</node>
+    <node x="1904.0" y="2815.0">ch.zhaw.pm2.autochess.controller.MainMenuController</node>
+    <node x="579.0" y="0.0">ch.zhaw.pm2.autochess.hero.HeroBase</node>
+    <node x="0.0" y="2950.0">ch.zhaw.pm2.autochess.board.exceptions.MinionNotOnBoardException</node>
+    <node x="2105.5" y="2550.0">ch.zhaw.pm2.autochess.minion.exceptions.MinionException</node>
+    <node x="0.0" y="2685.0">ch.zhaw.pm2.autochess.minion.strategy.DefensiveStrategy</node>
+    <node x="734.0" y="2420.0">ch.zhaw.pm2.autochess.hero.exceptions.InvalidHeroAttributeException</node>
+    <node x="807.0" y="2950.0">ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException</node>
+    <node x="2736.0" y="0.0">ch.zhaw.pm2.autochess.game.Game</node>
+    <node x="1312.0" y="1777.0">ch.zhaw.pm2.autochess.board.BoardManager</node>
+    <node x="1891.5" y="435.0">ch.zhaw.pm2.autochess.controller.MainApp</node>
+    <node x="0.0" y="1777.0">ch.zhaw.pm2.autochess.GameTest</node>
+    <node x="1787.0" y="1777.0">ch.zhaw.pm2.autochess.PositionVector</node>
+    <node x="523.0" y="2550.0">ch.zhaw.pm2.autochess.minion.strategy.MoveStrategy</node>
+    <node x="631.0" y="663.5">ch.zhaw.pm2.autochess.hero.HeroSpaceMarine</node>
+    <node x="1594.0" y="2685.0">ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionAttributeException</node>
+    <node x="2022.0" y="2685.0">ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionAttributeModifierException</node>
+    <node x="360.0" y="663.5">ch.zhaw.pm2.autochess.hero.HeroEngineer</node>
+    <node x="351.0" y="2420.0">ch.zhaw.pm2.autochess.hero.exceptions.InvalidMinionIDException</node>
+    <node x="2932.0" y="2815.0">ch.zhaw.pm2.autochess.AggressiveStrategyTest</node>
+    <node x="1147.0" y="2420.0">ch.zhaw.pm2.autochess.hero.exceptions.InvalidHeroTypeException</node>
+    <node x="845.0" y="2815.0">ch.zhaw.pm2.autochess.game.exceptions.GameException</node>
+    <node x="212.0" y="2815.0">ch.zhaw.pm2.autochess.board.exceptions.BoardManagerException</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ch.zhaw.pm2.autochess.hero.HeroAlien" target="ch.zhaw.pm2.autochess.hero.HeroBase">
+      <point x="0.0" y="-70.0" />
+      <point x="1027.5" y="625.0" />
+      <point x="874.8333333333333" y="625.0" />
+      <point x="118.33333333333326" y="300.0" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.hero.HeroEngineer" target="ch.zhaw.pm2.autochess.hero.HeroBase">
+      <point x="0.0" y="-56.5" />
+      <point x="485.5" y="625.0" />
+      <point x="638.1666666666666" y="625.0" />
+      <point x="-118.33333333333337" y="300.0" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.minion.Tank" target="ch.zhaw.pm2.autochess.minion.MinionBase">
+      <point x="0.0" y="-29.0" />
+      <point x="1324.0" y="706.0" />
+      <point x="1287.6666666666667" y="706.0" />
+      <point x="-179.33333333333326" y="340.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException" target="ch.zhaw.pm2.autochess.game.exceptions.GameException">
+      <point x="0.0" y="-42.5" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.hero.exceptions.IllegalValueException" target="ch.zhaw.pm2.autochess.hero.exceptions.HeroException">
+      <point x="0.0" y="-42.5" />
+      <point x="165.5" y="2390.0" />
+      <point x="816.5" y="2390.0" />
+      <point x="-114.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.hero.exceptions.InvalidHeroTypeException" target="ch.zhaw.pm2.autochess.hero.exceptions.HeroException">
+      <point x="0.0" y="-42.5" />
+      <point x="1329.5" y="2400.0" />
+      <point x="987.5" y="2400.0" />
+      <point x="57.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionAttributeException" target="ch.zhaw.pm2.autochess.minion.exceptions.MinionException">
+      <point x="0.0" y="-42.5" />
+      <point x="1798.0" y="2660.0" />
+      <point x="2155.5" y="2660.0" />
+      <point x="-100.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.minion.Warrior" target="ch.zhaw.pm2.autochess.minion.MinionBase">
+      <point x="0.0" y="-29.0" />
+      <point x="0.0" y="340.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.minion.Ranger" target="ch.zhaw.pm2.autochess.minion.MinionBase">
+      <point x="0.0" y="-29.0" />
+      <point x="1618.0" y="706.0" />
+      <point x="1646.3333333333335" y="706.0" />
+      <point x="179.33333333333348" y="340.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.board.exceptions.MinionNotOnBoardException" target="ch.zhaw.pm2.autochess.board.exceptions.BoardManagerException">
+      <point x="0.0" y="-42.5" />
+      <point x="194.0" y="2925.0" />
+      <point x="300.75" y="2925.0" />
+      <point x="-88.75" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.board.exceptions.InvalidPositionException" target="ch.zhaw.pm2.autochess.board.exceptions.BoardManagerException">
+      <point x="0.0" y="-42.5" />
+      <point x="585.0" y="2925.0" />
+      <point x="478.25" y="2925.0" />
+      <point x="88.75" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.minion.strategy.CowardStrategy" target="ch.zhaw.pm2.autochess.minion.strategy.MoveStrategy">
+      <point x="0.0" y="-42.5" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.hero.exceptions.InvalidHeroAttributeException" target="ch.zhaw.pm2.autochess.hero.exceptions.HeroException">
+      <point x="0.0" y="-42.5" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.hero.exceptions.IllegalFundsReductionException" target="ch.zhaw.pm2.autochess.hero.exceptions.HeroException">
+      <point x="0.0" y="-42.5" />
+      <point x="1734.0" y="2390.0" />
+      <point x="1044.5" y="2390.0" />
+      <point x="114.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.hero.HeroSpaceMarine" target="ch.zhaw.pm2.autochess.hero.HeroBase">
+      <point x="0.0" y="-56.5" />
+      <point x="0.0" y="300.0" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionTypeException" target="ch.zhaw.pm2.autochess.minion.exceptions.MinionException">
+      <point x="0.0" y="-42.5" />
+      <point x="2699.0" y="2660.0" />
+      <point x="2355.5" y="2660.0" />
+      <point x="100.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.minion.strategy.AggressiveStrategy" target="ch.zhaw.pm2.autochess.minion.strategy.MoveStrategy">
+      <point x="0.0" y="-42.5" />
+      <point x="1297.5" y="2660.0" />
+      <point x="942.1666666666666" y="2660.0" />
+      <point x="167.66666666666663" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionAttributeModifierException" target="ch.zhaw.pm2.autochess.minion.exceptions.MinionException">
+      <point x="0.0" y="-42.5" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.hero.exceptions.InvalidMinionIDException" target="ch.zhaw.pm2.autochess.hero.exceptions.HeroException">
+      <point x="0.0" y="-42.5" />
+      <point x="532.5" y="2400.0" />
+      <point x="873.5" y="2400.0" />
+      <point x="-57.0" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.minion.strategy.DefensiveStrategy" target="ch.zhaw.pm2.autochess.minion.strategy.MoveStrategy">
+      <point x="0.0" y="-42.5" />
+      <point x="251.5" y="2660.0" />
+      <point x="606.8333333333334" y="2660.0" />
+      <point x="-167.66666666666663" y="42.5" />
+    </edge>
+    <edge source="ch.zhaw.pm2.autochess.controller.MainApp" target="javafx.application.Application">
+      <point x="0.0" y="-42.5" />
+      <point x="0.0" y="192.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.30000000000000004" x="1340.190476190476" y="499.33333333333303" />
+  <SelectedNodes>
+    <node>ch.zhaw.pm2.autochess.Config</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+
