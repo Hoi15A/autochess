@@ -255,7 +255,7 @@ public class BoardManager {
             removeMinionFromBoard(minion.getId());
             setMinionOnBoard(minion, movePosition);
             System.out.println("-- MOVED: minion " + minion.getId() + " " + "From: " + currentPos + " To: " + movePosition);
-            log.setMoveLog(minion.getId(), currentPos, movePosition);
+            log.setMoveLog(minion.getId(), currentPos, movePosition, minion.getType());
         }
         battleLogs.add(log);
     }
@@ -285,11 +285,11 @@ public class BoardManager {
                 log.setAttackLog(attacker.getId(), getMinionPosition(attacker.getId()), defender.getId(), getMinionPosition(defender.getId()), damage);
                 battleLogs.add(log);
                 if (defender.getHealth() <= 0) {
+                    BattleLog deathLog = new BattleLog();
+                    deathLog.setDeathLog(defender.getId(), getMinionPosition(defender.getId()));
+                    battleLogs.add(deathLog);
                     removeMinionFromBoard(defender.getId());
                     System.out.println("-- DEATH: minion " + defender.getId());
-                    BattleLog deathLog = new BattleLog();
-                    deathLog.setDeathLog(defender.getId());
-                    battleLogs.add(deathLog);
                 }
             }
         }

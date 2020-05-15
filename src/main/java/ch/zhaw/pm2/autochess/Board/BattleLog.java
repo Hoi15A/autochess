@@ -1,5 +1,6 @@
 package ch.zhaw.pm2.autochess.Board;
 
+import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.PositionVector;
 
 /**
@@ -10,11 +11,11 @@ public class BattleLog {
     private LogType type;
     private int actorId;
     private PositionVector actorPos;
+    private Config.MinionType actorType;
     private int defenderId;
     private PositionVector defenderPos;
     private int damageDealt;
     private PositionVector newPos;
-    private int deadMinion;
 
     /**
      * The type of action this log represents
@@ -60,11 +61,12 @@ public class BattleLog {
      * @param currentPos Position the minion started at
      * @param newPos Position the minion moved to
      */
-    public void setMoveLog(int minionId, PositionVector currentPos, PositionVector newPos) {
+    public void setMoveLog(int minionId, PositionVector currentPos, PositionVector newPos, Config.MinionType actorType) {
         type = LogType.MOVE;
         actorId = minionId;
         actorPos = currentPos;
         this.newPos = newPos;
+        this.actorType = actorType;
     }
 
     /**
@@ -84,9 +86,10 @@ public class BattleLog {
      *
      * @param minionId Id of minion that died
      */
-    public void setDeathLog(int minionId) {
+    public void setDeathLog(int minionId, PositionVector pos) {
         type = LogType.DEATH;
-        deadMinion = minionId;
+        actorId = minionId;
+        actorPos = pos;
     }
 
     /**
@@ -146,11 +149,11 @@ public class BattleLog {
     }
 
     /**
-     * Get the minion that died
-     * @return minionId
+     * Get the MinionType for actor
+     * @return MinionType
      */
-    public int getDeadMinion() {
-        return deadMinion;
+    public Config.MinionType getActorType() {
+        return actorType;
     }
 
     //ONLY NEEDED WITHOUT GUI
