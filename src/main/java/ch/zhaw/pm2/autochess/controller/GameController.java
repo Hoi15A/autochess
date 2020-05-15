@@ -135,15 +135,28 @@ public class GameController implements Initializable {
         p1removeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-             //   int id = Integer.parseInt(p1minionidField.getText());
+                int id = Integer.parseInt(p1minionidField.getText());
                 refreshGameGrid();
 
-             /*   try {
+                try {
+                    PositionVector posVec = game.getMinionPos(id);
+                    int row = posVec.getY();
+                    int col = posVec.getX();
+                    ObservableList<Node> childrens = fieldGrid.getChildren();
+                    for (Node node : childrens) {
+                        try {
+                            if (fieldGrid.getRowIndex(node) == row && fieldGrid.getColumnIndex(node) == col) {
+                                System.out.println(node);
+                                fieldGrid.getChildren().remove(node);
+                            }
+                        }catch (NullPointerException e){
+                            System.out.println("yees");
+                        }
+                    }
                     game.removeMinionFromBoard(id);
-                    //todo   fieldGrid.getChildren().remove();
                 } catch (MinionNotOnBoardException e) {
                     e.printStackTrace();
-                }*/
+                }
             }
             });
 
