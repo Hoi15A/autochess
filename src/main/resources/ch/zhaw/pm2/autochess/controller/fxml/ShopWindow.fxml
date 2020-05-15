@@ -4,8 +4,8 @@
 
 <?import javafx.scene.layout.RowConstraints?>
 <GridPane xmlns:fx="http://javafx.com/fxml"
-          fx:controller="ch.zhaw.pm2.autochess.controller.ShopController" alignment="center"
-          hgap="10" vgap="10" fx:id="shopMainGrid" gridLinesVisible="true">
+          alignment="center"
+          hgap="10" vgap="10" fx:id="shopMainGrid" gridLinesVisible="false">
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="350" minWidth="350" prefWidth="350"/>

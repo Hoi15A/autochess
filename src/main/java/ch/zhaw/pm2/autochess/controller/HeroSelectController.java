@@ -1,262 +1,245 @@
 package ch.zhaw.pm2.autochess.controller;
 
-import javafx.event.EventHandler;
+import ch.zhaw.pm2.autochess.Config;
+import ch.zhaw.pm2.autochess.Game.Game;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+/**
+ * This is the controller class of the HeroSelectWindow.
+ * It initializes all the components.
+ */
 public class HeroSelectController implements Initializable {
-    private Text player1;
-    private Text player2;
+    //data fields
+    protected Game game;
+    protected Button nextButton;
 
-    private VBox player1Hero1Box;
-    private VBox player1Hero2Box;
-    private VBox player1Hero3Box;
+    //Player 1 data fields (p1 = player1 h1 = hero 1)
+    private Text p1Text;
 
-    private VBox player2Hero1Box;
-    private VBox player2Hero2Box;
-    private VBox player2Hero3Box;
+    private VBox p1H1VBox;
+    private VBox p1H2VBox;
+    private VBox p1H3VBox;
 
-    private ImageView player1Hero1ImgV;
-    private ImageView player1Hero2ImgV;
-    private ImageView player1Hero3ImgV;
+    private ImageView p1H1ImgView;
+    private ImageView p1H2ImgView;
+    private ImageView p1H3ImgView;
 
-    private ImageView player2Hero1ImgV;
-    private ImageView player2Hero2ImgV;
-    private ImageView player2Hero3ImgV;
+    private Image p1H1Img;
+    private Image p1H2Img;
+    private Image p1H3Img;
 
-    private Image player1Hero1Img;
-    private Image player1Hero2Img;
-    private Image player1Hero3Img;
+    private ToggleGroup p1ToggleGroup;
 
-    private Image player2Hero1Img;
-    private Image player2Hero2Img;
-    private Image player2Hero3Img;
+    private RadioButton p1H1RadioButton;
+    private RadioButton p1H2RadioButton;
+    private RadioButton p1H3RadioButton;
 
-    private RadioButton player1Hero1Button;
-    private RadioButton player1Hero2Button;
-    private RadioButton player1Hero3Button;
+    private Config.HeroType heroTypeP1;
 
-    private RadioButton player2Hero1Button;
-    private RadioButton player2Hero2Button;
-    private RadioButton player2Hero3Button;
 
-    private ToggleGroup player1ButtonGroup;
-    private ToggleGroup player2ButtonGroup;
+    //Player 2 data fields (p1 = player1 h1 = hero 1)
+    private Text p2Text;
 
-    private Button nextButton;
+    private VBox p2H1VBox;
+    private VBox p2H2VBox;
+    private VBox p2H3VBox;
 
-  //  private Config.HeroType heroTypePlayer1;
-  //  private Config.HeroType heroTypePlayer2;
+    private ImageView p2H1ImgView;
+    private ImageView p2H2ImgView;
+    private ImageView p2H3ImgView;
 
+    private Image p2H1Img;
+    private Image p2H2Img;
+    private Image p2H3Img;
+
+    private ToggleGroup p2ToggleGroup;
+
+    private RadioButton p2H1RadioButton;
+    private RadioButton p2H2RadioButton;
+    private RadioButton p2H3RadioButton;
+
+    private Config.HeroType heroTypeP2;
+
+    //fxml data fields
     @FXML
     GridPane mainGrid;
 
+
+    public HeroSelectController(Game currentGame) {
+        game = currentGame;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initializePlayerText();
         initializeHeroImages();
         initializeHeroButtons();
-        initializePlayers();
-        initializePlayer();
-
-        //player1 title
-        mainGrid.add(player1,1,0);
-
-        //player1 images and buttons
-        mainGrid.add(player1Hero1Box,0,1);
-        mainGrid.add(player1Hero2Box,1,1);
-        mainGrid.add(player1Hero3Box,2,1);
-
-        //player2 title
-        mainGrid.add(player2,1,2);
-
-        //player2 images and buttons
-        mainGrid.add(player2Hero1Box,0,3);
-        mainGrid.add(player2Hero2Box,1,3);
-        mainGrid.add(player2Hero3Box,2,3);
-
-       //next button
-        nextButton = new Button("next");
-        mainGrid.add(nextButton,2,4);
-
-
-        //nextbutton listener
-        nextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (player1Hero1Button.equals(player1ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player1Hero1Button");
-                    //heroTypePlayer1 = ALIEN
-                }else if (player1Hero2Button.equals(player1ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player1Hero2Button");
-                    //heroTypePlayer1 = SpSPACEMARINER
-                }else if (player1Hero3Button.equals(player1ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player1Hero3Button");
-                    //heroTypePlayer1 = ENGINEER
-                }else {
-                    System.out.println("yeet");
-                }
-
-                if (player2Hero1Button.equals(player2ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player2Hero1Button");
-                    //heroTypePlayer2 = ALIEN
-                }else if (player2Hero2Button.equals(player2ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player2Hero2Button");
-                    //heroTypePlayer2 = SpSPACEMARINER
-                }else if (player2Hero3Button.equals(player2ButtonGroup.getSelectedToggle())) {
-                    System.out.println("player2Hero3Button");
-                    //heroTypePlayer2 = ENGINEER
-                }else {
-                    System.out.println("yeet");
-                }
-
-                try {
-                 //   Game game new Game(heroTypePlayer1, heroTypePlayer2);
-                }catch(Exception e){
-                    System.out.println("invalid");
-                    /*todo
-                    popup fals nicht geht!
-                     */
-                }
-
-                Stage currentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-                currentStage.close();
-                loadShopWindow();
-            }
-        });
+        initializeVBox();
+        addComponentsToMainGrid();
     }
 
-    private void loadShopWindow(){
-        Stage heroSelectStage = new Stage();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/ShopWindow.fxml"));
-            Pane shopPane = loader.load();
+    private void addComponentsToMainGrid() {
+        //Add playerText to mainGrid
+        mainGrid.add(p1Text, 1, 0);
+        mainGrid.add(p2Text, 1, 2);
 
-            Stage stage = new Stage();
-            stage.setTitle("SMAC");
-            stage.setScene(new Scene(shopPane, 800, 600));
-            stage.setResizable(false);
-            stage.show();
-        } catch (IOException e) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "Failed to create new Window.", e);
-        }
+
+        //Add player VBox to mainGrid
+        mainGrid.add(p1H1VBox, 0, 1);
+        mainGrid.add(p1H2VBox, 1, 1);
+        mainGrid.add(p1H3VBox, 2, 1);
+
+        mainGrid.add(p2H1VBox, 0, 3);
+        mainGrid.add(p2H2VBox, 1, 3);
+        mainGrid.add(p2H3VBox, 2, 3);
+
+        //Add next Button to mainGrid
+        nextButton = new Button("Next");
+        mainGrid.add(nextButton, 2, 4);
     }
 
-    private void initializePlayers(){
-        player1 = new Text("Player 1");
-        player2 = new Text("Player 2");
-
+    private void initializePlayerText() {
+        p1Text = new Text("Player 1");
+        p2Text = new Text("Player 2");
     }
 
-    private void initializeHeroImages(){
-        //player 1
-        player1Hero1Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
-        player1Hero1ImgV = new ImageView(player1Hero1Img);
-        player1Hero1ImgV.setFitWidth(100);
-        player1Hero1ImgV.setFitHeight(100);
+    private void initializeHeroImages() {
+        //Add Hero1 image to player1 Image view, set Size of ImageView
+        p1H1Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        p1H1ImgView = new ImageView(p1H1Img);
+        p1H1ImgView.setFitWidth(100);
+        p1H1ImgView.setFitHeight(100);
 
-        player1Hero2Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
-        player1Hero2ImgV = new ImageView(player1Hero2Img);
-        player1Hero2ImgV.setFitWidth(100);
-        player1Hero2ImgV.setFitHeight(100);
+        //Add Hero2 image to player1  Image view, set Size of ImageView
+        p1H2Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        p1H2ImgView = new ImageView(p1H2Img);
+        p1H2ImgView.setFitWidth(100);
+        p1H2ImgView.setFitHeight(100);
 
-        player1Hero3Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
-        player1Hero3ImgV = new ImageView(player1Hero3Img);
-        player1Hero3ImgV.setFitWidth(100);
-        player1Hero3ImgV.setFitHeight(100);
+        //Add Hero2 image to player1  Image view, set Size of ImageView
+        p1H3Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        p1H3ImgView = new ImageView(p1H3Img);
+        p1H3ImgView.setFitWidth(100);
+        p1H3ImgView.setFitHeight(100);
 
-        //player 2
-        player2Hero1Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
-        player2Hero1ImgV = new ImageView(player2Hero1Img);
-        player2Hero1ImgV.setFitWidth(100);
-        player2Hero1ImgV.setFitHeight(100);
+        //Add Hero1 image to player2 Image view, set Size of ImageView
+        p2H1Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        p2H1ImgView = new ImageView(p2H1Img);
+        p2H1ImgView.setFitWidth(100);
+        p2H1ImgView.setFitHeight(100);
 
-        player2Hero2Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
-        player2Hero2ImgV = new ImageView(player2Hero2Img);
-        player2Hero2ImgV.setFitWidth(100);
-        player2Hero2ImgV.setFitHeight(100);
+        //Add Hero2 image to player2  Image view, set Size of ImageView
+        p2H2Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        p2H2ImgView = new ImageView(p2H2Img);
+        p2H2ImgView.setFitWidth(100);
+        p2H2ImgView.setFitHeight(100);
 
-        player2Hero3Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
-        player2Hero3ImgV = new ImageView(player2Hero3Img);
-        player2Hero3ImgV.setFitWidth(100);
-        player2Hero3ImgV.setFitHeight(100);
+        //Add Hero2 image to player2  Image view, set Size of ImageView
+        p2H3Img = new Image(String.valueOf(getClass().getResource("images/minion.jpg")));
+        p2H3ImgView = new ImageView(p2H3Img);
+        p2H3ImgView.setFitWidth(100);
+        p2H3ImgView.setFitHeight(100);
     }
 
     private void initializeHeroButtons() {
         //player 1
-        player1ButtonGroup = new ToggleGroup();
+        p1ToggleGroup = new ToggleGroup();
 
-        player1Hero1Button = new RadioButton();
-        player1Hero2Button = new RadioButton();
-        player1Hero3Button = new RadioButton();
+        p1H1RadioButton = new RadioButton(Config.HeroType.ALIEN.toString());
+        p1H2RadioButton = new RadioButton(Config.HeroType.ENGINEER.toString());
+        p1H3RadioButton = new RadioButton(Config.HeroType.SPACE_MARINE.toString());
 
-        player1Hero1Button.setToggleGroup(player1ButtonGroup);
-        player1Hero2Button.setToggleGroup(player1ButtonGroup);
-        player1Hero3Button.setToggleGroup(player1ButtonGroup);
+        p1H1RadioButton.setSelected(true);
+
+        p1H1RadioButton.setToggleGroup(p1ToggleGroup);
+        p1H2RadioButton.setToggleGroup(p1ToggleGroup);
+        p1H3RadioButton.setToggleGroup(p1ToggleGroup);
 
         //player 2
-        player2ButtonGroup = new ToggleGroup();
+        p2ToggleGroup = new ToggleGroup();
 
-        player2Hero1Button = new RadioButton();
-        player2Hero2Button = new RadioButton();
-        player2Hero3Button = new RadioButton();
+        p2H1RadioButton = new RadioButton(Config.HeroType.ALIEN.toString());
+        p2H2RadioButton = new RadioButton(Config.HeroType.ENGINEER.toString());
+        p2H3RadioButton = new RadioButton(Config.HeroType.SPACE_MARINE.toString());
 
-        player1Hero1Button.setId("player1Hero1Button");
-        player2Hero2Button.setId("player2Hero2Button");
-        player2Hero3Button.setId("player2Hero3Button");
+        p2H1RadioButton.setSelected(true);
 
-        player2Hero1Button.setToggleGroup(player2ButtonGroup);
-        player2Hero2Button.setToggleGroup(player2ButtonGroup);
-        player2Hero3Button.setToggleGroup(player2ButtonGroup);
+        p2H1RadioButton.setToggleGroup(p2ToggleGroup);
+        p2H2RadioButton.setToggleGroup(p2ToggleGroup);
+        p2H3RadioButton.setToggleGroup(p2ToggleGroup);
     }
 
-    private void initializePlayer() {
-        //player 1
-        player1Hero1Box = new VBox();
-        player1Hero2Box = new VBox();
-        player1Hero3Box = new VBox();
+    private void initializeVBox() {
+        //Inizialize VBoxes
+        p1H1VBox = new VBox();
+        p1H2VBox = new VBox();
+        p1H3VBox = new VBox();
 
-        player1Hero1Box.getChildren().add(player1Hero1ImgV);
-        player1Hero1Box.getChildren().add(player1Hero1Button);
+        p2H1VBox = new VBox();
+        p2H2VBox = new VBox();
+        p2H3VBox = new VBox();
 
-        player1Hero2Box.getChildren().add(player1Hero2ImgV);
-        player1Hero2Box.getChildren().add(player1Hero2Button);
 
-        player1Hero3Box.getChildren().add(player1Hero3ImgV);
-        player1Hero3Box.getChildren().add(player1Hero3Button);
+        //Add elements to Player1 VBoxes
+        p1H1VBox.getChildren().add(p1H1ImgView);
+        p1H1VBox.getChildren().add(p1H1RadioButton);
 
-        //player 2
-        player2Hero1Box = new VBox();
-        player2Hero2Box = new VBox();
-        player2Hero3Box = new VBox();
+        p1H2VBox.getChildren().add(p1H2ImgView);
+        p1H2VBox.getChildren().add(p1H2RadioButton);
 
-        player2Hero1Box.getChildren().add(player2Hero1ImgV);
-        player2Hero1Box.getChildren().add(player2Hero1Button);
+        p1H3VBox.getChildren().add(p1H3ImgView);
+        p1H3VBox.getChildren().add(p1H3RadioButton);
 
-        player2Hero2Box.getChildren().add(player2Hero2ImgV);
-        player2Hero2Box.getChildren().add(player2Hero2Button);
+        //Add elements to Player2 VBoxes
+        p2H1VBox.getChildren().add(p2H1ImgView);
+        p2H1VBox.getChildren().add(p2H1RadioButton);
 
-        player2Hero3Box.getChildren().add(player2Hero3ImgV);
-        player2Hero3Box.getChildren().add(player2Hero3Button);
+        p2H2VBox.getChildren().add(p2H2ImgView);
+        p2H2VBox.getChildren().add(p2H2RadioButton);
+
+        p2H3VBox.getChildren().add(p2H3ImgView);
+        p2H3VBox.getChildren().add(p2H3RadioButton);
+    }
+
+    /**
+     * This Method handles the Action, if the next button is clicked
+     * It creates a new Game
+     * @param currentStage
+     */
+    public void nextButtonClicked(Stage currentStage) {
+        if (p1H1RadioButton.equals(p1ToggleGroup.getSelectedToggle())) {
+            heroTypeP1 = Config.HeroType.ALIEN;
+        } else if (p1H2RadioButton.equals(p1ToggleGroup.getSelectedToggle())) {
+            heroTypeP1 = Config.HeroType.ENGINEER;
+        } else if (p1H3RadioButton.equals(p1ToggleGroup.getSelectedToggle())) {
+            heroTypeP1 = Config.HeroType.SPACE_MARINE;
+        }
+
+        if (p2H1RadioButton.equals(p2ToggleGroup.getSelectedToggle())) {
+            heroTypeP2 = Config.HeroType.ALIEN;
+        } else if (p2H2RadioButton.equals(p2ToggleGroup.getSelectedToggle())) {
+            heroTypeP2 = Config.HeroType.ENGINEER;
+        } else if (p2H3RadioButton.equals(p2ToggleGroup.getSelectedToggle())) {
+            heroTypeP2 = Config.HeroType.SPACE_MARINE;
+        }
+
+        try {
+            game = new Game(heroTypeP1, heroTypeP2);
+        } catch (IllegalGameStateException illegalGameStateException) {
+        }
     }
 }
