@@ -1,4 +1,5 @@
 package ch.zhaw.pm2.autochess.controller;
+
 import ch.zhaw.pm2.autochess.Config;
 import ch.zhaw.pm2.autochess.Game.Game;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,7 +26,8 @@ public class ShopController implements Initializable {
     private GridPane player2BuyPane;
     private static final int P1_FIELD_COLS = 3;
     private static final int P2_FIELD_COLS = 3;
-    private static final int P1_FIELD_ROWS = 3;;
+    private static final int P1_FIELD_ROWS = 3;
+    ;
     private static final int P2_FIELD_ROWS = 3;
 
     private GridPane player1SellPane;
@@ -43,7 +46,7 @@ public class ShopController implements Initializable {
     @FXML
     private GridPane shopMainGrid;
 
-    public ShopController(Game game){
+    public ShopController(Game game) {
         this.game = game;
         nextButton = new Button("next");
     }
@@ -60,24 +63,23 @@ public class ShopController implements Initializable {
          */
 
 
-        shopMainGrid.add(player1Text,0,0);
-        shopMainGrid.add(player2Text,1,0);
-        shopMainGrid.add(player1BuyPane,0,1);
-        shopMainGrid.add(player2BuyPane,1,1);
-        shopMainGrid.add(player1SellPane,0,2);
-        shopMainGrid.add(player2SellPane,1,2);
+        shopMainGrid.add(player1Text, 0, 0);
+        shopMainGrid.add(player2Text, 1, 0);
+        shopMainGrid.add(player1BuyPane, 0, 1);
+        shopMainGrid.add(player2BuyPane, 1, 1);
+        shopMainGrid.add(player1SellPane, 0, 2);
+        shopMainGrid.add(player2SellPane, 1, 2);
 
 
-
-        shopMainGrid.add(nextButton,1,4);
+        shopMainGrid.add(nextButton, 1, 4);
     }
 
-    private void initializePlayerText(){
+    private void initializePlayerText() {
         player1Text = new Text("Player 1 Shop");
         player2Text = new Text("Player 2 Shop");
     }
 
-    private void initializePlayerBuyView(){
+    private void initializePlayerBuyView() {
 
         //player 1
         player1BuyPane = new GridPane();
@@ -100,30 +102,29 @@ public class ShopController implements Initializable {
         Button p1BuyWarrior = new Button("buy");
         Button p1BuyRanger = new Button("buy");
 
-        player1BuyPane.add(new Label("Tank"),0,0);
-        player1BuyPane.add(new Label("10$"),1,0);
-        player1BuyPane.add(p1BuyTank,2,0);
+        player1BuyPane.add(new Label("Tank"), 0, 0);
+        player1BuyPane.add(new Label("10$"), 1, 0);
+        player1BuyPane.add(p1BuyTank, 2, 0);
 
-        player1BuyPane.add(new Label("Warrior"),0,1);
-        player1BuyPane.add(new Label("10$"),1,1);
-        player1BuyPane.add(p1BuyWarrior,2,1);
+        player1BuyPane.add(new Label("Warrior"), 0, 1);
+        player1BuyPane.add(new Label("10$"), 1, 1);
+        player1BuyPane.add(p1BuyWarrior, 2, 1);
 
-        player1BuyPane.add(new Label("Ranger"),0,2);
-        player1BuyPane.add(new Label("10$"),1,2);
-        player1BuyPane.add(p1BuyRanger,2,2);
+        player1BuyPane.add(new Label("Ranger"), 0, 2);
+        player1BuyPane.add(new Label("10$"), 1, 2);
+        player1BuyPane.add(p1BuyRanger, 2, 2);
 
         p1BuyTank.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
                     game.buyMinion(1, Config.MinionType.TANK);
-                }catch(IllegalGameStateException illegalGameStateException) {
-                    System.out.println(illegalGameStateException.getStackTrace());
-                }catch (IllegalFundsReductionException illegalFundsReductionException) {
-                    System.out.println(illegalFundsReductionException.getStackTrace());
+                } catch (IllegalGameStateException e) {
+                    e.printStackTrace();
+                } catch (IllegalFundsReductionException e) {
+                    e.printStackTrace();
                 }
-                String c = "Tank"+(p1MinionList.getItems().size()+1);
-                p1MinionList.getItems().add(p1MinionList.getItems().size(), c);
+                reloadMinionList();
             }
         });
 
@@ -132,13 +133,12 @@ public class ShopController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     game.buyMinion(1, Config.MinionType.WARRIOR);
-                }catch(IllegalGameStateException illegalGameStateException) {
+                } catch (IllegalGameStateException illegalGameStateException) {
                     System.out.println(illegalGameStateException.getStackTrace());
-                }catch (IllegalFundsReductionException illegalFundsReductionException) {
+                } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
-                String c = "Warrior"+(p1MinionList.getItems().size()+1);
-                p1MinionList.getItems().add(p1MinionList.getItems().size(), c);
+                reloadMinionList();
             }
         });
 
@@ -147,17 +147,14 @@ public class ShopController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     game.buyMinion(1, Config.MinionType.RANGER);
-                }catch(IllegalGameStateException illegalGameStateException) {
+                } catch (IllegalGameStateException illegalGameStateException) {
                     System.out.println(illegalGameStateException.getStackTrace());
-                }catch (IllegalFundsReductionException illegalFundsReductionException) {
+                } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
-                String c = "Ranger"+(p1MinionList.getItems().size()+1);
-                p1MinionList.getItems().add(p1MinionList.getItems().size(), c);
+                reloadMinionList();
             }
         });
-
-
 
 
         //player 2
@@ -181,30 +178,29 @@ public class ShopController implements Initializable {
         Button p2BuyWarrior = new Button("buy");
         Button p2BuyRanger = new Button("buy");
 
-        player2BuyPane.add(new Label("Tank"),0,0);
-        player2BuyPane.add(new Label("10$"),1,0);
-        player2BuyPane.add(p2BuyTank,2,0);
+        player2BuyPane.add(new Label("Tank"), 0, 0);
+        player2BuyPane.add(new Label("10$"), 1, 0);
+        player2BuyPane.add(p2BuyTank, 2, 0);
 
-        player2BuyPane.add(new Label("Warrior"),0,1);
-        player2BuyPane.add(new Label("10$"),1,1);
-        player2BuyPane.add(p2BuyWarrior,2,1);
+        player2BuyPane.add(new Label("Warrior"), 0, 1);
+        player2BuyPane.add(new Label("10$"), 1, 1);
+        player2BuyPane.add(p2BuyWarrior, 2, 1);
 
-        player2BuyPane.add(new Label("Ranger"),0,2);
-        player2BuyPane.add(new Label("10$"),1,2);
-        player2BuyPane.add(p2BuyRanger,2,2);
+        player2BuyPane.add(new Label("Ranger"), 0, 2);
+        player2BuyPane.add(new Label("10$"), 1, 2);
+        player2BuyPane.add(p2BuyRanger, 2, 2);
 
         p2BuyTank.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
                     game.buyMinion(2, Config.MinionType.TANK);
-                }catch(IllegalGameStateException illegalGameStateException) {
+                } catch (IllegalGameStateException illegalGameStateException) {
                     System.out.println(illegalGameStateException.getStackTrace());
-                }catch (IllegalFundsReductionException illegalFundsReductionException) {
+                } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
-                String c = "Tank"+(p2MinionList.getItems().size()+1);
-                p2MinionList.getItems().add(p2MinionList.getItems().size(), c);
+                reloadMinionList();
             }
         });
 
@@ -213,13 +209,12 @@ public class ShopController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     game.buyMinion(2, Config.MinionType.RANGER);
-                }catch(IllegalGameStateException illegalGameStateException) {
+                } catch (IllegalGameStateException illegalGameStateException) {
                     System.out.println(illegalGameStateException.getStackTrace());
-                }catch (IllegalFundsReductionException illegalFundsReductionException) {
+                } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
-                String c = "Ranger"+(p2MinionList.getItems().size()+1);
-                p2MinionList.getItems().add(p2MinionList.getItems().size(), c);
+                reloadMinionList();
             }
         });
 
@@ -228,18 +223,17 @@ public class ShopController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     game.buyMinion(2, Config.MinionType.WARRIOR);
-                }catch(IllegalGameStateException illegalGameStateException) {
+                } catch (IllegalGameStateException illegalGameStateException) {
                     System.out.println(illegalGameStateException.getStackTrace());
-                }catch (IllegalFundsReductionException illegalFundsReductionException) {
+                } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
-                String c = "Warrior"+(p2MinionList.getItems().size()+1);
-                p2MinionList.getItems().add(p2MinionList.getItems().size(), c);
+                reloadMinionList();
             }
         });
     }
 
-    private void initializePlayerSellView(){
+    private void initializePlayerSellView() {
         //player 1
         player1SellPane = new GridPane();
         player1SellPane.setGridLinesVisible(true);
@@ -255,26 +249,23 @@ public class ShopController implements Initializable {
         }
 
         Button p1SellButton = new Button("sell");
-        TextField minionIDFiel = new TextField();
+        TextField p1minionIDFiel = new TextField();
 
-        player1SellPane.add(minionIDFiel,0,0);
-        player1SellPane.add(p1SellButton,1,0);
+        player1SellPane.add(p1minionIDFiel, 0, 0);
+        player1SellPane.add(p1SellButton, 1, 0);
 
         p1SellButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                int minionID = Integer.parseInt(minionIDFiel.getText());
+                int minionID = Integer.parseInt(p1minionIDFiel.getText());
                 try {
                     game.sellMinion(1, minionID);
-                }catch (IllegalGameStateException illegalGameStateException) {
+                } catch (IllegalGameStateException illegalGameStateException) {
                     System.out.println(illegalGameStateException.getStackTrace());
-                }catch (InvalidMinionIDException invalidMinionIDException){
+                } catch (InvalidMinionIDException invalidMinionIDException) {
                     System.out.println(invalidMinionIDException.getStackTrace());
                 }
-                /*todo get minon by id and remove from list
-                String c = "Warrior"+(p2MinionList.getItems().size()+1);
-                p2MinionList.getItems().add(p2MinionList.getItems().size(), c);
-                */
+                reloadMinionList();
             }
         });
 
@@ -293,27 +284,33 @@ public class ShopController implements Initializable {
         }
 
         Button p2SellButton = new Button("sell");
-        TextField p2xFiel = new TextField();
-        TextField p2yFiel = new TextField();
+        TextField p2minionIDFiel = new TextField();
 
-        player2SellPane.add(p2xFiel,0,0);
-        player2SellPane.add(p2yFiel,1,0);
-        player2SellPane.add(p2SellButton,2,0);
+        player2SellPane.add(p2minionIDFiel, 0, 0);
+        player2SellPane.add(p2SellButton, 1, 0);
 
         p2SellButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //sellMinion(int heroId, int minionId);
+                int minionID = Integer.parseInt(p2minionIDFiel.getText());
+                try {
+                    game.sellMinion(2, minionID);
+                } catch (IllegalGameStateException illegalGameStateException) {
+                    System.out.println(illegalGameStateException.getStackTrace());
+                } catch (InvalidMinionIDException invalidMinionIDException) {
+                    System.out.println(invalidMinionIDException.getStackTrace());
+                }
+                reloadMinionList();
             }
         });
     }
 
-    private void initializeMinionList(){
-         p1MinionList = new ListView<String>();
-         p1Items =FXCollections.observableArrayList ();
+    private void initializeMinionList() {
+        p1MinionList = new ListView<String>();
+        p1Items = FXCollections.observableArrayList();
 
         p2MinionList = new ListView<String>();
-        p2Items =FXCollections.observableArrayList ();
+        p2Items = FXCollections.observableArrayList();
 
         /*todo
         getAllMinionIds(int heroId) -> getMinionInfoAsString(int heroId, int minionId)
@@ -321,7 +318,7 @@ public class ShopController implements Initializable {
          */
 
         p1MinionList.setItems(p1Items);
-        shopMainGrid.add(p1MinionList,0,3);
+        shopMainGrid.add(p1MinionList, 0, 3);
 
         /*todo
         getAllMinionIds(int heroId) -> getMinionInfoAsString(int heroId, int minionId)
@@ -329,6 +326,31 @@ public class ShopController implements Initializable {
          */
 
         p2MinionList.setItems(p2Items);
-        shopMainGrid.add(p2MinionList,1,3);
+        shopMainGrid.add(p2MinionList, 1, 3);
+    }
+
+    private void reloadMinionList() {
+        p1MinionList.getItems().clear();
+        p2MinionList.getItems().clear();
+        try {
+            for (int id : game.getAllMinionIds(1)) {
+                String c = game.getMinionInfoAsString(1, id);
+                p1MinionList.getItems().add(c);
+            }
+        } catch (IllegalGameStateException e) {
+            e.printStackTrace();
+        } catch (InvalidMinionIDException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (int id : game.getAllMinionIds(2)) {
+                String c = game.getMinionInfoAsString(2, id);
+                p2MinionList.getItems().add(c);
+            }
+        } catch (IllegalGameStateException e) {
+            e.printStackTrace();
+        } catch (InvalidMinionIDException e) {
+            e.printStackTrace();
+        }
     }
 }
