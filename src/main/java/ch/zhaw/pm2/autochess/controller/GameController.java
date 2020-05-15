@@ -1,15 +1,24 @@
 package ch.zhaw.pm2.autochess.controller;
 
+import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
+import ch.zhaw.pm2.autochess.Board.exceptions.MinionNotOnBoardException;
 import ch.zhaw.pm2.autochess.Game.Game;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
+import ch.zhaw.pm2.autochess.Hero.exceptions.InvalidMinionIDException;
+import ch.zhaw.pm2.autochess.PositionVector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.Iterator;
@@ -29,6 +38,18 @@ public class GameController implements Initializable {
     private static final int FIELD_COLS = 8;
     private static final int FIELD_ROWS = 8;
 
+    private TextField p1minionIdTF;
+    private TextField p1fieldposXTF;
+    private TextField p1fieldposYTF;
+    private Button p1PlaceButton;
+    private GridPane p1minionplacegrid;
+
+    private TextField p2minionIdTF;
+    private TextField p2fieldposXTF;
+    private TextField p2fieldposYTF;
+    private Button p2PlaceButton;
+    private GridPane p2minionplacegrid;
+
     private Game game;
 
     @FXML
@@ -41,14 +62,6 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         /*todo
-        -Minion list display -> liste alles minions in besitz anzeigen -> getAllMinionIds(int heroId) -> getMinionInfoAsString(int heroId, int minionId)
-             iterieren und anzeigen
-        -place minion: TextFiel (minionID) TextField (fieldposX) TextField (fieldposY) Button
-           button.onClick  -> get values x&Y (check not empty) -> set boarder red (falss empty)
-           x&Y -> positionVector
-           -> placeMinionOnBoard(int heroId, int minionId, PositionVector pos)
-           -> updateBoard -> getAllMinionIDS(heroID) iterate ->  getMinionPos(int minionId) if(no exc) -> draw minionType on grid   else -> do nothing
-
          -remove minion: TextFiel (minionID) button: set boarder red (falls empty)
          button.onClick  -> get Id -> removeMinionFromBoard(int minionId)
          -> updateBoard -> getAllMinionIDS(heroID) iterate ->  getMinionPos(int minionId) if(no exc) -> draw minionType on grid   else -> do nothing
@@ -66,10 +79,113 @@ public class GameController implements Initializable {
         initializeFieldGrid();
         initializePlayerGrid();
         initializeMinionList();
+        initializePlaceMinionSection();
+        initializeRemoveMinionSection();
+
+        player1Grid.add(p1minionplacegrid,0,1);
+        player2Grid.add(p2minionplacegrid,0,1);
 
         gameMainGrid.add(fieldGrid, 1, 0);
         gameMainGrid.add(player1Grid, 0, 0);
         gameMainGrid.add(player2Grid, 2, 0);
+    }
+
+    private void initializeRemoveMinionSection() {
+
+    }
+
+    private void initializePlaceMinionSection() {
+        p1minionIdTF = new TextField();
+        p1fieldposXTF = new TextField();
+        p1fieldposYTF = new TextField();
+        p1PlaceButton = new Button("place");
+
+        p1minionplacegrid = new GridPane();
+
+        for (int i = 0; i < 2; i++) {
+            ColumnConstraints column = new ColumnConstraints(75);
+            p1minionplacegrid.getColumnConstraints().add(column);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            RowConstraints row = new RowConstraints(50);
+            p1minionplacegrid.getRowConstraints().add(row);
+        }
+
+        p1minionplacegrid.add(p1fieldposXTF,0,0);
+        p1minionplacegrid.add(p1fieldposYTF,1,0);
+        p1minionplacegrid.add(p1minionIdTF,0,1);
+        p1minionplacegrid.add(p1PlaceButton,1,1);
+
+        p1PlaceButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                int id = Integer.parseInt(p1minionIdTF.getText());
+                int x = Integer.parseInt(p1fieldposXTF.getText());
+                int y = Integer.parseInt(p1fieldposYTF.getText());
+                System.out.println("id: " + id+ " x: " + x+ " y: " +y);
+                PositionVector posVector = new PositionVector();
+                posVector.setX(x);
+                posVector.setY(y);
+
+                try {
+                    game.placeMinionOnBoard(1, id, posVector);
+                    fieldGrid.add(new Text("test"),posVector.getX(),posVector.getY());
+                } catch (InvalidPositionException e) {
+                    e.printStackTrace();
+                } catch (IllegalGameStateException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+            p2minionIdTF = new TextField();
+            p2fieldposXTF = new TextField();
+            p2fieldposYTF = new TextField();
+            p2PlaceButton = new Button("place");
+
+            p2minionplacegrid = new GridPane();
+
+            for (int i = 0; i < 2; i++) {
+                ColumnConstraints column = new ColumnConstraints(75);
+                p2minionplacegrid.getColumnConstraints().add(column);
+            }
+
+            for (int i = 0; i < 2; i++) {
+                RowConstraints row = new RowConstraints(50);
+                p2minionplacegrid.getRowConstraints().add(row);
+            }
+
+        p2minionplacegrid.add(p2fieldposXTF,0,0);
+        p2minionplacegrid.add(p2fieldposYTF,1,0);
+        p2minionplacegrid.add(p2minionIdTF,0,1);
+        p2minionplacegrid.add(p2PlaceButton,1,1);
+
+            p2PlaceButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    int id = Integer.parseInt(p2minionIdTF.getText());
+                    int x = Integer.parseInt(p2fieldposXTF.getText());
+                    int y = Integer.parseInt(p2fieldposYTF.getText());
+                    System.out.println("id: " + id+ " x: " + x+ " y: " +y);
+                    PositionVector posVector = new PositionVector();
+                    posVector.setX(x);
+                    posVector.setY(y);
+
+                    try {
+                        game.placeMinionOnBoard(2, id, posVector);
+                        fieldGrid.add(new Text("test"),posVector.getX(),posVector.getY());
+                    } catch (InvalidPositionException e) {
+                        e.printStackTrace();
+                    } catch (IllegalGameStateException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+
+
     }
 
     private void initializeFieldGrid() {
@@ -134,25 +250,27 @@ public class GameController implements Initializable {
         p2MinionList.setItems(p2Items);
         player2Grid.add(p2MinionList,0,0);
 
-        //todo valid ids (aktuell wird hochgezählt)
         try {
             for (int id : game.getAllMinionIds(1)) {
-                String c = game.getMinionType(1, id).toString()+(p1MinionList.getItems().size()+1);
+                String c = game.getMinionInfoAsString(1,id);
                 p1MinionList.getItems().add(p1MinionList.getItems().size(), c);
             }
         } catch (
             IllegalGameStateException e) {
             e.printStackTrace();
+        } catch (InvalidMinionIDException e) {
+            e.printStackTrace();
         }
 
-        //todo valid ids (aktuell wird hochgezählt)
         try {
             for (int id : game.getAllMinionIds(2)) {
-                String c = game.getMinionType(2, id).toString()+(p2MinionList.getItems().size()+1);
+                String c = game.getMinionInfoAsString(2,id);
                 p2MinionList.getItems().add(p2MinionList.getItems().size(), c);
             }
         } catch (
             IllegalGameStateException e) {
+            e.printStackTrace();
+        } catch (InvalidMinionIDException e) {
             e.printStackTrace();
         }
     }
