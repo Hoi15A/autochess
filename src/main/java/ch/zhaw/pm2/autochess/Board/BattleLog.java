@@ -8,13 +8,11 @@ import ch.zhaw.pm2.autochess.PositionVector;
 public class BattleLog {
 
     private LogType type;
-    private int attacker;
-    private PositionVector attackerPos;
-    private int defender;
+    private int actorId;
+    private PositionVector actorPos;
+    private int defenderId;
     private PositionVector defenderPos;
     private int damageDealt;
-    private int movingMinion;
-    private PositionVector oldPos;
     private PositionVector newPos;
     private int deadMinion;
 
@@ -36,9 +34,9 @@ public class BattleLog {
      */
     public void setAttackLog(int attackerId, PositionVector attackerPos, int defenderId, PositionVector defenderPos, int damage) {
         type = LogType.ATTACK;
-        attacker = attackerId;
-        this.attackerPos = attackerPos;
-        defender = defenderId;
+        actorId = attackerId;
+        this.actorPos = attackerPos;
+        this.defenderId = defenderId;
         this.defenderPos = defenderPos;
         damageDealt = damage;
     }
@@ -51,8 +49,8 @@ public class BattleLog {
      */
     public void setNoAttackLog(int attackerId, PositionVector attackerPos) {
         type = LogType.NO_ATTACK;
-        attacker = attackerId;
-        this.attackerPos = attackerPos;
+        actorId = attackerId;
+        this.actorPos = attackerPos;
     }
 
     /**
@@ -64,8 +62,8 @@ public class BattleLog {
      */
     public void setMoveLog(int minionId, PositionVector currentPos, PositionVector newPos) {
         type = LogType.MOVE;
-        movingMinion = minionId;
-        oldPos = currentPos;
+        actorId = minionId;
+        actorPos = currentPos;
         this.newPos = newPos;
     }
 
@@ -77,8 +75,8 @@ public class BattleLog {
      */
     public void setNoMoveLog(int minionId, PositionVector currentPos) {
         type = LogType.NO_MOVE;
-        movingMinion = minionId;
-        oldPos = currentPos;
+        actorId = minionId;
+        actorPos = currentPos;
     }
 
     /**
@@ -103,24 +101,24 @@ public class BattleLog {
      * Get the attacking minion id
      * @return minionId
      */
-    public int getAttacker() {
-        return attacker;
+    public int getActorId() {
+        return actorId;
     }
 
     /**
      * Get the attacking minion position
      * @return position
      */
-    public PositionVector getAttackerPos() {
-        return attackerPos;
+    public PositionVector getActorPos() {
+        return actorPos;
     }
 
     /**
      * Get the defending minion id
      * @return minionId
      */
-    public int getDefender() {
-        return defender;
+    public int getDefenderId() {
+        return defenderId;
     }
 
     /**
@@ -140,22 +138,6 @@ public class BattleLog {
     }
 
     /**
-     * Get the minion that is moving
-     * @return minionId
-     */
-    public int getMovingMinion() {
-        return movingMinion;
-    }
-
-    /**
-     * Get the position the moving minion started at
-     * @return position
-     */
-    public PositionVector getOldPos() {
-        return oldPos;
-    }
-
-    /**
      * Get the position the moving minion ended at
      * @return position
      */
@@ -169,5 +151,26 @@ public class BattleLog {
      */
     public int getDeadMinion() {
         return deadMinion;
+    }
+
+    //ONLY NEEDED WITHOUT GUI
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Minion ID: " + actorId + ", " + type + "-> ");
+        switch(type) {
+            case MOVE:
+                sb.append("From " + actorPos + "to " + newPos);
+                break;
+            case NO_MOVE:
+            case NO_ATTACK:
+            case DEATH:
+                sb.append("At " + actorPos);
+                break;
+            case ATTACK:
+                sb.append("From " + actorPos + ", Defender: " + defenderId + " at " + defenderPos + ", Damage:" + damageDealt);
+                break;
+        }
+        return sb.toString();
     }
 }

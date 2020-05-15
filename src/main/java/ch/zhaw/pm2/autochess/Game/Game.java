@@ -1,5 +1,6 @@
 package ch.zhaw.pm2.autochess.Game;
 
+import ch.zhaw.pm2.autochess.Board.BattleLog;
 import ch.zhaw.pm2.autochess.Board.BoardManager;
 import ch.zhaw.pm2.autochess.Board.exceptions.InvalidPositionException;
 import ch.zhaw.pm2.autochess.Board.exceptions.MinionNotOnBoardException;
@@ -13,6 +14,7 @@ import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.PositionVector;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -25,8 +27,8 @@ public class Game {
     public Game(Config.HeroType heroTypePlayer1, Config.HeroType heroTypePlayer2) throws IllegalGameStateException {
         boardManager = new BoardManager();
         heroArrayList = new ArrayList<>();
-        addHero(heroTypePlayer1);
-        addHero(heroTypePlayer2);
+        addHero(heroTypePlayer1, Config.HERO_ID_1);
+        addHero(heroTypePlayer2, Config.HERO_ID_2);
 
     }
 
@@ -68,9 +70,9 @@ public class Game {
         }
     }
 
-    private void addHero(Config.HeroType heroType) throws IllegalGameStateException{
+    private void addHero(Config.HeroType heroType, int heroId) throws IllegalGameStateException{
         try {
-            heroArrayList.add(HeroBase.getHeroFromType(heroType));
+            heroArrayList.add(HeroBase.newHeroFromType(heroType, heroId));
         } catch (InvalidHeroTypeException | InvalidHeroAttributeException e) {
             throw new IllegalGameStateException(e.getMessage());
         }
@@ -133,7 +135,7 @@ public class Game {
 
     public void placeMinionOnBoard(int heroId, int minionId, PositionVector pos) throws InvalidPositionException, IllegalGameStateException {
         try {
-            boardManager.setMinionOnBoard(getHero(heroId).getMinion(minionId), pos);
+            boardManager.placeMinionOnBoard(getHero(heroId).getMinion(minionId), pos);
         } catch (InvalidMinionIDException e) {
             throw new IllegalGameStateException(e.getMessage());
         }
@@ -170,9 +172,11 @@ public class Game {
 
     public void doBattle() throws IllegalGameStateException {
         try {
+            boardManager.clearBattleLogs();
             boardManager.doBattle();
             doHeroDamage();
             distributeFunds();
+            resetAllMinionHealth();
             boardManager.clearBoard();
         }catch(MinionNotOnBoardException | InvalidPositionException e) {
             throw new IllegalGameStateException(e.getMessage());
@@ -181,20 +185,31 @@ public class Game {
 
     private void doHeroDamage() throws IllegalGameStateException {
         try {
-            for(HeroBase hero : heroArrayList) {
-                hero.decreaseHealth(boardManager.getNumberOfMinionsPerHero(hero.getId()));
-            }
+            getHero(Config.HERO_ID_1).decreaseHealth(boardManager.getNumberOfMinionsPerHero(Config.HERO_ID_2));
+            getHero(Config.HERO_ID_2).decreaseHealth(boardManager.getNumberOfMinionsPerHero(Config.HERO_ID_1));
         }catch (IllegalValueException e) {
             throw new IllegalGameStateException(e.getMessage());
         }
     }
 
-    private void distributeFunds() {
-
+    private void distributeFunds() throws IllegalGameStateException {
+        for(HeroBase hero : heroArrayList) {
+            try {
+                hero.increaseFunds(30);
+            } catch (IllegalValueException e) {
+                throw new IllegalGameStateException(e.getMessage());
+            }
+        }
     }
 
-    public void getBattleLog() {
+    private void resetAllMinionHealth() {
+        for(HeroBase hero: heroArrayList) {
+            hero.resetAllMinionHealth();
+        }
+    }
 
+    public List<BattleLog> getBattleLog() {
+        return boardManager.getBattleLogs();
     }
 
     public void printBoard() {

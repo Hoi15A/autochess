@@ -10,8 +10,5 @@ public class Warrior extends MinionBase {
         super(Config.MinionType.WARRIOR, new AggressiveStrategy(), Config.WARRIOR_PRICE, Config.WARRIOR_HEALTH, Config.WARRIOR_ATTACK, Config.WARRIOR_DEFENCE, Config.WARRIOR_MOVEMENT_RANGE,Config.WARRIOR_ATTACK_RANGE, Config.WARRIOR_AGILITY, heroId);
     }
 
-    @Override
-    public String toString() {
-        return "W";
-    }
+
 }

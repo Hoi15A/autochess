@@ -89,33 +89,6 @@ public class MinionTest {
     }
 
     @Test
-    public void testInitMinionLevel() throws MinionException {
-        minion = new Tank(0);
-        assertEquals(1, minion.getLevel());
-    }
-
-    @Test
-    public void testChangeMinionLevel() throws MinionException {
-        minion = new Tank(0);
-        minion.modifyLevel(1);
-        assertEquals(2, minion.getLevel());
-    }
-
-    @Test
-    public void testMinMinionLevel() throws MinionException {
-        minion = new Tank(0);
-        minion.modifyLevel(-100);
-        assertEquals(1, minion.getLevel());
-    }
-
-    @Test
-    public void testMaxMinionLevel() throws MinionException {
-        minion = new Tank(0);
-        minion.modifyLevel(100);
-        assertEquals(3, minion.getLevel());
-    }
-
-    @Test
     public void testValidAttackModifier() throws MinionException {
         int modifier = 1;
         minion = new Ranger(0);
