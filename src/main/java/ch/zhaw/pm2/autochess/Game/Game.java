@@ -32,6 +32,11 @@ public class Game {
 
     }
 
+    //ONLY USED FOR TESTING
+    public List<HeroBase> getHeroList() {
+        return heroArrayList;
+    }
+
     public int getWinner() {
         int winner = NO_WINNER;
         if(checkWinner()) {
@@ -212,6 +217,7 @@ public class Game {
         return boardManager.getBattleLogs();
     }
 
+    //ONLY NEEDED WITHOUT GUI
     public void printBoard() {
         boardManager.printBoard();
     }
