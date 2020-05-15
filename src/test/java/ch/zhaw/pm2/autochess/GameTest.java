@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 
 public class GameTest {
 
-    Game game;
+    private Game game;
 
     private static final Config.HeroType TEST_HERO_TYPE_1 = Config.HeroType.ALIEN;
     private static final Config.HeroType TEST_HERO_TYPE_2 = Config.HeroType.ENGINEER;
@@ -32,7 +32,7 @@ public class GameTest {
     @Mock private HeroBase heroTwo;
 
     @BeforeEach
-    void setUp() throws IllegalGameStateException {
+    public void setUp() throws IllegalGameStateException {
         MockitoAnnotations.initMocks(this);
         game = new Game(TEST_HERO_TYPE_1, TEST_HERO_TYPE_2);
     }
