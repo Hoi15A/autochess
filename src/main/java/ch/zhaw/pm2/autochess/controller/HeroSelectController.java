@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
  * It initializes all the components.
  */
 public class HeroSelectController implements Initializable {
+
     //data fields
     protected Game game;
     protected Button nextButton;

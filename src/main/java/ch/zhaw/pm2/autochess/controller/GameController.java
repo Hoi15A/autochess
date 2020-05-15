@@ -170,7 +170,7 @@ public class GameController implements Initializable {
     }
 
     private void initializePlayer1MinionList() {
-        p1MinionList = new ListView<String>();
+        p1MinionList = new ListView<>();
         p1Items = FXCollections.observableArrayList();
 
         p1MinionList.setItems(p1Items);
@@ -190,7 +190,7 @@ public class GameController implements Initializable {
     }
 
     private void initializePlayer2MinionList() {
-        p2MinionList = new ListView<String>();
+        p2MinionList = new ListView<>();
         p2Items = FXCollections.observableArrayList();
 
         p2MinionList.setItems(p2Items);
@@ -202,9 +202,7 @@ public class GameController implements Initializable {
                 p2MinionList.getItems().add(p2MinionList.getItems().size(), c);
             }
         } catch (
-            IllegalGameStateException e) {
-            e.printStackTrace();
-        } catch (InvalidMinionIDException e) {
+            IllegalGameStateException | InvalidMinionIDException e) {
             e.printStackTrace();
         }
     }
@@ -253,9 +251,7 @@ public class GameController implements Initializable {
                 try {
                     game.placeMinionOnBoard(1, id, posVector);
                     fieldSectionGridPane.add(new Text(game.getMinionType(1, id).toString()), posVector.getX(), posVector.getY());
-                } catch (InvalidPositionException e) {
-                    e.printStackTrace();
-                } catch (IllegalGameStateException e) {
+                } catch (InvalidPositionException | IllegalGameStateException e) {
                     e.printStackTrace();
                 }
                 p1fieldPosXTextField.setText("");
@@ -309,9 +305,7 @@ public class GameController implements Initializable {
                 try {
                     game.placeMinionOnBoard(2, id, posVector);
                     fieldSectionGridPane.add(new Text(game.getMinionType(2, id).toString()), posVector.getX(), posVector.getY());
-                } catch (InvalidPositionException e) {
-                    e.printStackTrace();
-                } catch (IllegalGameStateException e) {
+                } catch (InvalidPositionException | IllegalGameStateException e) {
                     e.printStackTrace();
                 }
                 p2fieldPosXTextField.setText("");
@@ -418,7 +412,7 @@ public class GameController implements Initializable {
                         doAttack(battleLog.getActorId(), battleLog.getActorPos(), battleLog.getDefenderId(), battleLog.getDefenderPos(), battleLog.getDamageDealt());
                         break;
                     case MOVE:
-                        doMove(battleLog.getActorId(), battleLog.getActorPos(), battleLog.getNewPos(), battleLog.getActorType());
+                        doMove(battleLog.getActorPos(), battleLog.getNewPos(), battleLog.getActorType());
                         break;
                     case DEATH:
                         doDeath(battleLog.getActorPos());
@@ -436,7 +430,7 @@ public class GameController implements Initializable {
         //Animation attack eg. field red
     }
 
-    private void doMove(int actorId, PositionVector actorPos, PositionVector actorNewPos, Config.MinionType minionType) {
+    private void doMove(PositionVector actorPos, PositionVector actorNewPos, Config.MinionType minionType) {
         removeMinionFromGrid(actorPos);
         fieldSectionGridPane.add(new Text(minionType.toString()), actorNewPos.getX(), actorNewPos.getY());
     }
@@ -457,9 +451,9 @@ public class GameController implements Initializable {
     private void removeMinionFromGrid(PositionVector minionPos) {
         int row = minionPos.getY();
         int col = minionPos.getX();
-        ObservableList<Node> childrens = fieldSectionGridPane.getChildren();
+        ObservableList<Node> children = fieldSectionGridPane.getChildren();
         try {
-            for (Node node : childrens) {
+            for (Node node : children) {
                 if(fieldSectionGridPane.getRowIndex(node) == null && fieldSectionGridPane.getRowIndex(node) == null) {
                 }else {
                     if (fieldSectionGridPane.getRowIndex(node) == row && fieldSectionGridPane.getColumnIndex(node) == col) {
@@ -468,6 +462,7 @@ public class GameController implements Initializable {
                 }
             }
         } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
         }
     }
 

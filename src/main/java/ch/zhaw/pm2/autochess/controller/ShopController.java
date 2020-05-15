@@ -76,7 +76,6 @@ public class ShopController implements Initializable {
     private Button p2SellButton;
     private TextField p2minionIDFiel;
 
-
     //fxml data fields
     @FXML
     private GridPane shopMainGrid;
@@ -235,9 +234,7 @@ public class ShopController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     game.buyMinion(2, TANK);
-                } catch (IllegalGameStateException e) {
-                    e.printStackTrace();
-                } catch (IllegalFundsReductionException e) {
+                } catch (IllegalGameStateException | IllegalFundsReductionException e) {
                     e.printStackTrace();
                 }
                 initializePlayerText();
@@ -250,9 +247,7 @@ public class ShopController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     game.buyMinion(2, WARRIOR);
-                } catch (IllegalGameStateException e) {
-                    e.printStackTrace();
-                } catch (IllegalFundsReductionException e) {
+                } catch (IllegalGameStateException | IllegalFundsReductionException e) {
                     e.printStackTrace();
                 }
                 initializePlayerText();
@@ -265,9 +260,7 @@ public class ShopController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     game.buyMinion(2, RANGER);
-                } catch (IllegalGameStateException e) {
-                    e.printStackTrace();
-                } catch (IllegalFundsReductionException e) {
+                } catch (IllegalGameStateException | IllegalFundsReductionException e) {
                     e.printStackTrace();
                 }
                 initializePlayerText();
@@ -310,9 +303,7 @@ public class ShopController implements Initializable {
                 int minionID = Integer.parseInt(p1minionIDFiel.getText());
                 try {
                     game.sellMinion(1, minionID);
-                } catch (IllegalGameStateException e) {
-                    e.printStackTrace();
-                } catch (InvalidMinionIDException e) {
+                } catch (IllegalGameStateException | InvalidMinionIDException e) {
                     e.printStackTrace();
                 }
                 initializePlayerText();
@@ -355,9 +346,7 @@ public class ShopController implements Initializable {
                 int minionID = Integer.parseInt(p2minionIDFiel.getText());
                 try {
                     game.sellMinion(2, minionID);
-                } catch (IllegalGameStateException e) {
-                    e.printStackTrace();
-                } catch (InvalidMinionIDException e) {
+                } catch (IllegalGameStateException | InvalidMinionIDException e) {
                     e.printStackTrace();
                 }
                 initializePlayerText();
@@ -390,9 +379,7 @@ public class ShopController implements Initializable {
                 String c = game.getMinionInfoAsString(1, id);
                 p1MinionList.getItems().add(c);
             }
-        } catch (IllegalGameStateException e) {
-            e.printStackTrace();
-        } catch (InvalidMinionIDException e) {
+        } catch (IllegalGameStateException | InvalidMinionIDException e) {
             e.printStackTrace();
         }
     }
@@ -404,9 +391,7 @@ public class ShopController implements Initializable {
                 String c = game.getMinionInfoAsString(2, id);
                 p2MinionList.getItems().add(c);
             }
-        } catch (IllegalGameStateException e) {
-            e.printStackTrace();
-        } catch (InvalidMinionIDException e) {
+        } catch (IllegalGameStateException | InvalidMinionIDException e) {
             e.printStackTrace();
         }
     }

@@ -67,7 +67,7 @@ public class MainApp extends Application {
      * @throws Exception
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         loadMainMenu();
     }
 
