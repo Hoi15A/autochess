@@ -34,7 +34,6 @@ public class CowardStrategy extends MoveStrategy {
             }
         }
 
-
         double longest = 0.0;
         List<PositionVector> possiblePositions = findPositionsInRange(getUnoccupiedSpaces(board), position, self.getMovementRange());
         if (closestEnemy != null) {
@@ -76,7 +75,6 @@ public class CowardStrategy extends MoveStrategy {
                 }
             }
         }
-
         return targetPosition;
     }
 }

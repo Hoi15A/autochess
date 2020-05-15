@@ -48,7 +48,6 @@ public abstract class HeroBase {
     private ArrayList<MinionBase> minionList = new ArrayList<>();
 
     private static final int MAX_LEGAL_VALUE = 1000;
-    //private static int heroCounter = 1;
     private final int heroId;
     private final int maxHealth;
     private final Config.HeroType heroType;
@@ -68,8 +67,6 @@ public abstract class HeroBase {
         validateHeroParameters(health, funds);
         validateHeroType(heroType);
         this.heroId = heroId;
-        //this.heroId = heroCounter;
-        //heroCounter++;
         this.maxHealth = health;
         this.health = maxHealth;
         this.funds = funds;
@@ -208,17 +205,6 @@ public abstract class HeroBase {
             throw new IllegalValueException("Illegal hero value: " + value + "-> Negative or greater allowed max: " + MAX_LEGAL_VALUE);
         }
     }
-
-
-    /**
-     * Reset the unique ID counter for minions.
-     * Used for testing
-     */
-    /*
-    public static void resetIdCounter() {
-        heroCounter = 0;
-    }
-     */
 
     /**
      * Abstract method for hero ability. Abilities can be activated to modify the attributes of the heroes minions.

@@ -50,8 +50,6 @@ public class AggressiveStrategy extends MoveStrategy {
                 }
             }
         }
-
-
         return targetPosition;
     }
 
@@ -80,7 +78,6 @@ public class AggressiveStrategy extends MoveStrategy {
                 }
             }
         }
-
         return targetPosition;
     }
 }
