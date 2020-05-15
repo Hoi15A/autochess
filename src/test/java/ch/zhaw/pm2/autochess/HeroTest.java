@@ -2,7 +2,11 @@ package ch.zhaw.pm2.autochess;
 
 import ch.zhaw.pm2.autochess.hero.HeroAlien;
 import ch.zhaw.pm2.autochess.hero.HeroBase;
-import ch.zhaw.pm2.autochess.hero.exceptions.*;
+import ch.zhaw.pm2.autochess.hero.exceptions.IllegalFundsReductionException;
+import ch.zhaw.pm2.autochess.hero.exceptions.IllegalValueException;
+import ch.zhaw.pm2.autochess.hero.exceptions.InvalidHeroAttributeException;
+import ch.zhaw.pm2.autochess.hero.exceptions.InvalidHeroTypeException;
+import ch.zhaw.pm2.autochess.hero.exceptions.InvalidMinionIDException;
 import ch.zhaw.pm2.autochess.minion.MinionBase;
 import ch.zhaw.pm2.autochess.minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.minion.exceptions.MinionException;
@@ -13,8 +17,11 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 public class HeroTest {
 

@@ -7,7 +7,10 @@ import ch.zhaw.pm2.autochess.game.exceptions.IllegalGameStateException;
 import ch.zhaw.pm2.autochess.minion.MinionBase;
 import ch.zhaw.pm2.autochess.PositionVector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 public class BoardManager {
 
