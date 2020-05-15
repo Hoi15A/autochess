@@ -1,12 +1,16 @@
 package ch.zhaw.pm2.autochess.controller;
 
 import ch.zhaw.pm2.autochess.Game.Game;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -47,6 +51,7 @@ public class MainApp extends Application {
     /**
      * Main Method of the application.
      * Launches the App.
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -55,6 +60,7 @@ public class MainApp extends Application {
 
     /**
      * Thiss Method loads the the MainMenu.
+     *
      * @param primaryStage
      * @throws Exception
      */
@@ -85,7 +91,7 @@ public class MainApp extends Application {
             mainMenuStage.setMinHeight(600);
             mainMenuStage.setTitle("SMAC");
             mainMenuStage.show();
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "Error starting up MainMenu" + e.getMessage());
         }
         mainMenuController.menuNewGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -100,7 +106,7 @@ public class MainApp extends Application {
     /**
      * This Method loads the HeroSelectWindow
      */
-    protected void loadHeroSelectWindow(){
+    protected void loadHeroSelectWindow() {
         heroSelectStage = new Stage();
         heroSelectController = new HeroSelectController(game);
         try {
@@ -136,7 +142,7 @@ public class MainApp extends Application {
     /**
      * This Method loads the ShopWindow
      */
-    protected void loadShopWindow(){
+    protected void loadShopWindow() {
         shopStage = new Stage();
         shopController = new ShopController(game);
         try {
@@ -163,7 +169,6 @@ public class MainApp extends Application {
             public void handle(MouseEvent event) {
                 shopStage.close();
                 loadGameWindow();
-                //todo logik einbauen
             }
         });
     }
@@ -171,7 +176,7 @@ public class MainApp extends Application {
     /**
      * This Method loads the GameWindow
      */
-    private void loadGameWindow(){
+    private void loadGameWindow() {
         gameStage = new Stage();
         gameController = new GameController(game);
         try {
@@ -197,13 +202,34 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent event) {
                 gameController.doBattle();
-                if(game.getWinner() == -1){
+                if (game.getWinner() == -1) {
                     loadShopWindow();
                     gameStage.close();
-                }else if(game.getWinner() == 1){
-                    //todo display winner and back to main menu
-                }else if(game.getWinner() == 2){
-                    //todo display winner and back to main menu
+                    final Stage dialog = new Stage();
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.initOwner(shopStage);
+                    VBox dialogVbox = new VBox(20);
+                    dialogVbox.getChildren().add(new Text("Round over, close this Window to shop Minions for the next round!"));
+                    try {
+                        dialogVbox.getChildren().add(new Text("Player1: "+game.getHeroHealth(1)+" health"));
+                        dialogVbox.getChildren().add(new Text("Player2: "+game.getHeroHealth(2)+" health"));
+                    } catch (IllegalGameStateException e) {
+                        e.printStackTrace();
+                    }
+                    Scene dialogScene = new Scene(dialogVbox, 400, 200);
+                    dialog.setScene(dialogScene);
+                    dialog.show();
+                } else {
+                    gameStage.close();
+                    loadMainMenu();
+                    final Stage dialog = new Stage();
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.initOwner(mainMenuStage);
+                    VBox dialogVbox = new VBox(20);
+                    dialogVbox.getChildren().add(new Text("Game Over!  Player " + game.getWinner() + " won"));
+                    Scene dialogScene = new Scene(dialogVbox, 400, 200);
+                    dialog.setScene(dialogScene);
+                    dialog.show();
                 }
             }
         });
