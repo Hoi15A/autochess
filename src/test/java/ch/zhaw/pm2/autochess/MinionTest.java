@@ -76,7 +76,7 @@ public class MinionTest {
         int healthBefore = minion.getHealth();
         minion.decreaseHealth(VALID_MODIFIER_IN_RANGE);
         int healthAfter = minion.getHealth();
-        assertEquals(healthBefore + VALID_MODIFIER_IN_RANGE, healthAfter);
+        assertEquals(healthBefore - VALID_MODIFIER_IN_RANGE, healthAfter);
     }
 
     @Test
