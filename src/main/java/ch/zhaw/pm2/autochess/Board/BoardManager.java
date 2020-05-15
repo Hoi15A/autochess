@@ -276,8 +276,8 @@ public class BoardManager {
                 throw new InvalidPositionException("Not a valid position on board or no defender found");
             }else {
                 MinionBase defender = getContentFromPosition(attackPosition);
-                int damage = (defender.getDefense() - attacker.getAttack());
-                defender.changeHealth(damage);
+                int damage = (attacker.getAttack() - defender.getDefense());
+                defender.decreaseHealth(damage);
                 System.out.println("-- ATTACK: attacker " + attacker.getId() + getMinionPosition(attacker.getId()));
                 System.out.println("           defender " + defender.getId() + getMinionPosition(defender.getId()));
                 System.out.println("           attack " + attacker.getAttack() + ", defence " + defender.getDefense() + ", damage " + damage);

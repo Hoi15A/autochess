@@ -146,19 +146,30 @@ public abstract class MinionBase {
     }
 
     /**
-     * Alter the amount of health a minion has.
-     * The modifier can be any positive or negative integer which will be added to the health.
-     * If the calculation goes outside the range of [0, maxHealth] then it will be set to either 0 or max.
+     * Increases the minions health by a set amount.
+     * If the increase results in a value above the maximum health it simply cuts off at max.
      *
-     * @param modifier amount by which health should be altered
+     * @param amount health to add
      */
-    public void changeHealth(int modifier) {
-        if (health + modifier > maxHealth) {
-            this.health = maxHealth;
-        } else if (health + modifier < 0) {
-            this.health = 0;
+    public void increaseHealth(int amount) {
+        if (health + amount > maxHealth) {
+            health = maxHealth;
         } else {
-            this.health += modifier;
+            health += amount;
+        }
+    }
+
+    /**
+     * Decreases the minions health by a set amount.
+     * If the decrease results in a value below 0 it is set to 0.
+     *
+     * @param amount health to remove
+     */
+    public void decreaseHealth(int amount) {
+        if (health - amount < 0) {
+            health = 0;
+        } else {
+            health -= amount;
         }
     }
 

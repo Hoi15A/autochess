@@ -72,19 +72,18 @@ public class MinionTest {
 
     @Test
     public void testValidHealthChange() throws MinionException {
-        int modifier = -VALID_MODIFIER_IN_RANGE;
         minion = new Warrior(HERO_ID);
         int healthBefore = minion.getHealth();
-        minion.changeHealth(modifier);
+        minion.decreaseHealth(VALID_MODIFIER_IN_RANGE);
         int healthAfter = minion.getHealth();
-        assertEquals(healthBefore + modifier, healthAfter);
+        assertEquals(healthBefore + VALID_MODIFIER_IN_RANGE, healthAfter);
     }
 
     @Test
     public void testMaxHealthLimit() throws MinionException {
         minion = new Warrior(HERO_ID);
         int healthBefore = minion.getHealth();
-        minion.changeHealth(BIG_VALUE_OUT_OF_RANGE);
+        minion.increaseHealth(BIG_VALUE_OUT_OF_RANGE);
         int healthAfter = minion.getHealth();
         assertEquals(healthBefore, healthAfter);
     }
@@ -92,7 +91,7 @@ public class MinionTest {
     @Test
     public void testMinHealthLimit() throws MinionException {
         minion = new Warrior(HERO_ID);
-        minion.changeHealth(-BIG_VALUE_OUT_OF_RANGE);
+        minion.decreaseHealth(BIG_VALUE_OUT_OF_RANGE);
         int healthAfter = minion.getHealth();
         assertEquals(0, healthAfter);
     }
