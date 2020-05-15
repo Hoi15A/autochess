@@ -82,11 +82,12 @@ public class ShopController implements Initializable {
         } catch (IllegalGameStateException e) {
             e.printStackTrace();
         }
-        player1Text = new Text("Player 1 Shop | cash: "+p1Funds);
-        player2Text = new Text("Player 2 Shop | cash: "+p2Funds);
 
         shopMainGrid.getChildren().remove(player1Text);
         shopMainGrid.getChildren().remove(player2Text);
+
+        player1Text = new Text("Player 1 Shop | cash: "+p1Funds);
+        player2Text = new Text("Player 2 Shop | cash: "+p2Funds);
 
         shopMainGrid.add(player1Text, 0, 0);
         shopMainGrid.add(player2Text, 1, 0);
@@ -195,15 +196,15 @@ public class ShopController implements Initializable {
         Button p2BuyRanger = new Button("buy");
 
         player2BuyPane.add(new Label("Tank"), 0, 0);
-        player2BuyPane.add(new Label("10$"), 1, 0);
+        player2BuyPane.add(new Label(Config.TANK_PRICE+" $"), 1, 0);
         player2BuyPane.add(p2BuyTank, 2, 0);
 
         player2BuyPane.add(new Label("Warrior"), 0, 1);
-        player2BuyPane.add(new Label("10$"), 1, 1);
+        player2BuyPane.add(new Label(Config.WARRIOR_PRICE+" $"), 1, 1);
         player2BuyPane.add(p2BuyWarrior, 2, 1);
 
         player2BuyPane.add(new Label("Ranger"), 0, 2);
-        player2BuyPane.add(new Label("10$"), 1, 2);
+        player2BuyPane.add(new Label(Config.RANGER_PRICE+" $"), 1, 2);
         player2BuyPane.add(p2BuyRanger, 2, 2);
 
         p2BuyTank.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -216,6 +217,7 @@ public class ShopController implements Initializable {
                 } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
+                initializePlayerText();
                 reloadMinionList();
             }
         });
@@ -230,6 +232,7 @@ public class ShopController implements Initializable {
                 } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
+                initializePlayerText();
                 reloadMinionList();
             }
         });
@@ -244,6 +247,7 @@ public class ShopController implements Initializable {
                 } catch (IllegalFundsReductionException illegalFundsReductionException) {
                     System.out.println(illegalFundsReductionException.getStackTrace());
                 }
+                initializePlayerText();
                 reloadMinionList();
             }
         });
