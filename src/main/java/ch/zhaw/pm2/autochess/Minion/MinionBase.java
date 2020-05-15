@@ -27,7 +27,6 @@ public abstract class MinionBase {
     private final int heroId;
     private final int price;
     private int health;
-    private int level = 1;
     private int attackModifier = 0;
     private int defenseModifier = 0;
     private int attackRangeModifier = 0;
@@ -134,28 +133,6 @@ public abstract class MinionBase {
     }
 
     /**
-     * Returns the minions level
-     * @return level
-     */
-    public int getLevel() {
-        return level;
-    }
-
-    /**
-     * Alter the minions level
-     * @param levelDifference The change in level to apply
-     */
-    public void modifyLevel(int levelDifference) {
-        if (level + levelDifference > Config.MAX_MINION_LEVEL) {
-            level = Config.MAX_MINION_LEVEL;
-        } else if (level + levelDifference < 1) {
-            level = 1;
-        } else {
-            level += levelDifference;
-        }
-    }
-
-    /**
      * Change the modifier used to calculate attack
      * @param attackModifier modifier
      */
@@ -259,7 +236,7 @@ public abstract class MinionBase {
     }
 
     public String getInfoAsString() {
-        String info = "-ID: " + minionId + ", type:" + type + ", Lvl: " + level + ", HP: " + health;
+        String info = "-ID: " + minionId + ", type:" + type + ", HP: " + health;
         return info;
     }
 

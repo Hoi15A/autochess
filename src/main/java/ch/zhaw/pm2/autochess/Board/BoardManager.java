@@ -20,6 +20,10 @@ public class BoardManager {
         return boardArray2d;
     }
 
+    /**
+     * Clear the board of all placed {@link MinionBase} objects
+     * Needed after Battle.
+     */
     public void clearBoard() {
         for(int i = 0; i < boardArray2d.length; i++) {
             for(int j = 0; j < boardArray2d.length; j++) {
@@ -28,10 +32,18 @@ public class BoardManager {
         }
     }
 
+    /**
+     * Clear the battle log entries.
+     * Sets all entries to null.
+     */
     public void clearBattleLogs() {
         battleLogs.clear();
     }
 
+    /**
+     * Getter method for list holding generated {@link BattleLog} objects.
+     * @return List of BattleLog objects
+     */
     public List<BattleLog> getBattleLogs() {
         return battleLogs;
     }
@@ -67,9 +79,30 @@ public class BoardManager {
         }
     }
 
+    private void validateNumberOfMinions(int heroId) throws IllegalGameStateException {
+        if(heroId == Config.HERO_ID_1 || heroId == Config.HERO_ID_2) {
+            if (heroId == Config.HERO_ID_1 && getNumberOfMinionsPerHero(Config.HERO_ID_1) >= Config.MAX_MINIONS_ON_BOARD ) {
+                throw new IllegalGameStateException("Invalid placement: Already placed " + getNumberOfMinionsPerHero(Config.HERO_ID_1) + " of " + Config.MAX_MINIONS_ON_BOARD + " minions");
+            } else if (heroId == Config.HERO_ID_2 && getNumberOfMinionsPerHero(Config.HERO_ID_2) >= Config.MAX_MINIONS_ON_BOARD ) {
+                throw new IllegalGameStateException("Invalid placement: Already placed " + getNumberOfMinionsPerHero(Config.HERO_ID_2) + " of " + Config.MAX_MINIONS_ON_BOARD + " minions");
+            }
+        } else {
+            throw new IllegalGameStateException("Invalid hero ID: " + heroId + ". Not a config value");
+        }
+    }
+
+    /**
+     * Method to place a {@link MinionBase} on the board at the given {@link PositionVector}.
+     * Successful if pos on board, vacant and in placement zone.
+     * @param minion Minion to be placed
+     * @param pos PositionVector of location to place minion
+     * @throws IllegalGameStateException thrown if pos not vacant, off board, not in placement zone or too many minions on board
+     * @throws InvalidPositionException thrown if minion hero not a valid config value
+     */
     public void placeMinionOnBoard(MinionBase minion, PositionVector pos) throws IllegalGameStateException, InvalidPositionException {
         Objects.requireNonNull(minion, "Minion to place is null");
         validatePosZone(pos, minion.getHeroId());
+        validateNumberOfMinions(minion.getHeroId());
         setMinionOnBoard(minion, pos);
     }
 
@@ -85,11 +118,22 @@ public class BoardManager {
         }
     }
 
+    /**
+     * Remove a minion from the board.
+     * @param minionId int ID value of minion to be removed
+     * @throws MinionNotOnBoardException thrown if no minion on board matches the given ID
+     */
     public void removeMinionFromBoard(int minionId) throws MinionNotOnBoardException {
         PositionVector pos = getMinionPosition(minionId);
         boardArray2d[pos.getY()][pos.getX()] = null;
     }
 
+    /**
+     * Getter method for the {@link PositionVector} of the minion matching the given int ID value.
+     * @param minionId int ID value of minion
+     * @return PositionVector of minion matching ID
+     * @throws MinionNotOnBoardException thrown if no minion on board matches the given ID
+     */
     public PositionVector getMinionPosition(int minionId) throws MinionNotOnBoardException {
         PositionVector position = null;
         for(int i = 0; i < boardArray2d.length; i++) {
@@ -106,6 +150,10 @@ public class BoardManager {
         return position;
     }
 
+    /**
+     * Getter method for all placed minions on board
+     * @return List of {@link MinionBase} objects
+     */
     public ArrayList<MinionBase> getAllMinionsOnBoard() {
         ArrayList<MinionBase> listActiveMinions = new ArrayList<>();
         for(int i = 0; i < boardArray2d.length; i++) {
@@ -119,6 +167,11 @@ public class BoardManager {
         return listActiveMinions;
     }
 
+    /**
+     * Getter method for all placed minions matching the specified int hero ID value.
+     * @param heroId int hero ID value to match
+     * @return List of {@link MinionBase} objects
+     */
     public ArrayList<MinionBase> getSpecHeroMinionsFromBoard(int heroId) {
         ArrayList<MinionBase> listActiveMinions = new ArrayList<>();
         for(int i = 0; i < boardArray2d.length; i++) {
@@ -132,24 +185,32 @@ public class BoardManager {
         return listActiveMinions;
     }
 
+    /**
+     * Getter method for int number of placed minions matching the specified int hero ID value.
+     * @param heroId int hero ID value to match
+     * @return List of {@link MinionBase} objects
+     */
     public int getNumberOfMinionsPerHero(int heroId) {
         return getSpecHeroMinionsFromBoard(heroId).size();
     }
 
-    private boolean checkEachHeroActiveMinions(ArrayList<MinionBase> activeMinions) {
-        //todo: maybe check with getNumberOfMinionsOfHero (Would need to know hero Id for that)
-        Set<Integer> heroSet = new HashSet<>();
-        for(MinionBase minion : activeMinions) {
-            heroSet.add(minion.getHeroId());
+    private boolean checkEachHeroActiveMinions() {
+        boolean isGreaterZeroMinions = false;
+        if(getNumberOfMinionsPerHero(Config.HERO_ID_1) > 0 && getNumberOfMinionsPerHero(Config.HERO_ID_2) > 0) {
+            isGreaterZeroMinions = true;
         }
-        boolean isGreaterOneHero = false;
-        if(heroSet.size() > 1) {
-            isGreaterOneHero = true;
-        }
-        return isGreaterOneHero;
+        return isGreaterZeroMinions;
     }
 
-    public void doBattle() throws MinionNotOnBoardException, InvalidPositionException, IllegalGameStateException {
+    /**
+     * Method to execute a battle with the current board state. Creates a list of all minions on the board
+     * to iterate through. Each minion is called on to make a move and an attack. If a minion death event occurs,
+     * the dead minion is immediately removed form the board and removed from the list upon their next turn.
+     * Each event (Move, No Move, Attack, etc) are logged as battleLog objects and stored for later usage.
+     * @throws MinionNotOnBoardException thrown if the listed minion is not on the board
+     * @throws InvalidPositionException thrown if the given position to set minion is not valid
+     */
+    public void doBattle() throws MinionNotOnBoardException, InvalidPositionException {
         ArrayList<MinionBase> activeMinions = getAllMinionsOnBoard();
         //todo: sort by agility
         //todo: remove prints
@@ -161,7 +222,7 @@ public class BoardManager {
         System.out.println(" ");
 
         int loopCounter = 0;
-        while(checkEachHeroActiveMinions(activeMinions) && loopCounter <= Config.MAX_BATTLE_LOOPS){
+        while(checkEachHeroActiveMinions() && loopCounter <= Config.MAX_BATTLE_LOOPS){
             for(Iterator<MinionBase> it = activeMinions.iterator(); it.hasNext(); ) {
                 MinionBase minion = it.next();
                 if(minion.getHealth() > 0) {
@@ -179,7 +240,7 @@ public class BoardManager {
         }
     }
 
-    private void minionDoMove(MinionBase minion) throws MinionNotOnBoardException, InvalidPositionException, IllegalGameStateException {
+    private void minionDoMove(MinionBase minion) throws MinionNotOnBoardException, InvalidPositionException {
         //todo: remove prints
         PositionVector currentPos = getMinionPosition(minion.getId());
         PositionVector movePosition = minion.move(boardArray2d, currentPos);

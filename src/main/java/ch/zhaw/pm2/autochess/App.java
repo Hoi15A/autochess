@@ -13,7 +13,7 @@ public class App {
         return "Hello world.";
     }
 
-    public static void main(String[] args) throws IllegalGameStateException, IllegalFundsReductionException, InvalidPositionException {
+    public static void main(String[] args) throws IllegalGameStateException {
         System.out.println(new App().getGreeting());
 
         try {

@@ -9,6 +9,7 @@ public final class Config {
     //BoardManager
     public static final int BOARD_HEIGHT = 8;
     public static final int BOARD_WIDTH =8;
+    public static final int MAX_MINIONS_ON_BOARD = 8;
     public static final int MAX_BATTLE_LOOPS = 20;
     public static final int PLACE_ZONE_HEIGHT = 2;
 
