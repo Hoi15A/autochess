@@ -326,6 +326,12 @@ public abstract class HeroBase {
         return minionIdSet;
     }
 
+    public void resetAllMinionHealth() {
+        for(MinionBase minion : minionList) {
+            minion.resetHealth();
+        }
+    }
+
     /**
      * Getter method for the {@link Config.MinionType} attribute of the minion matching the given ID.
      * @param minionId int ID value of minion

@@ -176,6 +176,7 @@ public class Game {
             boardManager.doBattle();
             doHeroDamage();
             distributeFunds();
+            resetAllMinionHealth();
             boardManager.clearBoard();
         }catch(MinionNotOnBoardException | InvalidPositionException e) {
             throw new IllegalGameStateException(e.getMessage());
@@ -198,6 +199,12 @@ public class Game {
             } catch (IllegalValueException e) {
                 throw new IllegalGameStateException(e.getMessage());
             }
+        }
+    }
+
+    private void resetAllMinionHealth() {
+        for(HeroBase hero: heroArrayList) {
+            hero.resetAllMinionHealth();
         }
     }
 

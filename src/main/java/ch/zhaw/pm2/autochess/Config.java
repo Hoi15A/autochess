@@ -24,21 +24,21 @@ public final class Config {
     public static final int MIN_FUNDS = 0;
 
     //HeroAlien
-    public static final int ALIEN_HEALTH = 100;
+    public static final int ALIEN_HEALTH = 5;
     public static final int ALIEN_START_FUNDS = 100;
     public static final int ALIEN_ABILITY_MOVE_RANGE = 0;
     public static final int ALIEN_BUFF_ATTACK = 0;
     public static final int ALIEN_BUFF_DEF = 0;
 
     //HeroEngineer
-    public static final int ENG_HEALTH = 100;
+    public static final int ENG_HEALTH = 5;
     public static final int ENG_START_FUNDS = 100;
     public static final int ENG_ABILITY_DEF = 0;
     public static final int ENG_BUFF_DEF = 0;
     public static final int ENG_BUFF_HP = 0;
 
     //HeroSpaceMarine
-    public static final int MARINE_HEALTH = 100;
+    public static final int MARINE_HEALTH = 5;
     public static final int MARINE_START_FUNDS = 100;
     public static final int MARINE_ABILITY_ATTACK = 0;
     public static final int MARINE_BUFF_MOVE_RANGE = 0;

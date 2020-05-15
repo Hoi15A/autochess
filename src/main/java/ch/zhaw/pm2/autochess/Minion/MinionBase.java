@@ -132,6 +132,10 @@ public abstract class MinionBase {
         return health;
     }
 
+    public void resetHealth() {
+        health = maxHealth;
+    }
+
     /**
      * Change the modifier used to calculate attack
      * @param attackModifier modifier

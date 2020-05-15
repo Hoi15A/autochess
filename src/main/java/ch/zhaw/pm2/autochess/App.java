@@ -8,6 +8,8 @@ import ch.zhaw.pm2.autochess.Game.Game;
 import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
 import ch.zhaw.pm2.autochess.Hero.exceptions.IllegalFundsReductionException;
 
+import java.sql.SQLOutput;
+
 public class App {
     public String getGreeting() {
         return "Hello world.";
@@ -42,6 +44,37 @@ public class App {
             System.out.println(" ");
 
             game.doBattle();
+
+            System.out.println("winner " + game.getWinner());
+
+            System.out.println("health 1: " + game.getHeroHealth(1));
+            System.out.println("health 2: " + game.getHeroHealth(2));
+
+            System.out.println(" ");
+            game.printBoard();
+            System.out.println(" ");
+
+            game.placeMinionOnBoard(1, 0, new PositionVector(4, 0));
+            game.placeMinionOnBoard(1, 1, new PositionVector(5,0));
+            game.placeMinionOnBoard(1, 2, new PositionVector(6, 0));
+            game.placeMinionOnBoard(1, 3, new PositionVector(7, 0));
+
+            game.placeMinionOnBoard(2, 4, new PositionVector(4, 7));
+            game.placeMinionOnBoard(2, 5, new PositionVector(5,7));
+            game.placeMinionOnBoard(2, 6, new PositionVector(6, 7));
+            game.placeMinionOnBoard(2, 7, new PositionVector(7, 7));
+
+            game.doBattle();
+
+            System.out.println("winner " + game.getWinner());
+
+            System.out.println("health 1: " + game.getHeroHealth(1));
+            System.out.println("health 2: " + game.getHeroHealth(2));
+
+            System.out.println(" ");
+            game.printBoard();
+            System.out.println(" ");
+
 
         }catch (IllegalFundsReductionException | InvalidPositionException e) {
             e.printStackTrace();
