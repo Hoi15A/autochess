@@ -1,19 +1,30 @@
 package ch.zhaw.pm2.autochess.controller;
 
 import ch.zhaw.pm2.autochess.Game.Game;
+import ch.zhaw.pm2.autochess.Game.exceptions.IllegalGameStateException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
 import java.net.URL;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
     private GridPane fieldGrid;
     private GridPane player1Grid;
     private GridPane player2Grid;
+
+    private ListView<String> p1MinionList;
+    private ObservableList<String> p1Items;
+
+    private ListView<String> p2MinionList;
+    private ObservableList<String> p2Items;
 
     private static final int FIELD_COLS = 8;
     private static final int FIELD_ROWS = 8;
@@ -29,7 +40,6 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         /*todo
         -Minion list display -> liste alles minions in besitz anzeigen -> getAllMinionIds(int heroId) -> getMinionInfoAsString(int heroId, int minionId)
              iterieren und anzeigen
@@ -55,10 +65,11 @@ public class GameController implements Initializable {
 
         initializeFieldGrid();
         initializePlayerGrid();
+        initializeMinionList();
 
-        gameMainGrid.add(fieldGrid,1,0);
-        gameMainGrid.add(player1Grid,0,0);
-        gameMainGrid.add(player2Grid,2,0);
+        gameMainGrid.add(fieldGrid, 1, 0);
+        gameMainGrid.add(player1Grid, 0, 0);
+        gameMainGrid.add(player2Grid, 2, 0);
     }
 
     private void initializeFieldGrid() {
@@ -77,7 +88,7 @@ public class GameController implements Initializable {
         }
     }
 
-    private void initializePlayerGrid(){
+    private void initializePlayerGrid() {
         //Player 1 Grid
         player1Grid = new GridPane();
         player1Grid.setGridLinesVisible(true);
@@ -107,5 +118,42 @@ public class GameController implements Initializable {
         player2Grid.getRowConstraints().add(player2MinionListRow);
         player2Grid.getRowConstraints().add(player2AddRow);
         player2Grid.getRowConstraints().add(player2RemoveRow);
+    }
+
+    private void initializeMinionList() {
+        p1MinionList = new ListView<String>();
+        p1Items = FXCollections.observableArrayList ();
+
+        p1MinionList.setItems(p1Items);
+        player1Grid.add(p1MinionList,0,0);
+
+
+        p2MinionList = new ListView<String>();
+        p2Items =FXCollections.observableArrayList ();
+
+        p2MinionList.setItems(p2Items);
+        player2Grid.add(p2MinionList,0,0);
+
+        //todo valid ids (aktuell wird hochgezählt)
+        try {
+            for (int id : game.getAllMinionIds(1)) {
+                String c = game.getMinionType(1, id).toString()+(p1MinionList.getItems().size()+1);
+                p1MinionList.getItems().add(p1MinionList.getItems().size(), c);
+            }
+        } catch (
+            IllegalGameStateException e) {
+            e.printStackTrace();
+        }
+
+        //todo valid ids (aktuell wird hochgezählt)
+        try {
+            for (int id : game.getAllMinionIds(2)) {
+                String c = game.getMinionType(2, id).toString()+(p2MinionList.getItems().size()+1);
+                p2MinionList.getItems().add(p2MinionList.getItems().size(), c);
+            }
+        } catch (
+            IllegalGameStateException e) {
+            e.printStackTrace();
+        }
     }
 }
