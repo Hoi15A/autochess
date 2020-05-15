@@ -101,6 +101,7 @@ public class BoardManager {
      */
     public void placeMinionOnBoard(MinionBase minion, PositionVector pos) throws IllegalGameStateException, InvalidPositionException {
         Objects.requireNonNull(minion, "Minion to place is null");
+        validatePosOnBoard(pos);
         validatePosZone(pos, minion.getHeroId());
         validateNumberOfMinions(minion.getHeroId());
         setMinionOnBoard(minion, pos);
@@ -214,24 +215,24 @@ public class BoardManager {
         ArrayList<MinionBase> activeMinions = getAllMinionsOnBoard();
         //todo: sort by agility
         //todo: remove prints
-        
+        /*
         System.out.println("All active minions");
         for(MinionBase minion : activeMinions) {
             minion.printInfo();
         }
         System.out.println(" ");
-
+         */
         int loopCounter = 0;
-        while(checkEachHeroActiveMinions() && loopCounter <= Config.MAX_BATTLE_LOOPS){
+        while(checkEachHeroActiveMinions() && loopCounter < Config.MAX_BATTLE_LOOPS){
             for(Iterator<MinionBase> it = activeMinions.iterator(); it.hasNext(); ) {
                 MinionBase minion = it.next();
                 if(minion.getHealth() > 0) {
-                    System.out.print("Current : ");
-                    minion.printInfo();
+                    //System.out.print("Current : ");
+                    //minion.printInfo();
                     minionDoMove(minion);
                     minionDoAttack(minion);
                 } else {
-                    System.out.println("Removed dead minion from list");
+                    //System.out.println("Removed dead minion from list");
                     it.remove();
                 }
                 printBoard();
@@ -246,7 +247,7 @@ public class BoardManager {
         PositionVector movePosition = minion.move(boardArray2d, currentPos);
         BattleLog log = new BattleLog();
         if(movePosition == null) {
-            System.out.println("-- NO_MOVE: minion " + minion.getId() + " " + "Pos" + currentPos);
+            //System.out.println("-- NO_MOVE: minion " + minion.getId() + " " + "Pos" + currentPos);
             log.setNoMoveLog(minion.getId(), currentPos);
 
         } else {
@@ -254,7 +255,7 @@ public class BoardManager {
             validatePosEmpty(movePosition);
             removeMinionFromBoard(minion.getId());
             setMinionOnBoard(minion, movePosition);
-            System.out.println("-- MOVED: minion " + minion.getId() + " " + "From: " + currentPos + " To: " + movePosition);
+            //System.out.println("-- MOVED: minion " + minion.getId() + " " + "From: " + currentPos + " To: " + movePosition);
             log.setMoveLog(minion.getId(), currentPos, movePosition);
         }
         battleLogs.add(log);
@@ -266,7 +267,7 @@ public class BoardManager {
         PositionVector attackPosition = attacker.attack(boardArray2d, currentPos);
 
         if (attackPosition == null) {
-            System.out.println("-- NO_ATTACK: minion " + attacker.getId() + " " + "Pos" + getMinionPosition(attacker.getId()));
+            //System.out.println("-- NO_ATTACK: minion " + attacker.getId() + " " + "Pos" + getMinionPosition(attacker.getId()));
             BattleLog log = new BattleLog();
             log.setNoAttackLog(attacker.getId(), getMinionPosition(attacker.getId()));
             battleLogs.add(log);
@@ -278,15 +279,15 @@ public class BoardManager {
                 MinionBase defender = getContentFromPosition(attackPosition);
                 int damage = (defender.getDefense() - attacker.getAttack());
                 defender.changeHealth(damage);
-                System.out.println("-- ATTACK: attacker " + attacker.getId() + getMinionPosition(attacker.getId()));
-                System.out.println("           defender " + defender.getId() + getMinionPosition(defender.getId()));
-                System.out.println("           attack " + attacker.getAttack() + ", defence " + defender.getDefense() + ", damage " + damage);
+                //System.out.println("-- ATTACK: attacker " + attacker.getId() + getMinionPosition(attacker.getId()));
+                //System.out.println("           defender " + defender.getId() + getMinionPosition(defender.getId()));
+                //System.out.println("           attack " + attacker.getAttack() + ", defence " + defender.getDefense() + ", damage " + damage);
                 BattleLog log = new BattleLog();
                 log.setAttackLog(attacker.getId(), getMinionPosition(attacker.getId()), defender.getId(), getMinionPosition(defender.getId()), damage);
                 battleLogs.add(log);
                 if (defender.getHealth() <= 0) {
                     removeMinionFromBoard(defender.getId());
-                    System.out.println("-- DEATH: minion " + defender.getId());
+                    //System.out.println("-- DEATH: minion " + defender.getId());
                     BattleLog deathLog = new BattleLog();
                     deathLog.setDeathLog(defender.getId());
                     battleLogs.add(deathLog);
