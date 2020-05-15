@@ -1,14 +1,15 @@
 package ch.zhaw.pm2.autochess;
 
 import ch.zhaw.pm2.autochess.Minion.MinionBase;
-import ch.zhaw.pm2.autochess.Minion.exceptions.InvalidMinionTypeException;
 import ch.zhaw.pm2.autochess.Minion.strategy.AggressiveStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class AggressiveStrategyTest {
@@ -18,26 +19,30 @@ public class AggressiveStrategyTest {
     @Mock private MinionBase dummyMinion;
     private AggressiveStrategy strategy;
 
+    private final static int HERO_ID_A = 0;
+    private final static int HERO_ID_B = 1;
+    private final static int AGGRO_MINION_ATK_RANGE = 1;
+    private final static int AGGRO_MINION_MOV_RANGE = 1;
+    private final static int AGGRO_MINION_ID = 0;
+    private final static int DUMMY_MINION_ID = 1;
+    private final static int ROWS = 8;
+    private final static int COLS = 8;
+    private final static PositionVector TOP_LEFT = new PositionVector(0, 0);
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        board = new MinionBase[8][8];
+        board = new MinionBase[ROWS][COLS];
 
         strategy = new AggressiveStrategy();
     }
 
-    // TODO: finish tests and document while at it
     @Test
     void testNoTargetNoMove() {
-        int row = 0;
-        int col = 0;
-
-        board[row][col] = aggroMinion;
-
+        board[0][0] = aggroMinion;
         setUpAggroMinionMock();
 
-        PositionVector resultPos = strategy.move(board, new PositionVector(col, row), aggroMinion);
-
+        PositionVector resultPos = strategy.move(board, TOP_LEFT, aggroMinion);
         assertNull(resultPos);
     }
 
@@ -49,7 +54,7 @@ public class AggressiveStrategyTest {
         board[7][7] = dummyMinion;
         setUpDummyMinionMock();
 
-        PositionVector result = strategy.move(board, new PositionVector(0, 0), aggroMinion);
+        PositionVector result = strategy.move(board, TOP_LEFT, aggroMinion);
         assertEquals(new PositionVector(1, 1), result);
 
         board[0][0] = null;
@@ -71,7 +76,7 @@ public class AggressiveStrategyTest {
         board[0][0] = aggroMinion;
         setUpAggroMinionMock();
 
-        PositionVector resultPos = strategy.attack(board, new PositionVector(0, 0), aggroMinion);
+        PositionVector resultPos = strategy.attack(board, TOP_LEFT, aggroMinion);
         assertNull(resultPos);
     }
 
@@ -83,31 +88,31 @@ public class AggressiveStrategyTest {
         board[1][1] = dummyMinion;
         setUpDummyMinionMock();
 
-        PositionVector resultPos = strategy.attack(board, new PositionVector(0, 0), aggroMinion);
+        PositionVector resultPos = strategy.attack(board, TOP_LEFT, aggroMinion);
         assertEquals(new PositionVector(1, 1), resultPos);
 
         board[1][0] = dummyMinion;
-        resultPos = strategy.attack(board, new PositionVector(0, 0), aggroMinion);
+        resultPos = strategy.attack(board, TOP_LEFT, aggroMinion);
         assertEquals(new PositionVector(0, 1), resultPos);
     }
 
     @Test
     void testNullAttack() {
         assertThrows(NullPointerException.class, () -> {
-            PositionVector result = strategy.attack(null, null, null);
+            strategy.attack(null, null, null);
         });
     }
 
 
     private void setUpAggroMinionMock() {
-        when(aggroMinion.getMovementRange()).thenReturn(1);
-        when(aggroMinion.getAttackRange()).thenReturn(1);
-        when(aggroMinion.getId()).thenReturn(0);
-        when(aggroMinion.getHeroId()).thenReturn(0);
+        when(aggroMinion.getMovementRange()).thenReturn(AGGRO_MINION_MOV_RANGE);
+        when(aggroMinion.getAttackRange()).thenReturn(AGGRO_MINION_ATK_RANGE);
+        when(aggroMinion.getId()).thenReturn(AGGRO_MINION_ID);
+        when(aggroMinion.getHeroId()).thenReturn(HERO_ID_A);
     }
 
     private void setUpDummyMinionMock() {
-        when(dummyMinion.getId()).thenReturn(2);
-        when(dummyMinion.getHeroId()).thenReturn(1);
+        when(dummyMinion.getId()).thenReturn(DUMMY_MINION_ID);
+        when(dummyMinion.getHeroId()).thenReturn(HERO_ID_B);
     }
 }
